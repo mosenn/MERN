@@ -9,6 +9,9 @@ import {
   TabPanel,
   TabPanels,
 } from "@chakra-ui/react";
+import { Register } from "../Register/Register";
+import { Login } from "../Login/Login";
+
 export const Home = () => {
   return (
     <Container maxW={{ md: "550px", lg: "container.md" }}>
@@ -44,6 +47,8 @@ export const Home = () => {
               w={{ base: "70%", md: "50%" }}
               border="1px solid #80808066"
               borderRadius={"4px"}
+              bg={"white"}
+              _selected={{ bg: "white" }}
               _focus={{
                 boxShadow: "none",
                 border: "1px solid #80808066",
@@ -60,10 +65,12 @@ export const Home = () => {
               Login
             </Tab>
             <Tab
+              bg={"white"}
               m={{ base: "0", md: "15px" }}
               w={{ base: "70%", md: "50%" }}
               border="1px solid #80808066"
               borderRadius={"4px"}
+              _selected={{ bg: "white" }}
               _focus={{
                 boxShadow: "none",
                 border: "1px solid #80808066",
@@ -82,10 +89,12 @@ export const Home = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <p>Login</p>
+              {/* Login componet */}
+              <Login />
             </TabPanel>
             <TabPanel>
-              <p>Register</p>
+              {/* Register Componet */}
+              <Register />
             </TabPanel>
           </TabPanels>
         </Tabs>
