@@ -30,14 +30,14 @@ export const Register = () => {
   };
   //? this log with onchange input
   console.log(user);
-  const handelSubmit = (e) => {
+  const handelSubmitRegister = (e) => {
     e.preventDefault();
     console.log("hi");
     //*post user state to database
     //*save someting to localstroge
   };
   return (
-    <form action="" onSubmit={handelSubmit}>
+    <form action="" onSubmit={handelSubmitRegister}>
       <VStack color="black">
         <FormControl isRequired>
           <FormLabel>username</FormLabel>
@@ -97,7 +97,7 @@ export const Register = () => {
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
-          <FormLabel>password</FormLabel>
+          <FormLabel>Profile Image</FormLabel>
           <Input
             name="pic"
             variant="filled"
