@@ -57,7 +57,7 @@ const loginUser = async (req, res) => {
       return res.status(404).send("username or password worng");
     }
   } catch (err) {
-    return res.status(404).send(err, "this user not found");
+    return res.status(404).send(err, "someting proplem for loginUser Route in user.js controller");
   }
 };
 module.exports = {
