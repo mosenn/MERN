@@ -1,4 +1,5 @@
 const User = require("../models/user");
+
 const { FunCreateToken } = require("../config/token");
 
 const registerUser = async (req, res) => {
@@ -7,7 +8,7 @@ const registerUser = async (req, res) => {
     const TakeEmailUser = await User.findOne({ email });
 
     if (TakeEmailUser) {
-      throw new Error("email hase existed");
+      res.status(422).send("email hase existed");
     }
 
     const user = await User.create({
