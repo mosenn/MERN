@@ -5,13 +5,19 @@ const ColorsLog = require("colors");
 const connectToMongoDb = require("./config/dbConnect");
 const app = express();
 const data = require("./data");
+const router = require("./routes/user");
+
 app.use(cors());
-console.log(data);
+// console.log(data);
 dotEnv.config();
 //* data base connection
 connectToMongoDb();
+//*accpet jason
+app.use(express.json());
 
-//* test Routes
+//*routes
+app.use("/registerUsers", router);
+
 app.get("/", (req, res) => {
   return res.status(200).send(data);
 });
