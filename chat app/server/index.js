@@ -16,18 +16,13 @@ connectToMongoDb();
 app.use(express.json());
 
 //*routes
-app.use("/registerUsers", router);
+app.use("/", router);
 
 app.get("/", (req, res) => {
   return res.status(200).send(data);
 });
 
-app.get("/:id", (req, res) => {
-  const FindChatWithId = data.find(
-    (chats) => chats._id === req.params.id
-  );
-  return res.status(200).send(FindChatWithId);
-});
+
 
 const port = process.env.PORT || 5000;
 

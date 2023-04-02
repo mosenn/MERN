@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const bycrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const { FunCreateToken } = require("../config/token");
 
 //*Create User (registerUser)
@@ -40,10 +40,8 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
-  const matchPassword = await bycrypt.compare(
-    user.password,
-    password
-  );
+  const matchPassword = await bcrypt.compare(password, user.password);
+  console.log(matchPassword, "matchpassword");
   try {
     if (user && matchPassword) {
       res.status(200).json({
@@ -53,10 +51,13 @@ const loginUser = async (req, res) => {
         password: user.password,
         createAt: user.createdAt,
         updateAt: user.updatedAt,
+        token: FunCreateToken(user._id),
       });
+    } else {
+      return res.status(404).send("username or password worng");
     }
   } catch (err) {
-    res.status(404).send("this user not found");
+    return res.status(404).send(err, "this user not found");
   }
 };
 module.exports = {

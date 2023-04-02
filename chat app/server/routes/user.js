@@ -10,8 +10,8 @@ const { registerUser, loginUser } = require("../controller/user");
 
 //!API POST
 //*USERS TO DATABASE
-router.post("/", registerUser);
+router.post("/registerUsers", registerUser);
 //*LOGIN USERS
-router.post("/userLogin", loginUser);
+router.post("/loginUser", loginUser);
 
 module.exports = router;
