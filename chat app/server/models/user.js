@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const bycrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "need name for account"] },
@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// ? pre mean before model saved do someting
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  const BS = await bycrypt.genSalt(10);
+  this.password = await bycrypt.hash(this.password, BS);
+});
 
 const User = mongoose.model("User", userSchema);
 
