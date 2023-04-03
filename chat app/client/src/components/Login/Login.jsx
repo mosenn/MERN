@@ -102,7 +102,7 @@ export const Login = () => {
               color: "black",
             }}
           >
-            Register
+            Login
           </Button>
           <Button
             onClick={Loginguset}

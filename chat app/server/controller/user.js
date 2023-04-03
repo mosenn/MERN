@@ -4,34 +4,42 @@ const { FunCreateToken } = require("../config/token");
 
 //*Create User (registerUser)
 const registerUser = async (req, res) => {
-  const { email, name, password, pic } = req.body;
+  const { email, name, password, pic, confirmPassword } = req.body;
   try {
-    const TakeEmailUser = await User.findOne({ email });
+    await User.validationUsers(req.body);
 
-    if (TakeEmailUser) {
-      res.status(422).send("email hase existed");
+    const Useremail = await User.findOne({ email });
+
+    if (Useremail) {
+      return res.status(422).json("email has existed");
     }
 
     const user = await User.create({
       email,
       name,
       password,
+      confirmPassword,
       pic,
     });
 
     if (user) {
-      res.status(201).json({
+      return res.status(201).json({
         _id: user._id,
         name: user.name,
         password: user.password,
+        confirmPassword: user.confirmPassword,
         pic: user.pic,
         token: FunCreateToken(user._id),
         updateAt: user.updatedAt,
         createAt: user.createdAt,
       });
     }
-  } catch (err) {
-    console.log(err.message);
+  } catch (ex) {
+    console.log(ex.errors);
+
+    //* set yup
+    console.log(ex.errors);
+    res.status(422).send(ex);
   }
 };
 
@@ -44,7 +52,7 @@ const loginUser = async (req, res) => {
   console.log(matchPassword, "matchpassword");
   try {
     if (user && matchPassword) {
-      res.status(200).json({
+      return res.status(200).json({
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -57,7 +65,12 @@ const loginUser = async (req, res) => {
       return res.status(404).send("username or password worng");
     }
   } catch (err) {
-    return res.status(404).send(err, "someting proplem for loginUser Route in user.js controller");
+    return res
+      .status(404)
+      .send(
+        err,
+        "someting proplem for loginUser Route in user.js controller"
+      );
   }
 };
 module.exports = {

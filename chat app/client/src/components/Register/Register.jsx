@@ -7,13 +7,24 @@ import {
   InputRightElement,
   Button,
 } from "@chakra-ui/react";
-
-import React, { useState } from "react";
-
+import { json, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+const urluploadimg = `https://api.cloudinary.com/v1_1/dm6tmiksw/image/upload`;
 export const Register = () => {
+  const navigate = useNavigate();
   const [user, SetUser] = useState();
   const [showPass, SetShowPass] = useState();
-
+  const [imageUrlUpload, SetImageUrlUpload] = useState();
+  const [loading, SetLoading] = useState(false);
+  const [registerUser, SetUserRegister] = useState();
+  const [handleError, SetHandelError] = useState();
+  const errors = [
+    {
+      path: "",
+      message: "",
+      email: "",
+    },
+  ];
   const takeInfoFromUser = (inputs) => {
     if (inputs.target.name === "pic") {
       SetUser({
@@ -29,20 +40,122 @@ export const Register = () => {
     SetShowPass(!showPass);
   };
   //? this log with onchange input
-  console.log(user);
-  const handelSubmitRegister = (e) => {
-    e.preventDefault();
-    console.log("hi");
-    //*post user state to database
-    //*save someting to localstroge
+  // console.log(user, "this user input state");
+
+  //* Create Form data for get pic
+  const data = new FormData();
+  const SeTimageAndControllLoadingBtn = () => {
+    if (
+      (user?.pic && user?.pic?.type === "image/jpeg") ||
+      user?.pic?.type === "image/png"
+    ) {
+      // console.log(user.pic.type, "this type");
+      // console.log(data, "form data");
+      // console.log(user.pic, "userpic");
+      data.append("file", user.pic);
+      data.append("upload_preset", "chatapp");
+      data.append("cloudName", "dm6tmiksw");
+      fetch(urluploadimg, {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.secure_url !== "") {
+            const uploadedFileUrl = data.secure_url;
+            // console.log(uploadedFileUrl, "in then");
+            SetImageUrlUpload(uploadedFileUrl);
+            SetLoading(false);
+          }
+        })
+        .catch((err) => console.log(err.message, "error in 62"));
+    } else {
+      //*set chakraUi toast
+      // console.log("pls set image for profile");
+      SetLoading(false);
+    }
   };
+
+  const sendUserValue = async () => {
+    // console.log("typeof", typeof user?.name);
+    const userData = await fetch(
+      "http://localhost:3000/registerUsers",
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user?.name,
+          password: user?.Password,
+          confirmPassword: user?.confrimPassword,
+          email: user?.Email,
+          pic: imageUrlUpload,
+        }),
+      }
+    );
+    const jsonData = await userData.json();
+    SetUserRegister(jsonData);
+  };
+
+  // console.log(registerUser?.token, "i need this token");
+  //?have email error here
+  console.log(registerUser, "user state");
+
+  if (registerUser?.inner) {
+    registerUser.inner.filter((items) => {
+      const { message, path } = items;
+      // console.log(items.message, items.path);
+      errors.push({ path, message });
+    });
+    // console.log(registerUser.inner, "registeruser");
+  }
+  console.log(errors, "e");
+  const navigateTochatRoute = () => {
+    // if (registerUser?.token) {
+    //   setTimeout(() => {
+    //     navigate("/chat");
+    //   }, 3000);
+    // }
+  };
+  const handelSubmitRegister = (e) => {
+    SetLoading(true);
+    e.preventDefault();
+    SeTimageAndControllLoadingBtn();
+
+    sendUserValue();
+
+    // navigateTochatRoute();
+    // console.log("hi");
+    // //*post user state to database
+    // //*save someting to localstroge
+  };
+
+  //* i want know that new linke image has set or not . ! is okey no any proplem
+  useEffect(() => {
+    console.log(imageUrlUpload, "image linke");
+  }, [imageUrlUpload]);
+  //* i want know that new linke image has set or not . ! is okey no any proplem
+
   return (
     <form action="" onSubmit={handelSubmitRegister}>
       <VStack color="black">
-        <FormControl isRequired>
-          <FormLabel>username</FormLabel>
+        {errors?.map((items) => {
+          return (
+            <div key={items.path}>
+              <p>{items.message}</p>
+            </div>
+          );
+        })}
+        <FormControl>
+          <FormLabel>name</FormLabel>
+          {errors?.map((items) => {
+            return (
+              <div key={items.path}>
+                <p>{items.path === "name" && items.message}</p>
+              </div>
+            );
+          })}
           <Input
-            name="userName"
+            name="name"
             variant="filled"
             size="md"
             focusBorderColor="green.200"
@@ -51,8 +164,17 @@ export const Register = () => {
             }}
           ></Input>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel>email</FormLabel>
+
+          {errors?.map((items) => {
+            console.log(items);
+            return (
+              <div key={items.path}>
+                <p>{items.path === "email" && items.message}</p>
+              </div>
+            );
+          })}
           <Input
             name="Email"
             variant="filled"
@@ -63,8 +185,15 @@ export const Register = () => {
             }}
           ></Input>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel>password</FormLabel>
+          {errors?.map((items) => {
+            return (
+              <div key={items.path}>
+                <p>{items.path === "password" && items.message}</p>
+              </div>
+            );
+          })}
           <Input
             name="Password"
             variant="filled"
@@ -76,8 +205,17 @@ export const Register = () => {
             type={showPass ? "text" : "password"}
           ></Input>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel>confrim password</FormLabel>
+          {errors?.map((items) => {
+            return (
+              <div key={items.path}>
+                <p>
+                  {items.path === "confirmPassword" && items.message}
+                </p>
+              </div>
+            );
+          })}
           <InputGroup>
             <Input
               name="confrimPassword"
@@ -96,8 +234,15 @@ export const Register = () => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel>Profile Image</FormLabel>
+          {errors?.map((items) => {
+            return (
+              <div key={items.path}>
+                <p>{items.path === "pic" && items.message}</p>
+              </div>
+            );
+          })}
           <Input
             name="pic"
             variant="filled"
@@ -112,6 +257,7 @@ export const Register = () => {
         </FormControl>
         <Button
           type="submit"
+          isLoading={loading}
           m={{ base: "15px", md: "15px" }}
           w={{ base: "70%", md: "50%" }}
           border="1px solid #80808066"
@@ -129,9 +275,12 @@ export const Register = () => {
             color: "black",
           }}
         >
-          Register
+          {imageUrlUpload ? "Register" : "Upload image"}
         </Button>
       </VStack>
+      <figure>
+        <img src={imageUrlUpload} alt="" />
+      </figure>
     </form>
   );
 };
