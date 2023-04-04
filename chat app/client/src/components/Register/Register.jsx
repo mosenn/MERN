@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputRightElement,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import { json, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -16,8 +17,9 @@ export const Register = () => {
   const [showPass, SetShowPass] = useState();
   const [imageUrlUpload, SetImageUrlUpload] = useState();
   const [loading, SetLoading] = useState(false);
-  const [registerUser, SetUserRegister] = useState();
+  const [registerUser, SetUserRegister] = useState([]);
   const [handleError, SetHandelError] = useState();
+  const [test, setTest] = useState(true);
   const errors = [
     {
       path: "",
@@ -93,22 +95,33 @@ export const Register = () => {
       }
     );
     const jsonData = await userData.json();
-    SetUserRegister(jsonData);
+    SetUserRegister([jsonData]);
+
+    if (findObjectInRegisteruser) {
+      setTest(false);
+    }
   };
 
-  // console.log(registerUser?.token, "i need this token");
+  console.log(registerUser?.token, "i need this token");
   //?have email error here
   console.log(registerUser, "user state");
-
-  if (registerUser?.inner) {
-    registerUser.inner.filter((items) => {
-      const { message, path } = items;
-      // console.log(items.message, items.path);
-      errors.push({ path, message });
-    });
-    // console.log(registerUser.inner, "registeruser");
-  }
-  console.log(errors, "e");
+  const findObjectInRegisteruser = registerUser.find((items) => {
+    return items.token;
+  });
+  // if (registerUser?.inner) {
+  //   registerUser.inner.filter((items) => {
+  //     const { message, path } = items;
+  //     console.log(items.message, items.path, "err mesage");
+  //     errors.push({ path, message });
+  //   });
+  //   if (registerUser) {
+  //     let emailMessage = registerUser[0]?.message;
+  //     errors.push({ message: emailMessage });
+  //   }
+  //   console.log(registerUser.inner, "registeruser");
+  // }
+  // console.log(errors, "errorrrrr");
+  // console.log(errors, "e");
   const navigateTochatRoute = () => {
     // if (registerUser?.token) {
     //   setTimeout(() => {
@@ -131,29 +144,34 @@ export const Register = () => {
 
   //* i want know that new linke image has set or not . ! is okey no any proplem
   useEffect(() => {
-    console.log(imageUrlUpload, "image linke");
+    console.log(
+      imageUrlUpload,
+      "image linke",
+      registerUser,
+      "register"
+    );
   }, [imageUrlUpload]);
   //* i want know that new linke image has set or not . ! is okey no any proplem
 
   return (
     <form action="" onSubmit={handelSubmitRegister}>
       <VStack color="black">
-        {errors?.map((items) => {
-          return (
-            <div key={items.path}>
-              <p>{items.message}</p>
-            </div>
-          );
-        })}
-        <FormControl>
-          <FormLabel>name</FormLabel>
-          {errors?.map((items) => {
+        {registerUser.length > 0 &&
+          !findObjectInRegisteruser &&
+          registerUser?.map((items, index) => {
             return (
-              <div key={items.path}>
-                <p>{items.path === "name" && items.message}</p>
+              <div
+                key={index}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <p style={{ border: "1px solid red" }}>{items}</p>
               </div>
             );
           })}
+        ;
+        <FormControl>
+          <FormLabel>name</FormLabel>
+
           <Input
             name="name"
             variant="filled"
@@ -167,14 +185,6 @@ export const Register = () => {
         <FormControl>
           <FormLabel>email</FormLabel>
 
-          {errors?.map((items) => {
-            console.log(items);
-            return (
-              <div key={items.path}>
-                <p>{items.path === "email" && items.message}</p>
-              </div>
-            );
-          })}
           <Input
             name="Email"
             variant="filled"
@@ -187,13 +197,6 @@ export const Register = () => {
         </FormControl>
         <FormControl>
           <FormLabel>password</FormLabel>
-          {errors?.map((items) => {
-            return (
-              <div key={items.path}>
-                <p>{items.path === "password" && items.message}</p>
-              </div>
-            );
-          })}
           <Input
             name="Password"
             variant="filled"
@@ -207,15 +210,7 @@ export const Register = () => {
         </FormControl>
         <FormControl>
           <FormLabel>confrim password</FormLabel>
-          {errors?.map((items) => {
-            return (
-              <div key={items.path}>
-                <p>
-                  {items.path === "confirmPassword" && items.message}
-                </p>
-              </div>
-            );
-          })}
+
           <InputGroup>
             <Input
               name="confrimPassword"
@@ -236,13 +231,6 @@ export const Register = () => {
         </FormControl>
         <FormControl>
           <FormLabel>Profile Image</FormLabel>
-          {errors?.map((items) => {
-            return (
-              <div key={items.path}>
-                <p>{items.path === "pic" && items.message}</p>
-              </div>
-            );
-          })}
           <Input
             name="pic"
             variant="filled"

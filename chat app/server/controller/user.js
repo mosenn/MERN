@@ -9,11 +9,14 @@ const registerUser = async (req, res) => {
     await User.validationUsers(req.body);
 
     const Useremail = await User.findOne({ email });
+    const checkname = await User.findOne({ name });
 
     if (Useremail) {
-      return res.status(422).json("email has existed");
+     return res.status(400).json("Email already exists");
     }
-
+    if (checkname) {
+      return res.status(400).json("name already exists");
+    }
     const user = await User.create({
       email,
       name,
@@ -27,6 +30,7 @@ const registerUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         password: user.password,
+        email: user.email,
         confirmPassword: user.confirmPassword,
         pic: user.pic,
         token: FunCreateToken(user._id),
@@ -38,8 +42,7 @@ const registerUser = async (req, res) => {
     console.log(ex.errors);
 
     //* set yup
-    console.log(ex.errors);
-    res.status(422).send(ex);
+    return res.status(422).send(ex.errors);
   }
 };
 
