@@ -4,6 +4,7 @@ const { FunCreateToken } = require("../config/token");
 
 //*Create User (registerUser)
 const registerUser = async (req, res) => {
+
   const { email, name, password, pic, confirmPassword } = req.body;
   try {
     await User.validationUsers(req.body);
@@ -12,10 +13,14 @@ const registerUser = async (req, res) => {
     const checkname = await User.findOne({ name });
 
     if (Useremail) {
-     return res.status(400).json("Email already exists");
+      // return res.status(401).json("Email already exists");
+
+      throw "Email already exists";
     }
     if (checkname) {
-      return res.status(400).json("name already exists");
+      // return res.status(401).json("name already exists");
+ 
+      throw "name already exists";
     }
     const user = await User.create({
       email,
@@ -39,10 +44,19 @@ const registerUser = async (req, res) => {
       });
     }
   } catch (ex) {
-    console.log(ex.errors);
-
+    console.log(ex.inner);
     //* set yup
-    return res.status(422).send(ex.errors);
+    //?is okey
+    if (!ex.inner) {
+      res.status(401).json({
+        inner: [{ message: ex }],
+      });
+    } else {
+      return res.status(422).send(ex);
+    }
+
+    //*test
+    // return res.status(422).send(ex);
   }
 };
 

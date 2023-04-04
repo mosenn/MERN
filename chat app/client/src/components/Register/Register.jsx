@@ -18,15 +18,8 @@ export const Register = () => {
   const [imageUrlUpload, SetImageUrlUpload] = useState();
   const [loading, SetLoading] = useState(false);
   const [registerUser, SetUserRegister] = useState([]);
-  const [handleError, SetHandelError] = useState();
-  const [test, setTest] = useState(true);
-  const errors = [
-    {
-      path: "",
-      message: "",
-      email: "",
-    },
-  ];
+
+  //? is okey
   const takeInfoFromUser = (inputs) => {
     if (inputs.target.name === "pic") {
       SetUser({
@@ -46,6 +39,7 @@ export const Register = () => {
 
   //* Create Form data for get pic
   const data = new FormData();
+  //? is okey
   const SeTimageAndControllLoadingBtn = () => {
     if (
       (user?.pic && user?.pic?.type === "image/jpeg") ||
@@ -77,9 +71,8 @@ export const Register = () => {
       SetLoading(false);
     }
   };
-
+  //? is okey
   const sendUserValue = async () => {
-    // console.log("typeof", typeof user?.name);
     const userData = await fetch(
       "http://localhost:3000/registerUsers",
       {
@@ -96,32 +89,15 @@ export const Register = () => {
     );
     const jsonData = await userData.json();
     SetUserRegister([jsonData]);
-
-    if (findObjectInRegisteruser) {
-      setTest(false);
-    }
   };
 
   console.log(registerUser?.token, "i need this token");
   //?have email error here
-  console.log(registerUser, "user state");
+  console.log(registerUser[0]?.inner, "user state");
   const findObjectInRegisteruser = registerUser.find((items) => {
     return items.token;
   });
-  // if (registerUser?.inner) {
-  //   registerUser.inner.filter((items) => {
-  //     const { message, path } = items;
-  //     console.log(items.message, items.path, "err mesage");
-  //     errors.push({ path, message });
-  //   });
-  //   if (registerUser) {
-  //     let emailMessage = registerUser[0]?.message;
-  //     errors.push({ message: emailMessage });
-  //   }
-  //   console.log(registerUser.inner, "registeruser");
-  // }
-  // console.log(errors, "errorrrrr");
-  // console.log(errors, "e");
+
   const navigateTochatRoute = () => {
     // if (registerUser?.token) {
     //   setTimeout(() => {
@@ -129,6 +105,7 @@ export const Register = () => {
     //   }, 3000);
     // }
   };
+  //? is okey
   const handelSubmitRegister = (e) => {
     SetLoading(true);
     e.preventDefault();
@@ -158,13 +135,11 @@ export const Register = () => {
       <VStack color="black">
         {registerUser.length > 0 &&
           !findObjectInRegisteruser &&
-          registerUser?.map((items, index) => {
+          registerUser[0]?.inner.map((items, index) => {
+            console.log(items, "in map");
             return (
-              <div
-                key={index}
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <p style={{ border: "1px solid red" }}>{items}</p>
+              <div>
+                <p>{items.message}</p>
               </div>
             );
           })}
