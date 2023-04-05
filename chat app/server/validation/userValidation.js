@@ -1,12 +1,12 @@
 const yup = require("yup");
 
 const validUser = yup.object().shape({
-  name: yup.string().trim().required("set your name"),
+  name: yup.string().trim().required("set name"),
   email: yup
     .string()
     .trim()
     .email("set like that: chatapp@gmail.com")
-    .required("set your email"),
+    .required("set email"),
   password: yup.string().trim().required("set password"),
   confirmPassword: yup
     .string()

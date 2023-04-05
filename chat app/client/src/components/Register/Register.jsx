@@ -6,12 +6,24 @@ import {
   InputGroup,
   InputRightElement,
   Button,
-  Text,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  useDisclosure,
+  CloseButton,
 } from "@chakra-ui/react";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+
 const urluploadimg = `https://api.cloudinary.com/v1_1/dm6tmiksw/image/upload`;
+
 export const Register = () => {
+  const {
+    isOpen: isVisible,
+    onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: true });
+
   const navigate = useNavigate();
   const [user, SetUser] = useState();
   const [showPass, SetShowPass] = useState();
@@ -133,16 +145,23 @@ export const Register = () => {
   return (
     <form action="" onSubmit={handelSubmitRegister}>
       <VStack color="black">
-        {registerUser.length > 0 &&
-          !findObjectInRegisteruser &&
-          registerUser[0]?.inner.map((items, index) => {
-            console.log(items, "in map");
-            return (
-              <div>
-                <p>{items.message}</p>
-              </div>
-            );
-          })}
+        <section>
+          {registerUser.length > 0 &&
+            !findObjectInRegisteruser &&
+            registerUser[0]?.inner.map((items, index) => {
+              console.log(items, "in map");
+              return (
+                <Alert status="warning" m={5}>
+                  <AlertIcon />
+                  <AlertTitle mr={2} fontWeight={"400"}>
+                    <p style={{ fontSize: "1.1rem" }}>
+                      {items.message}
+                    </p>
+                  </AlertTitle>
+                </Alert>
+              );
+            })}
+        </section>
         ;
         <FormControl>
           <FormLabel>name</FormLabel>

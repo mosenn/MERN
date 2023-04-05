@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { FunCreateToken } = require("../config/token");
 
+
 //*Create User (registerUser)
 const registerUser = async (req, res) => {
 
@@ -19,7 +20,7 @@ const registerUser = async (req, res) => {
     }
     if (checkname) {
       // return res.status(401).json("name already exists");
- 
+
       throw "name already exists";
     }
     const user = await User.create({
