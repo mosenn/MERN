@@ -10,6 +10,7 @@ const notFoundRoutes = require("./middleware/controlRoutes");
 const errorHandler = require("./middleware/errorHandel");
 
 const router = require("./routes/user");
+const chatRoute = require("./routes/chatRoutes");
 
 app.use(cors());
 // console.log(data);
@@ -21,6 +22,7 @@ app.use(express.json());
 
 //*routes
 app.use("/", router);
+app.use("/", chatRoute);
 
 //*send data from data.js to localhost
 app.get("/", (req, res) => {
