@@ -11,6 +11,7 @@ import {
   AlertTitle,
   useDisclosure,
   CloseButton,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -18,18 +19,13 @@ import React, { useEffect, useState } from "react";
 const urluploadimg = `https://api.cloudinary.com/v1_1/dm6tmiksw/image/upload`;
 
 export const Register = () => {
-  const {
-    isOpen: isVisible,
-    onClose,
-    onOpen,
-  } = useDisclosure({ defaultIsOpen: true });
-
   const navigate = useNavigate();
   const [user, SetUser] = useState();
   const [showPass, SetShowPass] = useState();
   const [imageUrlUpload, SetImageUrlUpload] = useState();
   const [loading, SetLoading] = useState(false);
   const [registerUser, SetUserRegister] = useState([]);
+  const toast = useToast();
 
   //? is okey
   const takeInfoFromUser = (inputs) => {
@@ -103,30 +99,38 @@ export const Register = () => {
     SetUserRegister([jsonData]);
   };
 
-  console.log(registerUser?.token, "i need this token");
+  // console.log(registerUser?.token, "i need this token");
   //?have email error here
-  console.log(registerUser[0]?.inner, "user state");
+  // console.log(registerUser[0]?.inner, "user state");
   const findObjectInRegisteruser = registerUser.find((items) => {
     return items.token;
   });
 
   const navigateTochatRoute = () => {
-    // if (registerUser?.token) {
-    //   setTimeout(() => {
-    //     navigate("/chat");
-    //   }, 3000);
-    // }
+    if (registerUser[0]?.token) {
+      // console.log(registerUser[0]?.token, "token here");
+      toast({
+        title: "Account created.",
+        description: "We've created your account for you.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
   };
   //? is okey
+
   const handelSubmitRegister = (e) => {
     SetLoading(true);
     e.preventDefault();
+    navigateTochatRoute();
     SeTimageAndControllLoadingBtn();
 
     sendUserValue();
 
-    // navigateTochatRoute();
-    // console.log("hi");
     // //*post user state to database
     // //*save someting to localstroge
   };
@@ -260,6 +264,7 @@ export const Register = () => {
           {imageUrlUpload ? "Register" : "Upload image"}
         </Button>
       </VStack>
+
       <figure>
         <img src={imageUrlUpload} alt="" />
       </figure>

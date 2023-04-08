@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   FormControl,
   FormLabel,
   VStack,
   Input,
-  InputGroup,
-  InputRightElement,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 export const Login = () => {
+  const navigate = useNavigate();
+  const toast = useToast();
   let [user, SetUser] = useState({
     Email: "",
     userName: "",
@@ -19,28 +22,83 @@ export const Login = () => {
   const takeInfoFromUser = (inputs) => {
     SetUser({ ...user, [inputs.target.name]: inputs.target.value });
     console.log(user, "takeInfoFromUser");
+    console.log(inputs.target.value, "input value");
   };
 
   const changeTypePass = () => {
     SetShowPass(!showPass);
   };
 
-  const handelSubmitLogin = (e) => {
+  const handelSubmitLogin = async (e) => {
     e.preventDefault();
     console.log("hi");
-    console.log(user, "handelSubmitLogin");
+    // console.log(user, "handelSubmitLogin");
+
+    try {
+      const userPost = await axios({
+        method: "post",
+        url: "http://localhost:3000/loginUser",
+        headers: { "Content-Type": "application/json" },
+        data: JSON.stringify({
+          Password: user.Password,
+          email: user.Email,
+        }),
+      });
+      //* user login log
+      // console.log(JSON.stringify(userPost.data));
+      const response = userPost.data;
+      console.log(response);
+      if (response.email !== "guset@gmail.com") {
+        toast({
+          title: "welcome",
+          description: `${response.email} in 3s ago u are join chat`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+      if (userPost?.data?.token) {
+        setTimeout(() => {
+          navigate("/chat");
+        }, 3000);
+      }
+    } catch (err) {
+      console.log(err.response.data);
+      console.log(err.response.status);
+      toast({
+        title: err.response.status,
+        description: err.response.data,
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
     //*post user state to database
     //*save someting to localstroge
   };
 
   const Loginguset = () => {
-    console.log(user, "this happen in guset function");
+    // console.log(user, "this happen in guset function");
+
     user = {
       Email: "guset@gmail.com",
       Password: "guset12345",
       userName: "guset",
     };
     console.log(user, "Loginguset");
+    if (user.Email === "guset@gmail.com") {
+      toast({
+        title: "guset@gmail.com",
+        description: "in 3s you are join chat with guset member",
+        status: "info",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+    setTimeout(() => {
+      navigate("/chat");
+    }, 3000);
   };
   return (
     <div>
@@ -49,6 +107,7 @@ export const Login = () => {
           <FormControl>
             <FormLabel>username</FormLabel>
             <Input
+              value={user.userName}
               name="userName"
               variant="filled"
               size="md"
@@ -64,6 +123,7 @@ export const Login = () => {
               name="Email"
               variant="filled"
               size="md"
+              value={user.Email}
               focusBorderColor="green.200"
               onChange={(e) => {
                 takeInfoFromUser(e);
@@ -73,6 +133,7 @@ export const Login = () => {
           <FormControl>
             <FormLabel>password</FormLabel>
             <Input
+              value={user.Password}
               name="Password"
               variant="filled"
               size="md"

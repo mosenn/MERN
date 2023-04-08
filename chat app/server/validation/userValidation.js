@@ -13,7 +13,7 @@ const validUser = yup.object().shape({
     .oneOf([yup.ref("password"), null], "passwords do not match")
     .trim()
     .required("set confirm password"),
-  // pic: yup.string().required("upload picture for profile"),
+  pic: yup.string().required("upload picture for profile"),
 });
 
 module.exports = validUser;
