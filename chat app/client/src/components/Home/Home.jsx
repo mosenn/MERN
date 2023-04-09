@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Container,
@@ -11,8 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(user, "this user in home.jsx");
+    if (user) navigate("/chat");
+  }, [navigate]);
+
   return (
     <Container maxW={{ md: "550px", lg: "container.md" }}>
       <Box

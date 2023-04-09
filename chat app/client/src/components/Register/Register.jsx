@@ -132,7 +132,8 @@ export const Register = () => {
     sendUserValue();
 
     // //*post user state to database
-    // //*save someting to localstroge
+    // //*save users to localstroge
+    localStorage.setItem(JSON.stringify(registerUser), "userInfo");
   };
 
   //* i want know that new linke image has set or not . ! is okey no any proplem

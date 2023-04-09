@@ -126,7 +126,7 @@ const addToGroup = async (req, res) => {
   )
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
-    .populate("users", "-confirmPassword ");
+    // .populate("users", "-confirmPassword ");
   if (!remove) {
     return res.status(400).send("chat not found");
   } else {
@@ -147,7 +147,7 @@ const removeFromGroup = async (req, res) => {
   )
     .populate("users", "-password")
     .populate("groupAdmin", "-password")
-    .populate("users", "-confirmPassword ");
+    // .populate("users", "-confirmPassword ");
   if (!remove) {
     return res.status(400).send("chat not found");
   } else {
