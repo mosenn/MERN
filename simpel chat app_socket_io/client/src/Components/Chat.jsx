@@ -19,6 +19,7 @@ export const Chat = ({ socket, username, room }) => {
 
       await socket.emit("SEND_MESSAGE", usersMessage);
       setList((list) => [...list, usersMessage]);
+      setMessage("");
     }
   };
 
@@ -31,15 +32,14 @@ export const Chat = ({ socket, username, room }) => {
   return (
     <div className="test">
       <textarea
+        value={message}
         type="text"
         placeholder="message"
         onChange={(e) => {
           setMessage(e.target.value);
         }}
         onKeyUp={(e) => {
-          if (e.key === "Enter") {
-            sendMessage();
-          }
+          e.code == "Enter" && sendMessage();
         }}
       />
       <button onClick={sendMessage}>send Message</button>
