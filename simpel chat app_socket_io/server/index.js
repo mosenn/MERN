@@ -15,16 +15,17 @@ const io = new Server(server, {
 });
 
 //* work with io
-io.on("connection", (socket) => {
-//   console.log(`user is connect with ID: ${socket.id}`);
+io.on("connection", (socket) => { 
+  //   console.log(`user is connect with ID: ${socket.id}`);
 
   socket.on("JOIN_ROOM", (data) => {
     socket.join(data);
     console.log(`user with id :${socket.id} join room ${data}`);
   });
-  //Whenever someone disconnects this piece of code executed
-  socket.on("disconnect", function () {
-    console.log("A user disconnected");
+
+  socket.on("SEND_MESSAGE", (data) => {
+    // console.log("user info  :", data);
+    socket.to(data.roomId).emit("receive_message", data);
   });
 });
 
