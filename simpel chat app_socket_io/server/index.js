@@ -1,13 +1,39 @@
 const express = require("express");
 const app = express();
+const http = require("http");
 const cors = require("cors");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
 app.use(cors());
+
+//* config io
+const io = new Server(server, {
+  cors: {
+    origin: "http://127.0.0.1:5173",
+    methods: ["GET", "POST"],
+  },
+});
+
+//* work with io
+io.on("connection", (socket) => {
+//   console.log(`user is connect with ID: ${socket.id}`);
+
+  socket.on("JOIN_ROOM", (data) => {
+    socket.join(data);
+    console.log(`user with id :${socket.id} join room ${data}`);
+  });
+  //Whenever someone disconnects this piece of code executed
+  socket.on("disconnect", function () {
+    console.log("A user disconnected");
+  });
+});
 
 app.get("/", (req, res) => {
   return res.send("chat app");
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`server is run at ${port}`);
+
+server.listen(port, () => {
+  console.log("server is runing");
 });
