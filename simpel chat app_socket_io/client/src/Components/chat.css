@@ -6,8 +6,7 @@
   border: none;
   outline: none;
   resize: none;
-  width: 150px;
-  height: 20px;
+
   border: 1px solid rgb(214, 214, 214);
   border-radius: 2px;
   caret-color: rgb(65, 131, 74);
@@ -59,11 +58,9 @@
 }
 
 .body-chat {
-  border: 1px solid red;
-  position: fixed;
   width: 250px;
   height: 250px;
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   top: 50px;
-  right: 20px;
+  right: 20px; */
 }

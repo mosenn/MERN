@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 import "./chat.css";
 
 export const Chat = ({ socket, username, room }) => {
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState("");
   const [list, setList] = useState([]);
+
+  const ROOT_CSS = {
+    height: 600,
+    width: 400,
+  };
   const sendMessage = async () => {
     if (message !== "") {
       const usersMessage = {
@@ -43,31 +49,33 @@ export const Chat = ({ socket, username, room }) => {
         }}
       />
       <button onClick={sendMessage}>send Message</button>
-      <section className="body-chat">
-        {list &&
-          list.map((user) => {
-            // console.log(user);
-            return (
-              <section>
-                <div>
-                  <p
-                    className={`userMessage ${
-                      username === user.name ? "you" : "other"
-                    }`}
-                  >
-                    {user.message}
-                  </p>
-                </div>
-                <div className="infoChat">
-                  <p>
-                    {user.name}
-                    <span> at : {user.time}</span>
-                  </p>
-                </div>
-              </section>
-            );
-          })}
-      </section>
+      <ScrollToBottom>
+        <section className="body-chat">
+          {list &&
+            list.map((user) => {
+              // console.log(user);
+              return (
+                <section>
+                  <div>
+                    <p
+                      className={`userMessage ${
+                        username === user.name ? "you" : "other"
+                      }`}
+                    >
+                      {user.message}
+                    </p>
+                  </div>
+                  <div className="infoChat">
+                    <p>
+                      {user.name}
+                      <span> at : {user.time}</span>
+                    </p>
+                  </div>
+                </section>
+              );
+            })}
+        </section>
+      </ScrollToBottom>
     </div>
   );
 };
