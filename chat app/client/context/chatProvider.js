@@ -13,6 +13,7 @@ const chatProvider = ({ children }) => {
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
+    console.log(user, "in context");
     if (!userInfo) {
       //navigate to login
       navigate("/login");

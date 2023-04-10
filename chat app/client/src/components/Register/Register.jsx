@@ -126,6 +126,23 @@ export const Register = () => {
   const handelSubmitRegister = (e) => {
     SetLoading(true);
     e.preventDefault();
+
+    //* this is better than alert for handel show error for front
+    //* but show not at one time need twoice click for submit
+    // if (
+    //   registerUser[0]?.inner
+    // ) {
+    //   console.log(registerUser[0]?.inner , "for toast");
+    //   registerUser[0]?.inner.map((items, index) => {
+    //     toast({
+    //       title: "checked agin",
+    //       description: items.message,
+    //       status: "warning",
+    //       duration: 1000,
+    //       isClosable: true,
+    //     });
+    //   });
+    // }
     navigateTochatRoute();
     SeTimageAndControllLoadingBtn();
 
@@ -154,9 +171,9 @@ export const Register = () => {
           {registerUser.length > 0 &&
             !findObjectInRegisteruser &&
             registerUser[0]?.inner.map((items, index) => {
-              console.log(items, "in map");
+              // console.log(items, "in map");
               return (
-                <Alert status="warning" m={5}>
+                <Alert status="warning" m={5} key={items.path}>
                   <AlertIcon />
                   <AlertTitle mr={2} fontWeight={"400"}>
                     <p style={{ fontSize: "1.1rem" }}>
