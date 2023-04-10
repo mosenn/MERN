@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import chatStyle from "./module.chat.css";
+
+import "./chat.css";
+
 export const Chat = ({ socket, username, room }) => {
   const [message, setMessage] = useState({});
   const [list, setList] = useState([]);
@@ -16,25 +18,56 @@ export const Chat = ({ socket, username, room }) => {
       };
 
       await socket.emit("SEND_MESSAGE", usersMessage);
+      setList((list) => [...list, usersMessage]);
     }
   };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log(data);
-      setList((prevList) => [...prevList, data]);
+      setList((list) => [...list, data]);
     });
   }, [socket]);
   return (
-    <div className={chatStyle.containerChat}>
+    <div className="test">
       <textarea
         type="text"
         placeholder="message"
         onChange={(e) => {
           setMessage(e.target.value);
         }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        }}
       />
       <button onClick={sendMessage}>send Message</button>
+      <section className="body-chat">
+        {list &&
+          list.map((user) => {
+            // console.log(user);
+            return (
+              <section>
+                <div>
+                  <p
+                    className={`userMessage ${
+                      username === user.name ? "you" : "other"
+                    }`}
+                  >
+                    {user.message}
+                  </p>
+                </div>
+                <div className="infoChat">
+                  <p>
+                    {user.name}
+                    <span> at : {user.time}</span>
+                  </p>
+                </div>
+              </section>
+            );
+          })}
+      </section>
     </div>
   );
 };
