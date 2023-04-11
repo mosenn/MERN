@@ -7,6 +7,8 @@ import {
   Menu,
   MenuButton,
   Avatar,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import { useChatState } from "../../../context/ChatProvider";
 
@@ -14,6 +16,7 @@ import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons";
 
 import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
+import { ProfileModel } from "../ProfileModel/ProfileModel";
 
 export const Sidebar = () => {
   const [search, setSearch] = useState("");
@@ -59,6 +62,7 @@ export const Sidebar = () => {
           <Menu>
             <MenuButton>
               <BellIcon m={1} fontSize="2x1" />
+              {/* <MenuList></MenuList> */}
             </MenuButton>
           </Menu>
           <Menu>
@@ -67,8 +71,15 @@ export const Sidebar = () => {
                 size="sm"
                 cruser="pointer"
                 name={userProvider?.userName}
+                src={userProvider?.pic}
               />
             </MenuButton>
+            <MenuList>
+              <ProfileModel userProvider={userProvider}>
+                <MenuItem>My Profile</MenuItem>
+              </ProfileModel>
+              <MenuItem>Logout</MenuItem>
+            </MenuList>
           </Menu>
         </div>
       </Flex>
