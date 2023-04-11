@@ -7,10 +7,6 @@ export const Chat = ({ socket, username, room }) => {
   const [message, setMessage] = useState("");
   const [list, setList] = useState([]);
 
-  const ROOT_CSS = {
-    height: 600,
-    width: 400,
-  };
   const sendMessage = async () => {
     if (message !== "") {
       const usersMessage = {

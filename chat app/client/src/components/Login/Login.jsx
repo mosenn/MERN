@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useChatState } from "../../../context/ChatProvider";
 import {
   FormControl,
   FormLabel,
@@ -10,6 +11,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 export const Login = () => {
+  const { userProvider, setUser } = useChatState();
+
+  console.log(JSON.parse(localStorage.getItem("userInfo")));
   const navigate = useNavigate();
   const toast = useToast();
   let [user, SetUser] = useState({
@@ -21,8 +25,8 @@ export const Login = () => {
 
   const takeInfoFromUser = (inputs) => {
     SetUser({ ...user, [inputs.target.name]: inputs.target.value });
-    console.log(user, "takeInfoFromUser");
-    console.log(inputs.target.value, "input value");
+    // console.log(user, "takeInfoFromUser");
+    // console.log(inputs.target.value, "input value");
   };
 
   const changeTypePass = () => {
@@ -48,6 +52,11 @@ export const Login = () => {
       // console.log(JSON.stringify(userPost.data));
       const response = userPost.data;
       console.log(response);
+      // localStorage.setItem(JSON.stringify(response), "userInfo");
+      // const usersinlocal = localStorage.getItem("userInfo");
+      // console.log(usersinlocal, "users in local");
+      setUser(response);
+
       if (response.email !== "guset@gmail.com") {
         toast({
           title: "welcome",
@@ -63,8 +72,8 @@ export const Login = () => {
         }, 3000);
       }
     } catch (err) {
-      console.log(err.response.data);
-      console.log(err.response.status);
+      // console.log(err.response.data);
+      // console.log(err.response.status);
       toast({
         title: err.response.status,
         description: err.response.data,
@@ -95,7 +104,8 @@ export const Login = () => {
         isClosable: true,
       });
     }
-
+    // localStorage.setItem(JSON.stringify(user), "userInfo");
+    setUser(user);
     setTimeout(() => {
       navigate("/chat");
     }, 3000);
