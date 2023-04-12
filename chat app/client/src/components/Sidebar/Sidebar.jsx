@@ -29,8 +29,9 @@ import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
 import { useNavigate } from "react-router-dom";
 
-import axios from 'axios'
+import {ChatLoading} from '../ChatLoading/ChatLoading'
 
+import axios from "axios";
 
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +48,7 @@ export const Sidebar = () => {
     navigate("/");
   };
   const toast = useToast();
-  const handleSearch =  async () => {
+  const handleSearch = async () => {
     if (!search) {
       toast({
         title: "Enter someting in search",
@@ -65,10 +66,13 @@ export const Sidebar = () => {
           Authorization: `Bearer ${userProvider.token}`,
         },
       };
-      const {data} =  await axios.get(`http://localhost:3000/?search=${search}` , config)
+      const { data } = await axios.get(
+        `http://localhost:3000/?search=${search}`,
+        config
+      );
       setLoading(false);
       setSerachResult(data);
-    } catch (err) {}
+    } catch (err) { }
   };
   return (
     <div>
@@ -90,11 +94,7 @@ export const Sidebar = () => {
         >
           <Button variant="ghost" p="5px" my="15px" onClick={onOpen}>
             <FcSearch fontSize="30px" />
-            <Text
-              display={{ base: "none", md: "flex" }}
-              px="4px"
-              m="5px"
-            >
+            <Text display={{ base: "none", md: "flex" }} px="4px" m="5px">
               Search User
             </Text>
           </Button>
@@ -141,9 +141,9 @@ export const Sidebar = () => {
               ></Input>
               <Button onClick={handleSearch}>Go</Button>
             </Flex>
-            {
-              loading ? <ChatLoading/> : <span>result</span>
-            }
+            {loading ? <ChatLoading /> : searchResult?.map((items)=> {
+             <UserListItem key={items._id} user={items}></UserListItem>
+            })}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
