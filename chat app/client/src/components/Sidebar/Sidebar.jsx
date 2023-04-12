@@ -9,6 +9,16 @@ import {
   Avatar,
   MenuList,
   MenuItem,
+  useDisclosure,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Input,
+  useToast,
 } from "@chakra-ui/react";
 import { useChatState } from "../../../context/ChatProvider";
 
@@ -17,15 +27,40 @@ import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
-
+import { useNavigate } from "react-router-dom";
 export const Sidebar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [searchResult, setSerachResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
 
   const { userProvider } = useChatState();
+  console.log(userProvider);
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+  };
+  const toast = useToast();
+  const handleSearch = () => {
+    if (!search) {
+      toast({
+        title: "Enter someting in search",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top-left",
+      });
+    }
 
+    try {
+      setLoading(true);
+      const config = {
+        
+      }
+    } catch (err) {}
+  };
   return (
     <div>
       <Flex
@@ -44,7 +79,7 @@ export const Sidebar = () => {
           p="5px"
           ml="10px"
         >
-          <Button variant="ghost" p="5px" my="15px">
+          <Button variant="ghost" p="5px" my="15px" onClick={onOpen}>
             <FcSearch fontSize="30px" />
             <Text
               display={{ base: "none", md: "flex" }}
@@ -70,7 +105,7 @@ export const Sidebar = () => {
               <Avatar
                 size="sm"
                 cruser="pointer"
-                name={userProvider?.userName}
+                name={userProvider?.name}
                 src={userProvider?.pic}
               />
             </MenuButton>
@@ -78,11 +113,28 @@ export const Sidebar = () => {
               <ProfileModel userProvider={userProvider}>
                 <MenuItem>My Profile</MenuItem>
               </ProfileModel>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
       </Flex>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>Search user</DrawerHeader>
+          <DrawerBody>
+            <Flex>
+              <Input
+                mr="5px"
+                placeholder="search by name or email"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              ></Input>
+              <Button onClick={handleSearch}>Go</Button>
+            </Flex>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 };

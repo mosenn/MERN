@@ -52,10 +52,12 @@ export const Login = () => {
       // console.log(JSON.stringify(userPost.data));
       const response = userPost.data;
       console.log(response);
-      // localStorage.setItem(JSON.stringify(response), "userInfo");
-      // const usersinlocal = localStorage.getItem("userInfo");
-      // console.log(usersinlocal, "users in local");
-      setUser(response);
+      localStorage.setItem("userInfo", JSON.stringify(response));
+      // const userinfo = JSON.parse(localStorage.getItem("userInfo"));
+      // console.log(userinfo, "button submit");
+      // setUser(userinfo);
+
+      // setUser(response);
 
       if (response.email !== "guset@gmail.com") {
         toast({
@@ -104,12 +106,17 @@ export const Login = () => {
         isClosable: true,
       });
     }
-    // localStorage.setItem(JSON.stringify(user), "userInfo");
-    setUser(user);
+    localStorage.setItem("userInfo", JSON.stringify(user));
+    // const userinfo = JSON.parse(localStorage.getItem("userInfo"));
+    // console.log(userinfo, "button guset memeber");
+    // setUser(userinfo);
     setTimeout(() => {
       navigate("/chat");
     }, 3000);
   };
+
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(userInfo, "after");
   return (
     <div>
       <form action="" onSubmit={handelSubmitLogin}>

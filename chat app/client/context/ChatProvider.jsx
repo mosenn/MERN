@@ -10,10 +10,11 @@ const chatContext = createContext();
 const ChatProvider = ({ children }) => {
   // const navigate = useNavigate();
   const [userProvider, setUser] = useState({});
+  const usersinlocal = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
-    const usersinlocal = JSON.parse(localStorage.getItem("userInfo"));
     setUser(usersinlocal);
+    console.log(userProvider);
     // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     // setUser(userInfo);
     if (!userProvider) {

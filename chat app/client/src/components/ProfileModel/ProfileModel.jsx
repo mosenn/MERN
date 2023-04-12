@@ -25,7 +25,7 @@ export const ProfileModel = ({ userProvider, children }) => {
       {children ? (
         <div>
           <span onClick={onOpen}>{children}</span>
-          <p>{userProvider?.userName}</p>
+          <p>{userProvider?.name}</p>
         </div>
       ) : (
         <IconButton
@@ -40,7 +40,7 @@ export const ProfileModel = ({ userProvider, children }) => {
         <ModalContent>
           <ModalHeader text="center">
             <Center fontSize="30px" m="20px">
-              {userProvider?.userName}
+              {userProvider?.name}
             </Center>
           </ModalHeader>
           <ModalCloseButton />
@@ -49,10 +49,10 @@ export const ProfileModel = ({ userProvider, children }) => {
               <Image
                 boxSize="150px"
                 src={userProvider?.pic}
-                alt={userProvider?.userName}
+                alt={userProvider?.pic}
               />
               <Text fontWeight="bold" mb="1rem" fontSize="30px">
-                {userProvider?.Email}
+                {userProvider?.email}
               </Text>
             </Flex>
           </ModalBody>
