@@ -21,18 +21,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useChatState } from "../../../context/ChatProvider";
-
 import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons";
-
 import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
 import { useNavigate } from "react-router-dom";
-
-import {ChatLoading} from '../ChatLoading/ChatLoading'
-
+import { ChatLoading } from '../ChatLoading/ChatLoading'
+import {UserList} from '../userList/UserList'
 import axios from "axios";
-
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -74,6 +70,13 @@ export const Sidebar = () => {
       setSerachResult(data);
     } catch (err) { }
   };
+
+  const accessChat = (userId) => {
+
+  }
+
+
+
   return (
     <div>
       <Flex
@@ -141,8 +144,11 @@ export const Sidebar = () => {
               ></Input>
               <Button onClick={handleSearch}>Go</Button>
             </Flex>
-            {loading ? <ChatLoading /> : searchResult?.map((items)=> {
-             <UserListItem key={items._id} user={items}></UserListItem>
+            {loading ? <ChatLoading /> : searchResult?.map((items) => {
+            
+       return        <UserList key={items._id} user={items}
+       handleFun={() => accessChat(items._id)}>
+     </UserList>
             })}
           </DrawerBody>
         </DrawerContent>
