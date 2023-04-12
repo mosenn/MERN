@@ -28,6 +28,10 @@ import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
 import { useNavigate } from "react-router-dom";
+
+import axios from 'axios'
+
+
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -43,7 +47,7 @@ export const Sidebar = () => {
     navigate("/");
   };
   const toast = useToast();
-  const handleSearch = () => {
+  const handleSearch =  async () => {
     if (!search) {
       toast({
         title: "Enter someting in search",
@@ -57,8 +61,13 @@ export const Sidebar = () => {
     try {
       setLoading(true);
       const config = {
-        
-      }
+        headers: {
+          Authorization: `Bearer ${userProvider.token}`,
+        },
+      };
+      const {data} =  await axios.get(`http://localhost:3000/?search=${search}` , config)
+      setLoading(false);
+      setSerachResult(data);
     } catch (err) {}
   };
   return (
@@ -132,6 +141,9 @@ export const Sidebar = () => {
               ></Input>
               <Button onClick={handleSearch}>Go</Button>
             </Flex>
+            {
+              loading ? <ChatLoading/> : <span>result</span>
+            }
           </DrawerBody>
         </DrawerContent>
       </Drawer>
