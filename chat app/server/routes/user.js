@@ -14,6 +14,7 @@ const { protect } = require("../middleware/auth");
 // router.route("/").post(registerUser).get(allUser);
 
 //!API get
+//*FOR SEARCH WITH QUERY USERS
 router.get("/", protect, allUser);
 //!API POST
 //*USERS TO DATABASE+

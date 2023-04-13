@@ -81,6 +81,7 @@ const loginUser = async (req, res) => {
         createAt: user.createdAt,
         updateAt: user.updatedAt,
         token: FunCreateToken(user._id),
+        pic: user.pic,
       });
     } else {
       return res.status(404).json("username or password worng");
@@ -109,7 +110,7 @@ const allUser = async (req, res) => {
     const users = await User.find(query).find({
       _id: { $ne: req.user._id },
     });
-    res.send(users);
+    return res.send(users);
   } catch (err) {
     return res.send(err);
   }
