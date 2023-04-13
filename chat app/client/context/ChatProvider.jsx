@@ -11,7 +11,7 @@ const ChatProvider = ({ children }) => {
   // const navigate = useNavigate();
   const [userProvider, setUser] = useState({});
   const [selectChat, setSelectChat] = useState();
-  const [userChat, setUserChat] = useState();
+  const [userChat, setUserChat] = useState([]);
   const usersinlocal = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const ChatProvider = ({ children }) => {
         selectChat,
         userChat,
         setUserChat
+       
       }}
     >
       {children}

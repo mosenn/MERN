@@ -23,8 +23,13 @@ export const UserChat = () => {
       <h1> chat Pages</h1>
       <Sidebar />
       <Flex bg="gray" justify="space-between" align="center" p="15px">
-        <MyChat />
-        <ChatBox />
+        {
+          userProvider && <MyChat />
+        }
+          {
+          userProvider && <ChatBox />
+        }
+
       </Flex>
     </div>
   );

@@ -19,10 +19,12 @@ import {
   DrawerCloseButton,
   Input,
   useToast,
+  Spinner 
+  
 } from "@chakra-ui/react";
 
+import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons"
 import { useChatState } from "../../../context/ChatProvider";
-import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
@@ -36,12 +38,15 @@ export const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSerachResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingChat, setLoadingChat] = useState();
+  const [loadingChat, setLoadingChat] = useState(false);
 
-  const { userProvider,setSelectChat,
+  const {
+    userProvider,
+    setUser,
+    setSelectChat,
     selectChat,
     userChat,
-    setUserChat} = useChatState();
+    setUserChat } = useChatState();
   console.log(userProvider);
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -49,7 +54,7 @@ export const Sidebar = () => {
   };
   const toast = useToast();
   const handleSearch = async () => {
-    if (!search) {
+    if (!search || search === '') {
       toast({
         title: "Enter someting in search",
         status: "warning",
@@ -58,7 +63,6 @@ export const Sidebar = () => {
         position: "top-left",
       });
     }
-
     try {
       setLoading(true);
       const config = {
@@ -70,10 +74,19 @@ export const Sidebar = () => {
         `http://localhost:3000/?search=${search}`,
         config
       );
+      console.log(data , 'data')
       setLoading(false);
+      setLoadingChat(false)
       setSerachResult(data);
-      onClose()
     } catch (err) { 
+      setLoadingChat(true)
+      toast({
+        title: "cant Fetch chats",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom-left",
+      });
   console.log(err)
     }
   };
@@ -82,6 +95,7 @@ export const Sidebar = () => {
     try {
 
       setLoading(true);
+
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -91,21 +105,28 @@ export const Sidebar = () => {
 
       const { data } = await axios.post(
         `http://localhost:3000/chat`,
+        {userId},
         config
       );
-
+      const findChat = userChat?.find((c)=>c._id === data._id)
+      if(!findChat) {
+        // setUserChat([data ,...userChat ])
+        setUserChat([data ,...userChat ])
+      }
+      console.log(userChat , 'userChat')
       setSelectChat(data)
-      setLoading(false);
+      setLoading(false)
+      setLoadingChat(false)
+      // onClose()
     } catch (err) {
       console.log(err);
       toast({
-        title: "Error fetch chats",
+        title: "cant post chats",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom-left",
       });
-    }
     }
   };
 
@@ -189,8 +210,10 @@ export const Sidebar = () => {
                 );
               })
             )}
+            {loadingChat && <Spinner size='xl' />}
           </DrawerBody>
         </DrawerContent>
+
       </Drawer>
     </div>
   );
