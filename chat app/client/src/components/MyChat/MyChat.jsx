@@ -18,10 +18,12 @@ export const MyChat = () => {
   try {
     const config = {
       headers:{ 
-        Authorization:`Bearer ${userProvider.token}`
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${userProvider?.token}`
       }
     }
-    const {data} = await axios.get( `http://localhost:3000/chat` , config)
+    const {data} = await axios.get(`http://localhost:3000/chat`,config)
+    console.log(data , 'mychat log')
     setUserChat(data)
   }catch(err) {
     toast({
@@ -33,10 +35,11 @@ export const MyChat = () => {
     });
   }
  }
-useEffect(()=> {
-  setLoggedUser(JSON.parse(localStorage.getItem('userInfo')))
-  fetchChats()
+ useEffect(()=> {
+  setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
+  fetchChats();
 },[])
+ console.log(userChat , 'mychat log')
   return (
     <div>MyChat</div>
   )

@@ -47,7 +47,7 @@ export const Sidebar = () => {
     selectChat,
     userChat,
     setUserChat } = useChatState();
-  console.log(userProvider);
+  // console.log(userProvider);
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
     navigate("/");
@@ -74,7 +74,7 @@ export const Sidebar = () => {
         `http://localhost:3000/?search=${search}`,
         config
       );
-      console.log(data , 'data')
+      // console.log(data , 'data')
       setLoading(false);
       setLoadingChat(false)
       setSerachResult(data);
@@ -113,7 +113,7 @@ export const Sidebar = () => {
         // setUserChat([data ,...userChat ])
         setUserChat([data ,...userChat ])
       }
-      console.log(userChat , 'userChat')
+      // console.log(userChat , 'userChat')
       setSelectChat(data)
       setLoading(false)
       setLoadingChat(false)

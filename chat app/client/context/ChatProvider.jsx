@@ -25,7 +25,7 @@ const ChatProvider = ({ children }) => {
     }
     // navigate
   }, []);
-  console.log(userProvider, "user Provider");
+  // console.log(userProvider, "user Provider");
 
   return (
     <chatContext.Provider
