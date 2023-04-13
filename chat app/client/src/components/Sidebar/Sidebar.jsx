@@ -20,15 +20,16 @@ import {
   Input,
   useToast,
 } from "@chakra-ui/react";
+
 import { useChatState } from "../../../context/ChatProvider";
 import { BellIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { FcSearch } from "react-icons/fc";
 import { ProfileModel } from "../ProfileModel/ProfileModel";
 import { useNavigate } from "react-router-dom";
-import { ChatLoading } from '../ChatLoading/ChatLoading'
-import {UserList} from '../userList/UserList'
-import axios from "axios";
+import { ChatLoading } from "../ChatLoading/ChatLoading";
+import { UserList } from "../userList/UserList";
+import axios from 'axios';
 export const Sidebar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -37,7 +38,10 @@ export const Sidebar = () => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
 
-  const { userProvider } = useChatState();
+  const { userProvider,setSelectChat,
+    selectChat,
+    userChat,
+    setUserChat} = useChatState();
   console.log(userProvider);
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -68,14 +72,42 @@ export const Sidebar = () => {
       );
       setLoading(false);
       setSerachResult(data);
-    } catch (err) { }
+      onClose()
+    } catch (err) { 
+  console.log(err)
+    }
   };
 
-  const accessChat = (userId) => {
+  const accessChat = async (userId) => {
+    try {
 
-  }
+      setLoading(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userProvider.token}`,
+        },
+      };
 
+      const { data } = await axios.post(
+        `http://localhost:3000/chat`,
+        config
+      );
 
+      setSelectChat(data)
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      toast({
+        title: "Error fetch chats",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+    }
+  };
 
   return (
     <div>
@@ -144,12 +176,19 @@ export const Sidebar = () => {
               ></Input>
               <Button onClick={handleSearch}>Go</Button>
             </Flex>
-            {loading ? <ChatLoading /> : searchResult?.map((items) => {
-            
-       return        <UserList key={items._id} user={items}
-       handleFun={() => accessChat(items._id)}>
-     </UserList>
-            })}
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult?.map((items) => {
+                return (
+                  <UserList
+                    key={items._id}
+                    user={items}
+                    handleFun={() => accessChat(items._id)}
+                  ></UserList>
+                );
+              })
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
