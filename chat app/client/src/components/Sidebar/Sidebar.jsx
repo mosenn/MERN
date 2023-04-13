@@ -133,7 +133,7 @@ export const Sidebar = () => {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>Search user</DrawerHeader>
+          <DrawerHeader>Search users</DrawerHeader>
           <DrawerBody>
             <Flex>
               <Input
