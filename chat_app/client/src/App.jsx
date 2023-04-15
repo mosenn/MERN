@@ -1,20 +1,11 @@
-
-import './App.css'
-
+import "./App.css";
+import { Register } from "./pages/Register";
 function App() {
-
-
   return (
-    <div >
-  <h1 class="bg-success">
-    Hello world!
-  </h1>
-  <h1 className='dark:text-slate-400'>
-    hehehe
-  </h1>
+    <div className="bg-red">
+      <Register />
     </div>
-  )
+  );
 }
 
-
-export default App
+export default App;
