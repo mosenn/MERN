@@ -1,0 +1,9 @@
+
+create api for register => done
+get response from clinet in api folder => done
+
+//Todo 
+add Route Component for Login and Register If token has existed
+add validation for server 
+add jwt for create user at server 
+set cookie in server and then check network tab clinet (see video)

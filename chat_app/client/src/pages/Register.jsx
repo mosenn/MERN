@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { handleRegisterUser } from "../api/RegisterUser";
 export const Register = () => {
   const [ValueRegister, setValueRegister] = useState({
     username: "",
@@ -8,17 +8,27 @@ export const Register = () => {
 
   const takeRegisterValue = (input) => {
     const { name, value } = input.target;
+
     setValueRegister({
       ...ValueRegister,
       [name]: value,
     });
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(ValueRegister);
+    let { username, password } = ValueRegister;
+    if (username && password) {
+      console.log("user and pass is done");
+      console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
+      handleRegisterUser(username, password);
+      setValueRegister({ username: "", password: "" });
+    } else {
+      console.log("error");
+    }
   };
 
+  useEffect(() => {}, []);
   return (
     <div className="h-screen border-2 border-black flex  flex-col md:flex-row ">
       <div className="h-1/6 md:w-1/2 md:h-full bg-red-400">for detail</div>
@@ -29,6 +39,7 @@ export const Register = () => {
         <input
           type="text"
           name="username"
+          value={ValueRegister.username}
           className="outline-0 border-2 border-[#e0e7ff] rounded-sm p-2 m-2  md:w-1/2"
           placeholder="username"
           onChange={(input) => {
@@ -38,6 +49,7 @@ export const Register = () => {
         <input
           type="text"
           name="password"
+          value={ValueRegister.password}
           className="outline-0 border-2 border-[#e0e7ff] rounded-sm p-2 m-2 md:w-1/2"
           placeholder="password"
           onChange={(input) => {
