@@ -5,10 +5,11 @@ const userRouter = require("./routes/user");
 const connectionToDb = require("./connection/db");
 let cookieParser = require("cookie-parser");
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
 
 app.use(cookieParser());
 app.use(express.json());
+
 //*connect to data base
 connectionToDb();
 //*doTEnv

@@ -1,9 +1,9 @@
 import React from "react";
 import { Register } from "../pages/Register";
 import { useGlobalcontext } from "../Context/Context";
-
 const Route = () => {
-  const { user, userId } = useGlobalcontext();
+  const { user } = useGlobalcontext();
+
   if (user) {
     return (
       <div>
@@ -11,6 +11,7 @@ const Route = () => {
       </div>
     );
   }
+
   return (
     <div>
       <Register />

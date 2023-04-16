@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { handleRegisterUser } from "../api/RegisterUser";
 import { useGlobalcontext } from "../Context/Context";
 export const Register = () => {
-  const { user, setUser, userId, setUserId } = useGlobalcontext();
-  console.log(user, userId);
+  const { user, setUser, userId, setUserId, userToken, setUserToken } =
+    useGlobalcontext();
+  // console.log(user, userId);
   const [ValueRegister, setValueRegister] = useState({
     username: "",
     password: "",
@@ -24,14 +25,20 @@ export const Register = () => {
     if (username && password) {
       console.log("user and pass is done");
       console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
-      handleRegisterUser(username, password, setUser, setUserId);
+      handleRegisterUser(
+        username,
+        password,
+        setUser,
+        setUserId,
+        userToken,
+        setUserToken
+      );
       setValueRegister({ username: "", password: "" });
     } else {
       console.log("error");
     }
   };
 
-  useEffect(() => {}, []);
   return (
     <div className="h-screen border-2 border-black flex  flex-col md:flex-row ">
       <div className="h-1/6 md:w-1/2 md:h-full bg-red-400">for detail</div>
