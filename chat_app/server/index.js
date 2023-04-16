@@ -3,9 +3,11 @@ const cors = require("cors");
 const testRouter = require("./routes/test");
 const userRouter = require("./routes/user");
 const connectionToDb = require("./connection/db");
-
+let cookieParser = require("cookie-parser");
 const app = express();
 app.use(cors());
+
+app.use(cookieParser());
 app.use(express.json());
 //*connect to data base
 connectionToDb();
