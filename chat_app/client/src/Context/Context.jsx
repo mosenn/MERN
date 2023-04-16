@@ -1,7 +1,8 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { Profile } from "../api/RegisterUser";
-import axios from "axios";
+
 const AppContext = createContext();
+
 const AppProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
