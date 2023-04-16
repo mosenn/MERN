@@ -1,10 +1,10 @@
 import "./App.css";
-import { Register } from "./pages/Register";
+import Route from "./components/Route";
 
 function App() {
   return (
     <div className="bg-red">
-      <Register />
+      <Route />
     </div>
   );
 }
