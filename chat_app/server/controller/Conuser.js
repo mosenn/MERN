@@ -1,38 +1,6 @@
 const User = require("../model/User");
 const jwt = require("jsonwebtoken");
 
-//*User Profile
-const userProfile = async (req, res) => {
-  try {
-    const token = req.cookies?.token;
-    console.log(token, "token");
-    if (token) {
-      jwt.verify(token, "secret", {}, (err, userData) => {
-        if (err) throw err;
-        console.log(userData, "userdata");
-       return res.json(userData);
-      });
-    }
-  } catch (err) {
-    res.status(401).json({ err: err, message: "no token" });
-  }
-
-  // console.log(req.cookies, "cookie");
-  // const { token } = req.cookies;
-  // const decode = jwt.verify(token, "secret");
-
-  // console.log("decode", decode);
-  // try {
-  //   return res.status(200).json({
-  //     coockie: req.cookies,
-  //     userInfo: decode,
-  //     message: "this cookie test",
-  //   });
-  // } catch (err) {
-  //   console.log(err.message);
-  // }
-};
-
 //*Create user
 const registerUser = async (req, res) => {
   const { username, password } = req.body;
@@ -64,6 +32,38 @@ const registerUser = async (req, res) => {
   } catch (err) {
     return res.status(500).send(err);
   }
+};
+
+//*User Profile
+const userProfile = async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+    console.log("token", token);
+    if (token) {
+      const decode = jwt.verify(token, "secret");
+      return res.status(200).json(decode);
+    } else {
+      return res.status(404).json("token is not found");
+    }
+  } catch (err) {
+    res.status(401).json({ err: err, message: "no token" });
+  }
+  //?----------- v-code
+  // try {
+  //   const token = req.cookies?.token;
+  //   console.log(token, "token");
+  //   if (token) {
+  //     jwt.verify(token, "secret", {}, (err, userData) => {
+  //       if (err) throw err;
+  //       console.log(userData, "userdata");
+  //       return res.status(200).json(userData);
+  //     });
+  //   } else {
+  //     throw err;
+  //   }
+  // } catch (err) {
+  //   res.status(401).json({ err: err, message: "no token" });
+  // }
 };
 
 module.exports = { registerUser, userProfile };
