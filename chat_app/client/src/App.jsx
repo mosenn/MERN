@@ -1,12 +1,9 @@
 import "./App.css";
 import { Register } from "./pages/Register";
-import { useGlobalcontext } from "./Context/Context";
+
 function App() {
-  const { user, userId } = useGlobalcontext();
   return (
     <div className="bg-red">
-      <h1 className="text-lg bg-blue-400">{user}</h1>
-      <h1 className="text-lg bg-blue-400">{userId}</h1>
       <Register />
     </div>
   );

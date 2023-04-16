@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { handleRegisterUser } from "../api/RegisterUser";
+import { useGlobalcontext } from "../Context/Context";
 export const Register = () => {
+  const { user, setUser, userId, setUserId } = useGlobalcontext();
+  console.log(user, userId);
   const [ValueRegister, setValueRegister] = useState({
     username: "",
     password: "",
@@ -21,7 +24,7 @@ export const Register = () => {
     if (username && password) {
       console.log("user and pass is done");
       console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
-      handleRegisterUser(username, password);
+      handleRegisterUser(username, password, setUser, setUserId);
       setValueRegister({ username: "", password: "" });
     } else {
       console.log("error");
