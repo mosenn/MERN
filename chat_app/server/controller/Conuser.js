@@ -33,7 +33,7 @@ const userProfile = async (req, res) => {
   try {
     return res
       .status(200)
-      .json({ coockie: req.cookies, message: "this cookie" });
+      .json({ coockie: req.cookies, message: "this cookie test" });
   } catch (err) {
     console.log(err.message);
   }
