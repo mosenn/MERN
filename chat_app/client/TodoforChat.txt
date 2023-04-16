@@ -5,10 +5,15 @@ add jwt for create user at server  => is done 32:21 video time
 set cookie in server and then check network tab clinet (see video) => is done 43:07 video time
 add context for get response at coocike for front end (see video at time 44:08) => done
 add Route Component for Login and Register If user register show loggin > is done video time 52:19
-
+create profile route at server (video time 53) => done
 
 //Todo 
-create profile route at server (video time 53)
+
 add validation for server 
 
+//proplembs : 
+زمانی که میایم می خوایم کوکی رو در سمت فرانت بگیریم 
+به ما ارور 401 که خودمون ست کردیم میده و کوکی رو نمیشناسه
+اما سمت سرور و داخل پست من اوکی هست و مشکلی نداره 
+برای این موضوع باید یک راه حلی پیدا کنم .
 
