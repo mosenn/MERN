@@ -7,7 +7,7 @@ const Route = () => {
   if (user) {
     return (
       <div>
-        <h1>user is login</h1>
+        <h1>Welcome! {user} You are Login</h1>
       </div>
     );
   }

@@ -1,4 +1,6 @@
 
+یک ساعت اول ویدو  کار های زیر انجام شد و به درستی کار می کنه  
+
 create api for register => done
 get response from clinet in api folder => done
 add jwt for create user at server  => is done 32:21 video time
@@ -7,14 +9,44 @@ add context for get response at coocike for front end (see video at time 44:08) 
 add Route Component for Login and Register If user register show loggin > is done video time 52:19
 create profile route at server (video time 53) => done
 
-//Todo 
-
-add validation for server 
-
-//proplembs : 
+// solution proplem-1
+//--- 1
 زمانی که میایم می خوایم کوکی رو در سمت فرانت بگیریم 
 به ما ارور 401 که خودمون ست کردیم میده و کوکی رو نمیشناسه
 اما سمت سرور و داخل پست من اوکی هست و مشکلی نداره 
 برای این موضوع باید یک راه حلی پیدا کنم .
-دقیقه ویدو 50 به بعد .
+دقیقه ویدو 50 به بعد . => درست شد
+رو نیاز بود تنظیم شه که ادرس براش ست شه و از  cors اول
+app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
+ بیایم  axios سمت فرانت هم نیاز هست که برای 
+ اپشن تعریف کنیم 
+ axios.defaults.withCredentials = true; 
+
+سمت سرور یا همون بک هم نیاز هست که اول چک کنیم ببینم توکن هست یا نه 
+ که اشتباه بود صورت درست اش مثل کد زیر هست که امید چک کردیم ببینم {token} اینجوری بار اول تعریف کرده بودیم
+ توکن هست یا نیست اگر بود بیاد یه سری کارا انجام شه 
+  try {
+    const token = req.cookies?.token;
+    console.log("token", token);
+    if (token) {
+      const decode = jwt.verify(token, "secret");
+      return res.status(200).json(decode);
+    } else {
+      return res.status(404).json("token is not found");
+    }
+  }
+// solution proplem-1
+//--- 1
+
+ یک ساعت بعدی ویدو شروع از 1:05:10 
+
+set state  userId & setUser they take data , from response profile 
+data.name and  data.userId in RegisterUser.js file (video time :1:06:53) => done
+
+//Todo 
+
+
+
+//proplembs : 
+
 

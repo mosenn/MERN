@@ -27,10 +27,9 @@ export const handleRegisterUser = async (
   setUserToken(data.token);
 };
 
-export const Profile = async () => {
+export const Profile = async (setUserId, setUser) => {
   const userDataResponse = await axios.get("/profile");
-  console.log(userDataResponse, "prfoile user info");
-  // await axios.get("/profile").then((response) => {
-  //   console.log(response, "response in context");
-  // });
+  setUser(userDataResponse.data.name);
+  setUserId(userDataResponse.data.userId);
+  console.log(userDataResponse.data, "prfoile user info");
 };

@@ -9,7 +9,7 @@ const AppProvider = ({ children }) => {
   const [userToken, setUserToken] = useState();
 
   useEffect(() => {
-    Profile();
+    Profile(setUserId, setUser);
   }, []);
   return (
     <AppContext.Provider
