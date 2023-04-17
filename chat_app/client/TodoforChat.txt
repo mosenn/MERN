@@ -77,7 +77,7 @@ and rename Register to RegisterAndLogin
 
 3- add web socket to server start video at 1:31:11 finish at 
 install ws > websocket packages => require('ws')
- 
+ 4- create state and eventlistener for socket frontend in chat componet in the useeffect()
 //proplembs : 
 
 
