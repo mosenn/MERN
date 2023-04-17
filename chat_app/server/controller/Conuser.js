@@ -1,34 +1,60 @@
 const User = require("../model/User");
 const jwt = require("jsonwebtoken");
+const { sign, verify } = require("../tools/jwt");
+const { compare } = require("../tools/bcrypt");
+//*Login
+const login = async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username, password, "in login route");
+  try {
+    const findUser = await User.findOne({ username });
+    //password compare becrypt
+
+    if (findUser) {
+      const userChek = compare(password, findUser.password);
+      if (userChek) {
+        const token = sign(findUser._id, findUser.username);
+        res
+          .cookie("token", token, { secure: true, sameSite: "none" })
+          .status(201)
+          .json({
+            id: findUser._id,
+            username: findUser.username,
+            token: token,
+          });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 //*Create user
 const registerUser = async (req, res) => {
   const { username, password } = req.body;
-  console.log("username:", username, "password:", password);
+  // console.log("username:", username, "password:", password);
 
   try {
     const createUser = await User.create({ username, password });
-    jwt.sign(
-      { userId: createUser._id, name: createUser.username },
-      "secret",
-      {},
-      (err, token) => {
-        if (err) throw err;
-        res
-          .cookie("token", token, {
-            // httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            // maxAge: 90000000,
-          })
-          .status(201)
-          .json({
-            id: createUser._id,
-            username: createUser.username,
-            token: token,
-          });
-      }
-    );
+    const token = sign(createUser._id, createUser.username);
+    // console.log(token, "refactor token");
+    // jwt.sign(
+    //   { userId: createUser._id, name: createUser.username },
+    //   "secret"
+    // );
+    res
+      .cookie("token", token, {
+        // httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        // maxAge: 90000000,
+      })
+      .status(201)
+      .json({
+        id: createUser._id,
+        username: createUser.username,
+        token: token,
+      });
   } catch (err) {
     return res.status(500).send(err);
   }
@@ -40,7 +66,8 @@ const userProfile = async (req, res) => {
     const token = req.cookies?.token;
     console.log("token", token);
     if (token) {
-      const decode = jwt.verify(token, "secret");
+      const decode = verify(token, "secret");
+      // jwt.verify(token, "secret");
       return res.status(200).json(decode);
     } else {
       return res.status(404).json("token is not found");
@@ -66,4 +93,4 @@ const userProfile = async (req, res) => {
   // }
 };
 
-module.exports = { registerUser, userProfile };
+module.exports = { registerUser, userProfile, login };

@@ -7,11 +7,11 @@ export const handleRegisterUser = async (
   password,
   setUser,
   setUserId,
-  userToken,
-  setUserToken
+  checkRegisterAndLogin
 ) => {
+  const url = checkRegisterAndLogin === "register" ? "/register" : "/login";
   const { data } = await axios.post(
-    "/register",
+    url,
     {
       username,
       password,

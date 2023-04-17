@@ -9,7 +9,8 @@ export const Register = () => {
     username: "",
     password: "",
   });
-
+  const [checkRegisterAndLogin, setCheckRegisterAndLogin] =
+    useState("register");
   const takeRegisterValue = (input) => {
     const { name, value } = input.target;
 
@@ -25,20 +26,17 @@ export const Register = () => {
     if (username && password) {
       console.log("user and pass is done");
       console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
-      handleRegisterUser(
-        username,
-        password,
-        setUser,
-        setUserId,
-        userToken,
-        setUserToken
-      );
+      handleRegisterUser(username, password, setUser, setUserId , checkRegisterAndLogin);
       setValueRegister({ username: "", password: "" });
     } else {
       console.log("error");
     }
   };
-
+  const toggelRegisterAndlogin = () => {
+    checkRegisterAndLogin === "register"
+      ? setCheckRegisterAndLogin("login")
+      : setCheckRegisterAndLogin("register");
+  };
   return (
     <div className="h-screen border-2 border-black flex  flex-col md:flex-row ">
       <div className="h-1/6 md:w-1/2 md:h-full bg-red-400">for detail</div>
@@ -66,9 +64,31 @@ export const Register = () => {
             takeRegisterValue(input);
           }}
         />
-        <button className="bg-[#0284c7] text-colortext md:w-1/2 p-1 m-2  hover:bg-[#0369a1] text-lg rounded-sm	 text-[#fafafafa]">
-          Register
-        </button>
+        {checkRegisterAndLogin === "register" && (
+          <>
+            <button className="bg-[#0284c7] text-colortext md:w-1/2 p-1 m-2  hover:bg-[#0369a1] text-lg rounded-sm	 text-[#fafafafa]">
+              Register
+            </button>
+            <div>
+              <button onClick={toggelRegisterAndlogin}>
+                {" "}
+                you can login here{" "}
+              </button>
+            </div>
+          </>
+        )}
+        {checkRegisterAndLogin === "login" && (
+          <>
+            <button className="bg-[#0284c7] text-colortext md:w-1/2 p-1 m-2  hover:bg-[#0369a1] text-lg rounded-sm	 text-[#fafafafa]">
+              Login
+            </button>
+            <div>
+              <button onClick={toggelRegisterAndlogin}>
+                you can register here
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );

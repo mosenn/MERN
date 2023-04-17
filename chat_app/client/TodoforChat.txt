@@ -43,10 +43,25 @@ app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
 set state  userId & setUser they take data , from response profile 
 data.name and  data.userId in RegisterUser.js file (video time :1:06:53) => done
 
+ کوکی رو که ست می کنیم درون سرور
+اگر به لوکال هاستش بریم می تونیم
+  در بخش اپلیکشن قسمت کوکی می تونیم ببینم کوکی 
+که ست کردیم رو
+
+if remove token from the http://localhost:4010/ 
+then back to clinet (front-end : http://127.0.0.1:5173/)
+then refresh page front-end , can see back to register page 
+and we dont see login > (video time 1:07:51 ) > is done 
+
 //Todo 
+set state For text button , if register show register txt 
+if login show login , then add text for 
+if register show down text > you have account click? 
+if login show down text > if you need account click (video time start at :1:07:52 finish at 1:11:58)
 
-
-
+create login route > (video time start at  1:14:04 finish at )
+hashpassowrd> (video time start at  1:14:04 finish at 1:18:39 )
+inlogin route check passowd(compare) hash > (video time start at  1:19:00 finish at 1:23:01 )
 //proplembs : 
 
 
