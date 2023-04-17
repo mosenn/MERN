@@ -51,17 +51,33 @@ data.name and  data.userId in RegisterUser.js file (video time :1:06:53) => done
 if remove token from the http://localhost:4010/ 
 then back to clinet (front-end : http://127.0.0.1:5173/)
 then refresh page front-end , can see back to register page 
-and we dont see login > (video time 1:07:51 ) > is done 
+and we dont see login > (video time 1:07:51 ) > done 
 
-//Todo 
+create login route > (video time start at  1:14:04 finish at ) => done
+
+i DO :create tools folder in directory(jwt,bycrypt)
+
+hash passowrd> (video time start at  1:14:04 finish at 1:18:39 ) => done
+
 set state For text button , if register show register txt 
 if login show login , then add text for 
 if register show down text > you have account click? 
-if login show down text > if you need account click (video time start at :1:07:52 finish at 1:11:58)
+if login show down text > if you need account click (video time start at :1:07:52 finish at 1:11:58) => done
+inlogin route check passowd(compare) hash > (video time start at  1:19:00 finish at 1:23:01 ) => done
 
-create login route > (video time start at  1:14:04 finish at )
-hashpassowrd> (video time start at  1:14:04 finish at 1:18:39 )
-inlogin route check passowd(compare) hash > (video time start at  1:19:00 finish at 1:23:01 )
+i  was see video at in time 1:22:50 => everything is okay , server & clinet is worked perfect.
+
+
+
+//Todo 
+if user login show chat start video time 1:23:07 
+1 - change Route componet render chat Componet if user login 
+and rename Register to RegisterAndLogin
+2- create chat componet and desgin start at video time 1:26:08 finish desgin message 1:31:11
+
+3- add web socket to server start video at 1:31:11 finish at 
+install ws > websocket packages => require('ws')
+ 
 //proplembs : 
 
 

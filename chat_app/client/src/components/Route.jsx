@@ -1,5 +1,6 @@
 import React from "react";
 import { Register } from "../pages/Register";
+import { Chat } from "../pages/Chat";
 import { useGlobalcontext } from "../Context/Context";
 const Route = () => {
   const { user } = useGlobalcontext();
@@ -8,6 +9,7 @@ const Route = () => {
     return (
       <div>
         <h1>Welcome! {user} You are Login</h1>
+        <Chat />
       </div>
     );
   }
