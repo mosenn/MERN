@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const { db } = require("../model/User");
+
 
 const hash = async (password) => {
   const salt = await bcrypt.genSalt(10);

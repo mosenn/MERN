@@ -3,7 +3,7 @@ const ws = require("ws");
 const cors = require("cors");
 const testRouter = require("./routes/test");
 const userRouter = require("./routes/user");
-const connectionToDb = require("./connection/db");
+const connectionToDb = require("./connection/Db");
 let cookieParser = require("cookie-parser");
 const app = express();
 app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
@@ -22,9 +22,13 @@ app.use("/", userRouter);
 //*Listen
 
 const port = process.env.PORT || 3010;
-const server = app.listen(4010);
+const server = app.listen(port, () => {
+  console.log(`server is runing at ${port}`);
+  console.log(`db is connect at ${process.env.DATA_BASE_URL}`);
+});
 const socket = new ws.WebSocketServer({ server });
 
 socket.on("connection", (connection) => {
   console.log("connected");
+  connection.send('hellow')
 });
