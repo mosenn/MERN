@@ -1,4 +1,5 @@
 const express = require("express");
+const ws = require("ws");
 const cors = require("cors");
 const testRouter = require("./routes/test");
 const userRouter = require("./routes/user");
@@ -19,8 +20,11 @@ require("dotenv").config({ path: "./config/config.env" });
 app.use("/", testRouter);
 app.use("/", userRouter);
 //*Listen
+
 const port = process.env.PORT || 3010;
-app.listen(port, () => {
-  console.log(`sv is runing at ${port}`);
-  console.log(process.env.DATA_BASE_URL, "in index");
+const server = app.listen(4010);
+const socket = new ws.WebSocketServer({ server });
+
+socket.on("connection", (connection) => {
+  console.log("connected");
 });

@@ -5,24 +5,21 @@ const { compare } = require("../tools/bcrypt");
 //*Login
 const login = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username, password, "in login route");
+  // console.log(username, password, "in login route");
   try {
     const findUser = await User.findOne({ username });
     //password compare becrypt
-
-    if (findUser) {
-      const userChek = compare(password, findUser.password);
-      if (userChek) {
-        const token = sign(findUser._id, findUser.username);
-        res
-          .cookie("token", token, { secure: true, sameSite: "none" })
-          .status(201)
-          .json({
-            id: findUser._id,
-            username: findUser.username,
-            token: token,
-          });
-      }
+    const passwordIsOkey = compare(password, findUser.password);
+    if (findUser && passwordIsOkey) {
+      const token = sign(findUser._id, findUser.username);
+      res
+        .cookie("token", token, { secure: true, sameSite: "none" })
+        .status(201)
+        .json({
+          id: findUser._id,
+          username: findUser.username,
+          token: token,
+        });
     }
   } catch (err) {
     console.log(err);
@@ -64,7 +61,7 @@ const registerUser = async (req, res) => {
 const userProfile = async (req, res) => {
   try {
     const token = req.cookies?.token;
-    console.log("token", token);
+    // console.log("token", token);
     if (token) {
       const decode = verify(token, "secret");
       // jwt.verify(token, "secret");
