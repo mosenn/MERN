@@ -8,7 +8,8 @@ const Route = () => {
   if (user) {
     return (
       <div>
-        <h1>Welcome! {user} You are Login</h1>
+        {/* //*Todo set pop up after finish project for login with toast */}
+        {/* <h1>Welcome! {user} You are Login</h1> */}
         <Chat />
       </div>
     );

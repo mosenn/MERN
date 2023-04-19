@@ -65,19 +65,35 @@ if register show down text > you have account click?
 if login show down text > if you need account click (video time start at :1:07:52 finish at 1:11:58) => done
 inlogin route check passowd(compare) hash > (video time start at  1:19:00 finish at 1:23:01 ) => done
 
-i  was see video at in time 1:22:50 => everything is okay , server & clinet is worked perfect.
+ --------- i  was see video at in time 1:22:50 => everything is okay , server & clinet is worked perfect.
 
-
-
-//Todo 
 if user login show chat start video time 1:23:07 
 1 - change Route componet render chat Componet if user login 
-and rename Register to RegisterAndLogin
-2- create chat componet and desgin start at video time 1:26:08 finish desgin message 1:31:11
-
-3- add web socket to server start video at 1:31:11 finish at 
+and rename Register to RegisterAndLogin => done
+2- create chat componet  at video time 1:26:08 finish desgin message 1:31:11 =>done
+desgin chat componet . video time  1:26:09 => done
+3- add web socket to server start video at 1:31:11 => done
 install ws > websocket packages => require('ws')
- 4- create state and eventlistener for socket frontend in chat componet in the useeffect()
+ 4- create state and eventlistener for socket frontend in chat componet in the useeffect() => done have hellow message
+
+
+video time => 1:37:37
+start for talk about clinet peroperty websocket at server 
+  console.log("req header from socket.one:", req.headers); => have infomation from req.headers cookie have token => done
+  need decode token from req.header for get user video time => 1:43:43 => done
+  get user they login check with two diffrent web browser (chrome and microstedge) video time 1:47:06 => done
+  maping  socket.clinet for show users is connecting Note : most be use two diffrent web broweser => done , 
+
+  foreach clinet then maping and send JSON STRINGFY to clinet start video time 1:48:11 finish at 1:49:49=> is done 
+
+  parse data socket at clinet and log them with loop 
+  loop for spefic show user online video time at 1:56:12 => done
+
+//Todo 
+
+
+display data parse in get socket at left side video time at 1:56:16
+
 //proplembs : 
 
 

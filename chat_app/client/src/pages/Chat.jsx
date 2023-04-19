@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from "react";
-
 export const Chat = () => {
   const [ws, setWs] = useState();
+  const [online, setOnline] = useState([]);
+  const showOnlineUser = (userInfo) => {
+    // console.log(userInfo);
+    const userOnline = {};
+    userInfo.find(({ userId, username }) => {
+      // online[user] = username;
+      // online[id] = userId;
+      userOnline.id = userId;
+      userOnline.name = username;
+    });
+    // setOnline([...online, userOnline]);
+    console.log(userOnline, "objct");
+  };
+  // console.log(online, "arry state");
   const handleMessage = (e) => {
-    console.log("socket message : ", e.data);
+    // console.log("socket message : ", e.data);
+    const data = JSON.parse(e.data);
+    console.log(data);
+    if ("userInfo" in data) {
+      showOnlineUser(data.userInfo);
+    }
+    // data.map((items) => {
+    //   console.log(items);
+    // });
   };
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:4010");
@@ -11,5 +32,48 @@ export const Chat = () => {
     socket.addEventListener("message", handleMessage);
   }, []);
 
-  return <div>chat</div>;
+  return (
+    <section className="flex  h-screen">
+      <div className="bg-white w-1/2 md:w-1/3">
+        user online
+        {/* {online.length > 0 &&
+          online.map((user) => {
+            const { name, id } = user;
+            return (
+              <section>
+                <p>
+                  {name} <span>{id}</span>
+                </p>
+              </section>
+            );
+          })} */}
+      </div>
+      <section className=" w-full md:w-2/3 flex bg-blue-50 flex-col justify-between">
+        <div className="">user message</div>
+        <div className="border border-orange-900 flex m-2 gap-2 ">
+          <input
+            className="w-full p-2   border rounded-sm"
+            type="text"
+            placeholder="send message"
+          />
+          <button className="w-11  p-2 bg-blue-500 rounded-sm text-white">
+            <svg
+              id="Group_10235"
+              data-name="Group 10235"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 173.64 149.826"
+              fill="#fafafa"
+            >
+              <path
+                id="Path_8370"
+                data-name="Path 8370"
+                d="M163.3,94.537,23.2,36.4A16.767,16.767,0,0,0,.529,56.035L13,104.936H74.053a5.087,5.087,0,0,1,0,10.175H13l-12.47,48.9A16.768,16.768,0,0,0,23.2,183.643l140.1-58.132a16.767,16.767,0,0,0,0-30.974Z"
+                transform="translate(-0.001 -35.111)"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+    </section>
+  );
 };

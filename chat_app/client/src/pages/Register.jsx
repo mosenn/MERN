@@ -11,6 +11,7 @@ export const Register = () => {
   });
   const [checkRegisterAndLogin, setCheckRegisterAndLogin] =
     useState("register");
+
   const takeRegisterValue = (input) => {
     const { name, value } = input.target;
 
@@ -24,8 +25,8 @@ export const Register = () => {
     event.preventDefault();
     let { username, password } = ValueRegister;
     if (username && password) {
-      console.log("user and pass is done");
-      console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
+      // console.log("user and pass is done");
+      // console.log("userInfoRegisterInSubmitFunction:", ValueRegister);
       handleRegisterUser(username, password, setUser, setUserId , checkRegisterAndLogin);
       setValueRegister({ username: "", password: "" });
     } else {

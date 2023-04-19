@@ -24,7 +24,7 @@ export const handleRegisterUser = async (
   // console.log(data.token, "this token coming from axios post");
   setUser(data.username);
   setUserId(data.id);
-  setUserToken(data.token);
+  // setUserToken(data.token);
 };
 
 export const Profile = async (setUserId, setUser) => {
