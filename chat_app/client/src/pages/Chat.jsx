@@ -4,28 +4,33 @@ export const Chat = () => {
   const [online, setOnline] = useState([]);
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
-    const userOnline = {};
-    userInfo.find(({ userId, username }) => {
-      // online[user] = username;
-      // online[id] = userId;
-      userOnline.id = userId;
-      userOnline.name = username;
+    // const userOnline = {};
+    const userOnline = userInfo.map(({ userId, username }) => {
+      // console.log(userId, username);
+      // userOnline[userId] = username;
+      // console.log(userId, username);
+      return { id: userId, name: username };
     });
-    // setOnline([...online, userOnline]);
-    console.log(userOnline, "objct");
+    const uniqueUsers = userOnline.filter((user, index, array) => {
+      // console.log(array, "array uniqueUser func");
+      // console.log(index, "index uniqueUser func");
+      // console.log(user, "user uniqueUser func");
+
+      return array.findIndex((u) => u.id === user.id) === index;
+    });
+    console.log(uniqueUsers, "uniqueUsers");
+    // console.log(userOnline);
+    setOnline(uniqueUsers);
   };
-  // console.log(online, "arry state");
+
   const handleMessage = (e) => {
     // console.log("socket message : ", e.data);
     const data = JSON.parse(e.data);
-    console.log(data);
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
     }
-    // data.map((items) => {
-    //   console.log(items);
-    // });
   };
+  // console.log(online);
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:4010");
     setWs(socket);
@@ -36,17 +41,30 @@ export const Chat = () => {
     <section className="flex  h-screen">
       <div className="bg-white w-1/2 md:w-1/3">
         user online
-        {/* {online.length > 0 &&
-          online.map((user) => {
-            const { name, id } = user;
+        {online.length > 0 &&
+          online.map((users) => {
+            {
+              console.log(users);
+            }
             return (
-              <section>
+              <div key={users.id}>
                 <p>
-                  {name} <span>{id}</span>
+                  {users.name}
+                  <span>{users.id}</span>
                 </p>
-              </section>
+              </div>
             );
-          })} */}
+          })}
+        {/* with object map */}
+        {/* {Object.keys(online).map((id) => {
+          return (
+            <div>
+              <p>
+                {online[id]} <span>{id}</span>
+              </p>
+            </div>
+          );
+        })} */}
       </div>
       <section className=" w-full md:w-2/3 flex bg-blue-50 flex-col justify-between">
         <div className="">user message</div>
