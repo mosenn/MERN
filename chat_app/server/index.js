@@ -38,6 +38,21 @@ socket.on("connection", (connection, req) => {
   if (cookie) {
     const tokenSTringInfoUser = cookie.replace("token=", "");
     const decodedTokenSocket = verify(tokenSTringInfoUser, "secret");
-    console.log(decodedTokenSocket);
+    const { userId, name } = decodedTokenSocket;
+    // console.log(userId, name);
+    connection.username = name;
+    connection.id = userId;
   }
+  // console.log([...socket.clients].map((users) => users.username, users.userId));
+  const userClinet = [...socket.clients];
+
+  const userInfo = userClinet.map((clinet) => ({
+    userId: clinet.id,
+    username: clinet.username,
+  }));
+  console.log(userInfo);
+  
+  userClinet.forEach((clinet) => {
+    clinet.send(JSON.stringify({userInfo}));
+  });
 });
