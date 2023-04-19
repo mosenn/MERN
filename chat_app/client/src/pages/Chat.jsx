@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Avatar from "../components/Avatar";
 export const Chat = () => {
   const [ws, setWs] = useState();
   const [online, setOnline] = useState([]);
@@ -39,19 +40,21 @@ export const Chat = () => {
 
   return (
     <section className="flex  h-screen">
-      <div className="bg-white w-1/2 md:w-1/3">
-        user online
+      <div className="bg-white w-1/2 md:w-1/3 p-4">
+        <div className="text-blue-500 p-4 font-extrabold text-4xl">Logo</div>
+        <div className="text-blue-300 p-4 font-bold text-2xl">Users online</div>
         {online.length > 0 &&
           online.map((users) => {
             {
               console.log(users);
             }
             return (
-              <div key={users.id}>
-                <p>
-                  {users.name}
-                  <span>{users.id}</span>
-                </p>
+              <div
+                key={users.id}
+                className="flex items-center gap-2 p-4 border-b border-gray-100 cursor-pointer"
+              >
+                <Avatar username={users.name} id={users.id} />
+                <p className="text-xl font-bold m-2">{users.name}</p>
               </div>
             );
           })}
