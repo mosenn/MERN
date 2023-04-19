@@ -99,7 +99,9 @@ display data parse in get socket at left side video time at 1:56:16
  set user avatar video time 2:01:13 => finish at 2:06:00 => done
  generate avatar bg-color with userId start video time : 2:06:09 finish at 2:11:51 => is done
 
-  click user online show background style for click  function start video time at  2:12:56 finish at 2:15:33
+  click user online show background style for click  function start video time at  2:12:56 finish at 2:15:23 => is done
+
+  create function logo start video time at 2:16:54 finish at :
 
 //proplembs : 
 

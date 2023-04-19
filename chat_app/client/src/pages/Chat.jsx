@@ -3,6 +3,8 @@ import Avatar from "../components/Avatar";
 export const Chat = () => {
   const [ws, setWs] = useState();
   const [online, setOnline] = useState([]);
+  const [selected, setSelected] = useState();
+
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
     // const userOnline = {};
@@ -51,7 +53,13 @@ export const Chat = () => {
             return (
               <div
                 key={users.id}
-                className="flex items-center gap-2 p-4 border-b border-gray-100 cursor-pointer"
+                className={
+                  "flex items-center gap-2 p-4 border-b border-gray-100 cursor-pointer " +
+                  (users.id === selected ? "bg-blue-50" : "")
+                }
+                onClick={() => {
+                  setSelected(users.id);
+                }}
               >
                 <Avatar username={users.name} id={users.id} />
                 <p className="text-xl font-bold m-2">{users.name}</p>
