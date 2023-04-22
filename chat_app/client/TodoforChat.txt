@@ -113,7 +113,7 @@ display data parse in get socket at left side video time at 1:56:16
 
   start send mesage at 2:27:46 - get buffer result at server 2:35:1 -  finish at : 2:43:57 => done have message
 
-  show message start 2:44:13
+  display message to ui   start 2:44:37 - 2:50:19 set who is sender and fixed dublicate message
     
 //proplembs : 
 

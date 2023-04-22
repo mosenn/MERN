@@ -9,6 +9,7 @@ export const Chat = () => {
   const [ws, setWs] = useState(null);
   const [online, setOnline] = useState([]);
   const [selectedId, setselectedId] = useState();
+  const [uiMessage, setUiMessage] = useState([]);
 
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
@@ -37,7 +38,8 @@ export const Chat = () => {
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
     } else {
-      console.log({data}, "data in handelmesage");
+      console.log({ data }, "data in handelmesage");
+      setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
     }
   };
   // console.log(online);
@@ -68,6 +70,8 @@ export const Chat = () => {
         },
       })
     );
+    setMessage("");
+    setUiMessage((prev) => [...prev, { text: message, isOur: true }]);
   };
 
   return (
@@ -113,8 +117,16 @@ export const Chat = () => {
         })} */}
       </div>
       <section className=" w-full md:w-2/3 flex bg-blue-50 flex-col justify-between">
-        <div className="flex items-center justify-center h-full m-2">
-          {!selectedId && (
+        <div className="flex flex-col items-center justify-center h-full m-2">
+          {selectedId ? (
+            uiMessage.map((msg) => {
+              return (
+                <div>
+                  <p>{msg.text}</p>
+                </div>
+              );
+            })
+          ) : (
             <div>
               <h1 className="text-gray-400 text-4xl">
                 {" "}
