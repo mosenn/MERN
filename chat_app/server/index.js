@@ -33,6 +33,8 @@ socket.on("connection", (connection, req) => {
   console.log("connected");
   // connection.send('hellow')
   // console.log("req header from socket.one:", req.headers.cookie);
+
+  //*read username and id from cookie for this connection
   const cookie = req.headers.cookie;
   // console.log("req header from socket.one:", cookie);
   if (cookie) {
@@ -44,6 +46,20 @@ socket.on("connection", (connection, req) => {
     connection.id = userId;
   }
   // console.log([...socket.clients].map((users) => users.username, users.userId));
+
+  //*here get mesasge inpute from front then check if user message and id , then filter and send json
+  connection.on("message", (message) => {
+    const userSendMessage = JSON.parse(message.toString());
+    console.log(userSendMessage);
+    const { text, recipinet } = userSendMessage.msg;
+    if ((text, recipinet)) {
+      [...socket.clients]
+        .filter((c) => c.id === recipinet)
+        .forEach((c) => c.send(JSON.stringify({ text })));
+    }
+  });
+
+  //* notify everyone about online users (when some one connect)
   const userClinet = [...socket.clients];
 
   const userInfo = userClinet.map((clinet) => ({
@@ -51,8 +67,8 @@ socket.on("connection", (connection, req) => {
     username: clinet.username,
   }));
   console.log(userInfo);
-  
+
   userClinet.forEach((clinet) => {
-    clinet.send(JSON.stringify({userInfo}));
+    clinet.send(JSON.stringify({ userInfo }));
   });
 });
