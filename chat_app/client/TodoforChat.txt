@@ -107,8 +107,14 @@ display data parse in get socket at left side video time at 1:56:16
   for show just user online , 
   but i dont need this in my code . my code fixed this . 
 
-  add line style for selected , start at : 2:22:28 finish at 2:24:13
+  add line style for selected , start at : 2:22:28 finish at 2:24:13 => done
 
+  show who is selected in message start at 2:24:24 finish at 2:27:19;
+
+  start send mesage at 2:27:46 - get buffer result at server 2:35:1 -  finish at : 2:43:57 => done have message
+
+  show message start 2:44:13
+    
 //proplembs : 
 
 

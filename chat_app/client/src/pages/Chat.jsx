@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import { useGlobalcontext } from "../Context/Context/";
+
 export const Chat = () => {
+  const [message, setMessage] = useState("");
   const { user } = useGlobalcontext();
-  const [ws, setWs] = useState();
+  const [ws, setWs] = useState(null);
   const [online, setOnline] = useState([]);
-  const [selected, setSelected] = useState();
+  const [selectedId, setselectedId] = useState();
 
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
@@ -34,6 +36,8 @@ export const Chat = () => {
     const data = JSON.parse(e.data);
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
+    } else {
+      console.log({data}, "data in handelmesage");
     }
   };
   // console.log(online);
@@ -43,10 +47,28 @@ export const Chat = () => {
     socket.addEventListener("message", handleMessage);
   }, []);
   //? if get proplem about user online then out commend this code and maping onlinePepoleExcolOurUser for online user
-  // const onlinePepoleExcolOurUser = online.filter(
-  //   (person) => person.name === user
-  // );
+
+  //*برای اینه که وقتی داخل یک مروگر با یک یوسر دیگه انلاین شدی فقط همون رو ببینی
+  //*مثلا با کروم میای فقط همون یوسر که با کروم امده دیده شه
+  //*با یه  مروگر دیگه مثلا ماکروسافت میای فقط همون یوسر دیده شه
+  const onlinePepoleExcolOurUser = online.filter(
+    (person) => person.name !== user
+  );
   // console.log(onlinePepoleExcolOurUser , 'PeoplExcoloOurUser');
+
+  //send message
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    ws.send(
+      JSON.stringify({
+        msg: {
+          recipinet: selectedId,
+          text: message,
+        },
+      })
+    );
+  };
 
   return (
     <section className="flex  h-screen">
@@ -54,7 +76,7 @@ export const Chat = () => {
         <Logo />
         <div className="text-blue-300 p-4 font-bold text-2xl">Users online</div>
         {online.length > 0 &&
-          online.map((users) => {
+          onlinePepoleExcolOurUser.map((users) => {
             {
               console.log(users);
             }
@@ -63,13 +85,13 @@ export const Chat = () => {
                 key={users.id}
                 className={
                   "flex items-center gap-2 border-b border-gray-100 cursor-pointer " +
-                  (users.id === selected ? "bg-blue-50" : "")
+                  (users.id === selectedId ? "bg-blue-50" : "")
                 }
                 onClick={() => {
-                  setSelected(users.id);
+                  setselectedId(users.id);
                 }}
               >
-                {users.id === selected && (
+                {users.id === selectedId && (
                   <div className="w-1 bg-blue-500 h-20 rounded-r-md pl-2"></div>
                 )}
                 <div className="flex items-center gap-2 p-2">
@@ -91,30 +113,48 @@ export const Chat = () => {
         })} */}
       </div>
       <section className=" w-full md:w-2/3 flex bg-blue-50 flex-col justify-between">
-        <div className="">user message</div>
-        <div className="border border-orange-900 flex m-2 gap-2 ">
-          <input
-            className="w-full p-2   border rounded-sm"
-            type="text"
-            placeholder="send message"
-          />
-          <button className="w-11  p-2 bg-blue-500 rounded-sm text-white">
-            <svg
-              id="Group_10235"
-              data-name="Group 10235"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 173.64 149.826"
-              fill="#fafafa"
-            >
-              <path
-                id="Path_8370"
-                data-name="Path 8370"
-                d="M163.3,94.537,23.2,36.4A16.767,16.767,0,0,0,.529,56.035L13,104.936H74.053a5.087,5.087,0,0,1,0,10.175H13l-12.47,48.9A16.768,16.768,0,0,0,23.2,183.643l140.1-58.132a16.767,16.767,0,0,0,0-30.974Z"
-                transform="translate(-0.001 -35.111)"
-              />
-            </svg>
-          </button>
+        <div className="flex items-center justify-center h-full m-2">
+          {!selectedId && (
+            <div>
+              <h1 className="text-gray-400 text-4xl">
+                {" "}
+                {`<-`} Selecte User For Chat
+              </h1>
+            </div>
+          )}
         </div>
+        {selectedId && (
+          <form onSubmit={sendMessage}>
+            <div className="border border-orange-900 flex m-2 gap-2 ">
+              <input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full p-2   border rounded-sm"
+                type="text"
+                placeholder="send message"
+              />
+              <button
+                type="submit"
+                className="w-11  p-2 bg-blue-500 rounded-sm text-white"
+              >
+                <svg
+                  id="Group_10235"
+                  data-name="Group 10235"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 173.64 149.826"
+                  fill="#fafafa"
+                >
+                  <path
+                    id="Path_8370"
+                    data-name="Path 8370"
+                    d="M163.3,94.537,23.2,36.4A16.767,16.767,0,0,0,.529,56.035L13,104.936H74.053a5.087,5.087,0,0,1,0,10.175H13l-12.47,48.9A16.768,16.768,0,0,0,23.2,183.643l140.1-58.132a16.767,16.767,0,0,0,0-30.974Z"
+                    transform="translate(-0.001 -35.111)"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+        )}
       </section>
     </section>
   );
