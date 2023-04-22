@@ -101,8 +101,16 @@ display data parse in get socket at left side video time at 1:56:16
 
   click user online show background style for click  function start video time at  2:12:56 finish at 2:15:23 => is done
 
-  create function logo start video time at 2:16:54 finish at :
+  create function logo start video time at 2:16:54 finish at : 2:17:05 
+
+  create onlinePepoleExclour User finish at 2:21:42 , 
+  for show just user online , 
+  but i dont need this in my code . my code fixed this . 
+
+  add line style for selected , start at : 2:22:28 finish at 2:24:13
 
 //proplembs : 
+
+
 
 
