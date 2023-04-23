@@ -6,6 +6,8 @@ const userRouter = require("./routes/user");
 const connectionToDb = require("./connection/Db");
 let cookieParser = require("cookie-parser");
 const { sign, verify } = require("./tools/jwt");
+
+const Messagemodel = require("./model/Message");
 const app = express();
 app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }));
 
@@ -48,15 +50,22 @@ socket.on("connection", (connection, req) => {
   // console.log([...socket.clients].map((users) => users.username, users.userId));
 
   //*here get mesasge inpute from front then check if user message and id , then filter and send json
-  connection.on("message", (message) => {
+  connection.on("message", async (message) => {
     const userSendMessage = JSON.parse(message.toString());
     console.log(userSendMessage);
     const { text, recipinet } = userSendMessage.msg;
     if ((text, recipinet)) {
+      const MessageDoc = await Messagemodel.create({
+        sender: connection.id,
+        recipinet: recipinet,
+        text: text,
+      });
       [...socket.clients]
         .filter((c) => c.id === recipinet)
         .forEach((c) =>
-          c.send(JSON.stringify({ text, sender: connection.id }))
+          c.send(
+            JSON.stringify({ text, sender: connection.id, id: MessageDoc._id })
+          )
         );
     }
   });

@@ -1,4 +1,3 @@
-import { schema } from "./User";
 
 const mongoose = require("mongoose");
 
@@ -13,6 +12,6 @@ const SchemaMessage = new mongoose.Schema(
   }
 );
 
-const Message = mongoose.model("Messaage", SchemaMessage);
+const Messagemodel = mongoose.model("Messaage", SchemaMessage);
 
-module.exports = Message;
+module.exports = Messagemodel;
