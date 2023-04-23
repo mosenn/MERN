@@ -55,7 +55,9 @@ socket.on("connection", (connection, req) => {
     if ((text, recipinet)) {
       [...socket.clients]
         .filter((c) => c.id === recipinet)
-        .forEach((c) => c.send(JSON.stringify({ text })));
+        .forEach((c) =>
+          c.send(JSON.stringify({ text, sender: connection.id }))
+        );
     }
   });
 
