@@ -35,6 +35,7 @@ export const Chat = () => {
   const handleMessage = (e) => {
     // console.log("socket message : ", e.data);
     const data = JSON.parse(e.data);
+    console.log(data, e);
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
     } else {

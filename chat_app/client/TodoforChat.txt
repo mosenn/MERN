@@ -113,8 +113,17 @@ display data parse in get socket at left side video time at 1:56:16
 
   start send mesage at 2:27:46 - get buffer result at server 2:35:1 -  finish at : 2:43:57 => done have message
 
-  display message to ui   start 2:44:37 - 2:50:19 set who is sender and fixed dublicate message
-    
+  display message to ui   start 2:44:37 - 2:50:19 set who is sender and fixed 
+  dublicate message add conncetion.id in sv then pass to clinet finsh at 3:01:51 but my code is work , i dont use this code but my code its okey => done
+
+=> need set this , watch video at 2:53:04 create modal message
+  set message to database start 2:53:04 -   create message chat model at sv start at 2:55:18
+  sender:objecId & recipeint:objecId , tex:String timestamps:true types is mongoose.Schema.Types.ObjectId ,ref to model User . 
+وقتی که می خوایم بین دوتا داکیومنت درون مونکو ارتباط برقرار کنیم 
+میایم از رف استفاده می کنم  و تایپ رو می زاریم روی 
+schema.Types.ObjectId
+
+وقتی رف میزنه یعنی ایدی اون یوسر که الان مسج داره ارسال می کنه میاد داخل داکیومنت یا همون دیتا ی مسج قرار میگیره    
 //proplembs : 
 
 
