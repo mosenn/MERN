@@ -64,7 +64,12 @@ socket.on("connection", (connection, req) => {
         .filter((c) => c.id === recipinet)
         .forEach((c) =>
           c.send(
-            JSON.stringify({ text, sender: connection.id, id: MessageDoc._id })
+            JSON.stringify({
+              text,
+              sender: connection.id,
+              recipinet,
+              id: MessageDoc._id,
+            })
           )
         );
     }
