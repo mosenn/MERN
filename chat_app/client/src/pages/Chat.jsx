@@ -35,10 +35,10 @@ export const Chat = () => {
   const handleMessage = (e) => {
     // console.log("socket message : ", e.data);
     const data = JSON.parse(e.data);
-    console.log(data, e);
+    console.log(data, e, "this e and data in handleMessage");
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
-    } else {
+    } else if('text' in data) {
       console.log({ data }, "data in handelmesage");
       setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
     }
