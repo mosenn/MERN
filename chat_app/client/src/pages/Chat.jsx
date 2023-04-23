@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import { useGlobalcontext } from "../Context/Context/";
 import { uniqBy } from "lodash";
-
+import ScrollToBottom from "react-scroll-to-bottom";
 export const Chat = () => {
   const [message, setMessage] = useState("");
   const { user, userId } = useGlobalcontext();
@@ -13,6 +13,9 @@ export const Chat = () => {
   const [uiMessage, setUiMessage] = useState([]);
   //*controll dublicate show message on screen
   const [latesMessage, setLatesMessage] = useState(null);
+
+  const setScrollFormessage = useRef();
+
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
     // const userOnline = {};
@@ -98,6 +101,9 @@ export const Chat = () => {
         ]),
       "text"
     );
+    const section = setScrollFormessage.current;
+    console.log(section, " section");
+    section.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   // //*controll dublicate show message on screen
@@ -145,77 +151,79 @@ export const Chat = () => {
           );
         })} */}
       </div>
-      <section className="border border-red-500 overflow-y-scroll w-full md:w-2/3 flex  bg-blue-50 flex-col  justify-between">
-        <div className="flex flex-col  m-2">
-          {selectedId ? (
-            uiMessage.map((msg) => {
-              console.log(msg, "chat message");
-              return (
-                <div
-                  className={
-                    "flex flex-col " +
-                    (msg.sender === userId ? "items-end" : "items-start")
-                  }
-                >
+      <ScrollToBottom className="border border-red-500  w-full md:w-2/3 flex  bg-blue-50 flex-col  justify-between">
+        <section>
+          <div className="flex flex-col   mb-2">
+            {selectedId ? (
+              uiMessage.map((msg) => {
+                console.log(msg, "chat message");
+                return (
                   <div
                     className={
-                      "p-2 m-2 rounded-md " +
-                      (msg.sender === userId
-                        ? "bg-blue-500 text-white"
-                        : "bg-white text-gray-500")
+                      "flex flex-col " +
+                      (msg.sender === userId ? "items-end" : "items-start")
                     }
                   >
-                    sender:{msg.sender}
-                    <br />
-                    my id : {userId}
-                    <p className="flex items-endtext-right">{msg.text}</p>
+                    <div
+                      className={
+                        "p-2 m-2 rounded-md " +
+                        (msg.sender === userId
+                          ? "bg-blue-500 text-white"
+                          : "bg-white text-gray-500")
+                      }
+                    >
+                      {/* sender:{msg.sender} */}
+                      <br />
+                      {/* my id : {userId} */}
+                      <p>{msg.text}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })
-          ) : (
-            <div>
-              <h1 className="text-gray-400 text-4xl">
-                {" "}
-                {`<-`} Selecte User For Chat
-              </h1>
-            </div>
-          )}
-        </div>
+                );
+              })
+            ) : (
+              <div>
+                <h1 className="text-gray-400 text-4xl">
+                  {" "}
+                  {`<-`} Selecte User For Chat
+                </h1>
+              </div>
+            )}
+          </div>
 
-        {selectedId && (
-          <form onSubmit={sendMessage}>
-            <div className="border border-orange-900 flex m-2 gap-2 ">
-              <input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-2   border rounded-sm"
-                type="text"
-                placeholder="send message"
-              />
-              <button
-                type="submit"
-                className="w-11  p-2 bg-blue-500 rounded-sm text-white"
-              >
-                <svg
-                  id="Group_10235"
-                  data-name="Group 10235"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 173.64 149.826"
-                  fill="#fafafa"
+          {selectedId && (
+            <form onSubmit={sendMessage}>
+              <div className="border border-orange-900 flex m-2 gap-2 ">
+                <input
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full p-2   border rounded-sm"
+                  type="text"
+                  placeholder="send message"
+                />
+                <button
+                  type="submit"
+                  className="w-11  p-2 bg-blue-500 rounded-sm text-white"
                 >
-                  <path
-                    id="Path_8370"
-                    data-name="Path 8370"
-                    d="M163.3,94.537,23.2,36.4A16.767,16.767,0,0,0,.529,56.035L13,104.936H74.053a5.087,5.087,0,0,1,0,10.175H13l-12.47,48.9A16.768,16.768,0,0,0,23.2,183.643l140.1-58.132a16.767,16.767,0,0,0,0-30.974Z"
-                    transform="translate(-0.001 -35.111)"
-                  />
-                </svg>
-              </button>
-            </div>
-          </form>
-        )}
-      </section>
+                  <svg
+                    id="Group_10235"
+                    data-name="Group 10235"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 173.64 149.826"
+                    fill="#fafafa"
+                  >
+                    <path
+                      id="Path_8370"
+                      data-name="Path 8370"
+                      d="M163.3,94.537,23.2,36.4A16.767,16.767,0,0,0,.529,56.035L13,104.936H74.053a5.087,5.087,0,0,1,0,10.175H13l-12.47,48.9A16.768,16.768,0,0,0,23.2,183.643l140.1-58.132a16.767,16.767,0,0,0,0-30.974Z"
+                      transform="translate(-0.001 -35.111)"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
+      </ScrollToBottom>
     </section>
   );
 };

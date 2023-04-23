@@ -167,7 +167,9 @@ contorl dublicate message start at 2:59:46 finish at 3:01:39 => done
   }, [latesMessage]);
 
 
-  add who is sender at 3:02:04
+  add who is sender at 3:02:04 finish at : 3:19:06
+
+  start fixed if send message automatic scroll for see message  start at 3:19:21
 
 //proplembs : 
 
