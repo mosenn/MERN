@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import { useGlobalcontext } from "../Context/Context/";
-
+import { uniqBy } from "lodash";
 export const Chat = () => {
   const [message, setMessage] = useState("");
   const { user } = useGlobalcontext();
@@ -10,7 +10,8 @@ export const Chat = () => {
   const [online, setOnline] = useState([]);
   const [selectedId, setselectedId] = useState();
   const [uiMessage, setUiMessage] = useState([]);
-
+  //*controll dublicate show message on screen
+  const [latesMessage, setLatesMessage] = useState(null);
   const showOnlineUser = (userInfo) => {
     // console.log(userInfo);
     // const userOnline = {};
@@ -27,7 +28,7 @@ export const Chat = () => {
 
       return array.findIndex((u) => u.id === user.id) === index;
     });
-    console.log(uniqueUsers, "uniqueUsers");
+    // console.log(uniqueUsers, "uniqueUsers");
     // console.log(userOnline);
     setOnline(uniqueUsers);
   };
@@ -35,15 +36,23 @@ export const Chat = () => {
   const handleMessage = (e) => {
     // console.log("socket message : ", e.data);
     const data = JSON.parse(e.data);
-    console.log(data, e, "this e and data in handleMessage");
+    // console.log(data, e, "this e and data in handleMessage");
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
-    } else if('text' in data) {
-      console.log({ data }, "data in handelmesage");
-      setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
+    } else if ("text" in data) {
+      setLatesMessage({ isOur: false, text: data.text });
+      // console.log({ data }, "data in handelmesage");
+      // setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
     }
   };
   // console.log(online);
+
+  useEffect(() => {
+    //*controll dublicate show message on screen
+    if (latesMessage) {
+      setUiMessage((prev) => [...prev, latesMessage]);
+    }
+  }, [latesMessage]);
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:4010");
     setWs(socket);
@@ -72,8 +81,15 @@ export const Chat = () => {
       })
     );
     setMessage("");
-    setUiMessage((prev) => [...prev, { text: message, isOur: true }]);
+    // //*controll dublicate show message on screen uniqBy
+    setUiMessage(
+      (prev) => uniqBy([...prev, { text: message, isOur: true }]),
+      "text"
+    );
   };
+
+  // //*controll dublicate show message on screen
+  // const ControllMessages = uniqBy(message, "id");
 
   return (
     <section className="flex  h-screen">
@@ -83,7 +99,7 @@ export const Chat = () => {
         {online.length > 0 &&
           onlinePepoleExcolOurUser.map((users) => {
             {
-              console.log(users);
+              // console.log(users);
             }
             return (
               <div
@@ -121,6 +137,7 @@ export const Chat = () => {
         <div className="flex flex-col items-center justify-center h-full m-2">
           {selectedId ? (
             uiMessage.map((msg) => {
+              console.log(msg, "chat message");
               return (
                 <div>
                   <p>{msg.text}</p>

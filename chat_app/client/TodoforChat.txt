@@ -116,8 +116,8 @@ display data parse in get socket at left side video time at 1:56:16
   display message to ui   start 2:44:37 - 2:50:19 set who is sender and fixed 
   dublicate message add conncetion.id in sv then pass to clinet finsh at 3:01:51 but my code is work , i dont use this code but my code its okey => done
 
-=> need set this , watch video at 2:53:04 create modal message
-  set message to database start 2:53:04 -   create message chat model at sv start at 2:55:18
+=> need set this , watch video at 2:53:04 create modal message=> is odne
+  set message to database start 2:53:04 -   create message chat model at sv start at 2:55:18 => is odne
   sender:objecId & recipeint:objecId , tex:String timestamps:true types is mongoose.Schema.Types.ObjectId ,ref to model User . 
 وقتی که می خوایم بین دوتا داکیومنت درون مونکو ارتباط برقرار کنیم 
 میایم از رف استفاده می کنم  و تایپ رو می زاریم روی 
@@ -136,6 +136,8 @@ recipeint => کسی که مسیج رو فرستاده
 بعد از فرستادن پیام درون دیتا بیس این دوتا ایدی رو داریم 
 که در واقع از مدل یوسر دارن گرفته میشن .
 
+
+contorl dublicate message start at 2:59:46 finish at
 //proplembs : 
 
 
