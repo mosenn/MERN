@@ -137,7 +137,38 @@ recipeint => کسی که مسیج رو فرستاده
 که در واقع از مدل یوسر دارن گرفته میشن .
 
 
-contorl dublicate message start at 2:59:46 finish at
+contorl dublicate message start at 2:59:46 finish at 3:01:39 => done
+برای اینکه مسیج تکراری داخل صحفه چاپ نشه در واقع تکرار نشه چند بار
+روش که داخل ویدو بود با لودش کار نکرد
+روش خودم رو استفاده کردم .
+  //*controll dublicate show message on screen
+  const [latesMessage, setLatesMessage] = useState(null);
+
+  const handleMessage = (e) => {
+    // console.log("socket message : ", e.data);
+    const data = JSON.parse(e.data);
+    // console.log(data, e, "this e and data in handleMessage");
+    if ("userInfo" in data) {
+      showOnlineUser(data.userInfo);
+    } else if ("text" in data) {
+      //*my way
+      setLatesMessage({ isOur: false, text: data.text });
+      // console.log({ data }, "data in handelmesage");
+      //*video way
+      // setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
+    }
+  };
+
+  useEffect(() => {
+    //*controll dublicate show message on screen
+    if (latesMessage) {
+      setUiMessage((prev) => [...prev, latesMessage]);
+    }
+  }, [latesMessage]);
+
+
+  add who is sender at 3:02:04
+
 //proplembs : 
 
 

@@ -3,9 +3,10 @@ import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import { useGlobalcontext } from "../Context/Context/";
 import { uniqBy } from "lodash";
+
 export const Chat = () => {
   const [message, setMessage] = useState("");
-  const { user } = useGlobalcontext();
+  const { user, userId } = useGlobalcontext();
   const [ws, setWs] = useState(null);
   const [online, setOnline] = useState([]);
   const [selectedId, setselectedId] = useState();
@@ -40,8 +41,10 @@ export const Chat = () => {
     if ("userInfo" in data) {
       showOnlineUser(data.userInfo);
     } else if ("text" in data) {
-      setLatesMessage({ isOur: false, text: data.text });
+      //*my way
+      setLatesMessage({ ...data });
       // console.log({ data }, "data in handelmesage");
+      //*video way
       // setUiMessage((prev) => [...prev, { isOur: false, text: data.text }]);
     }
   };
@@ -83,17 +86,26 @@ export const Chat = () => {
     setMessage("");
     // //*controll dublicate show message on screen uniqBy
     setUiMessage(
-      (prev) => uniqBy([...prev, { text: message, isOur: true }]),
+      (prev) =>
+        uniqBy([
+          ...prev,
+          {
+            text: message,
+            sender: userId,
+            recipinet: selectedId,
+            id: Date.now(),
+          },
+        ]),
       "text"
     );
   };
 
   // //*controll dublicate show message on screen
-  // const ControllMessages = uniqBy(message, "id");
+  const ControllMessages = uniqBy(message, "id");
 
   return (
-    <section className="flex  h-screen">
-      <div className="bg-white w-1/2 md:w-1/3 p-4">
+    <section className="flex h-screen">
+      <div className="bg-white w-1/2 md:w-1/3 p-4 ">
         <Logo />
         <div className="text-blue-300 p-4 font-bold text-2xl">Users online</div>
         {online.length > 0 &&
@@ -133,14 +145,31 @@ export const Chat = () => {
           );
         })} */}
       </div>
-      <section className=" w-full md:w-2/3 flex bg-blue-50 flex-col justify-between">
-        <div className="flex flex-col items-center justify-center h-full m-2">
+      <section className="border border-red-500 overflow-y-scroll w-full md:w-2/3 flex  bg-blue-50 flex-col  justify-between">
+        <div className="flex flex-col  m-2">
           {selectedId ? (
             uiMessage.map((msg) => {
               console.log(msg, "chat message");
               return (
-                <div>
-                  <p>{msg.text}</p>
+                <div
+                  className={
+                    "flex flex-col " +
+                    (msg.sender === userId ? "items-end" : "items-start")
+                  }
+                >
+                  <div
+                    className={
+                      "p-2 m-2 rounded-md " +
+                      (msg.sender === userId
+                        ? "bg-blue-500 text-white"
+                        : "bg-white text-gray-500")
+                    }
+                  >
+                    sender:{msg.sender}
+                    <br />
+                    my id : {userId}
+                    <p className="flex items-endtext-right">{msg.text}</p>
+                  </div>
                 </div>
               );
             })
@@ -153,6 +182,7 @@ export const Chat = () => {
             </div>
           )}
         </div>
+
         {selectedId && (
           <form onSubmit={sendMessage}>
             <div className="border border-orange-900 flex m-2 gap-2 ">
