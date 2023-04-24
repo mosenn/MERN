@@ -24,3 +24,4 @@ export { AppProvider };
 export const useGlobalcontext = () => {
   return useContext(AppContext);
 };
+

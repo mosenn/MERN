@@ -4,6 +4,7 @@ import Logo from "../components/Logo";
 import { useGlobalcontext } from "../Context/Context/";
 import { uniqBy } from "lodash";
 import ScrollToBottom from "react-scroll-to-bottom";
+import axios from "axios";
 export const Chat = () => {
   const [message, setMessage] = useState("");
   const { user, userId } = useGlobalcontext();
@@ -106,6 +107,17 @@ export const Chat = () => {
     section.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
+  const getChat = async () => {
+    if (selectedId) {
+      const data = await axios.get(
+        "http://localhost:4010/message/" + selectedId
+      );
+      console.log(data, "chat with id user");
+    }
+  };
+  useEffect(() => {
+    getChat();
+  }, [selectedId]);
   // //*controll dublicate show message on screen
   const ControllMessages = uniqBy(message, "id");
 

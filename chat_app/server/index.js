@@ -3,6 +3,7 @@ const ws = require("ws");
 const cors = require("cors");
 const testRouter = require("./routes/test");
 const userRouter = require("./routes/user");
+const messageRouter = require("./routes/mesage");
 const connectionToDb = require("./connection/Db");
 let cookieParser = require("cookie-parser");
 const { sign, verify } = require("./tools/jwt");
@@ -22,6 +23,7 @@ require("dotenv").config({ path: "./config/config.env" });
 //*Routers
 app.use("/", testRouter);
 app.use("/", userRouter);
+app.use("/", messageRouter);
 //*Listen
 
 const port = process.env.PORT || 3010;

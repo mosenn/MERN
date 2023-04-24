@@ -89,10 +89,10 @@ start for talk about clinet peroperty websocket at server
   parse data socket at clinet and log them with loop 
   loop for spefic show user online video time at 1:56:12 => done
 
-//Todo 
 
+  --////////////////////////////////
 
-display data parse in get socket at left side video time at 1:56:16
+  display data parse in get socket at left side video time at 1:56:16
 (this video show users with map in object key) 
  i do  with map with array and contorl dublicate object with filter array mehotd  => is done 
 
@@ -169,8 +169,19 @@ contorl dublicate message start at 2:59:46 finish at 3:01:39 => done
 
   add who is sender at 3:02:04 finish at : 3:19:06
 
-  start fixed if send message automatic scroll for see message  start at 3:19:21
+  start fixed if send message automatic scroll for see message  start at 3:19:21 finish at 3:29::15 - this in video is not work is fixed this with react-scroll-bottom package in npmjs => is done
 
+
+//Todo 
+
+
+
+start video at this time
+  if resresh chat remove wanna be fix this start at create route in server for chat message 3:29:28 finish at : 
+  video time at 3:32:02 set routes on server and pas req.params to clinet get user id 
+watch video at this time
+  start at 3:32:02
+ 
 //proplembs : 
 
 
