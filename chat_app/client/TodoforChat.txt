@@ -181,7 +181,16 @@ start video at this time
   video time at 3:32:02 set routes on server and pas req.params to clinet get user id 
 watch video at this time
   start at 3:32:02
- 
+ automatic websocket re connect this set at clinet 3:44:26 finish at 3:46:55
+ //code 
+   const connectToWebSocket = () => {
+    const socket = new WebSocket("ws://localhost:4010");
+    setWs(socket);
+    socket.addEventListener("message", handleMessage);
+    socket.addEventListener("close", () => console.log("close"));
+    socket.addEventListener("close", () => connectToWebSocket());
+  };
+  
 //proplembs : 
 
 

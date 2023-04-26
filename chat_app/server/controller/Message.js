@@ -1,9 +1,10 @@
 const Messagemodel = require("../model/Message");
-
+const { sign, verify } = require("../tools/jwt");
 const userMessage = async (req, res) => {
   try {
+    const { userId } = req.params;
     const message = await Messagemodel.find();
-    return res.status(200).json(req.params);
+    return res.status(200).json(message);
   } catch (err) {
     return res.status(400).send(err);
   }

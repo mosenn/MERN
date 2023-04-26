@@ -60,10 +60,16 @@ export const Chat = () => {
       setUiMessage((prev) => [...prev, latesMessage]);
     }
   }, [latesMessage]);
-  useEffect(() => {
+
+  const connectToWebSocket = () => {
     const socket = new WebSocket("ws://localhost:4010");
     setWs(socket);
     socket.addEventListener("message", handleMessage);
+    socket.addEventListener("close", () => console.log("close"));
+    socket.addEventListener("close", () => connectToWebSocket());
+  };
+  useEffect(() => {
+    connectToWebSocket();
   }, []);
   //? if get proplem about user online then out commend this code and maping onlinePepoleExcolOurUser for online user
 
