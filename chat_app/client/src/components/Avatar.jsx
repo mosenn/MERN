@@ -3,13 +3,12 @@ import React from "react";
 const colors = [
   "bg-teal-200",
   "bg-red-200",
-  "bg-green-200",
   "bg-purple-200",
   "bg-blue-200",
-  "bg-yellow-200",
+  "bg-yellow-100",
 ];
 
-const Avatar = ({ username, id }) => {
+const Avatar = ({ username, id, online }) => {
   // console.log(id);
   const userIdBase16 = parseInt(id, 16);
   const colorIndex = userIdBase16 % colors.length;
@@ -18,9 +17,13 @@ const Avatar = ({ username, id }) => {
 
   return (
     <div
-      className={"w-16 h-16 rounded-full  flex items-center justify-center text-2xl opacity-70 "+color}
+      className={
+        "w-16 h-16 relative rounded-full  flex items-center justify-center text-2xl opacity-70 " +
+        color
+      }
     >
       {username[0]}
+      <div className="absolute w-3 h-3 bg-green-500 bottom-2 rounded-full right-0"></div>
     </div>
   );
 };
