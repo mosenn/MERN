@@ -160,7 +160,11 @@ export const Chat = () => {
                   <div className="w-1 bg-blue-500 h-20 rounded-r-md pl-2"></div>
                 )}
                 <div className="flex items-center gap-2 p-2">
-                  <Avatar username={users.name} id={users.id} />
+                  <Avatar
+                    username={users.name}
+                    id={users.id}
+                    onlineUser={true}
+                  />
                   <p className="text-xl font-bold m-2">{users.name}</p>
                 </div>
               </div>
