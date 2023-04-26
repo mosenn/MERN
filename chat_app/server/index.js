@@ -70,7 +70,7 @@ socket.on("connection", (connection, req) => {
               text,
               sender: connection.id,
               recipinet,
-              id: MessageDoc._id,
+              _id: MessageDoc._id,
             })
           )
         );

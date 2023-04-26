@@ -100,6 +100,7 @@ export const Chat = () => {
     );
     setMessage("");
     // //*controll dublicate show message on screen uniqBy
+    console.log("message sent");
     setUiMessage(
       (prev) =>
         uniqBy([
@@ -108,7 +109,7 @@ export const Chat = () => {
             text: message,
             sender: userId,
             recipinet: selectedId,
-            id: Date.now(),
+            _id: Date.now(),
           },
         ]),
       "text"
@@ -124,15 +125,15 @@ export const Chat = () => {
         "http://localhost:4010/message/" + selectedId
       );
       console.log(data, "chat with id user");
+      setUiMessage(data.data);
     }
   };
 
-  
   useEffect(() => {
     getChat();
   }, [selectedId]);
   // //*controll dublicate show message on screen
-  const ControllMessages = uniqBy(message, "id");
+  const ControllMessages = uniqBy(uiMessage, "_id");
 
   return (
     <section className="flex h-screen">
@@ -180,10 +181,11 @@ export const Chat = () => {
         <section>
           <div className="flex flex-col   mb-2">
             {selectedId ? (
-              uiMessage.map((msg) => {
-                console.log(msg, "chat message");
+              ControllMessages.map((msg) => {
+                // console.log(msg, "chat message");
                 return (
                   <div
+                    key={msg._id}
                     className={
                       "flex flex-col " +
                       (msg.sender === userId ? "items-end" : "items-start")

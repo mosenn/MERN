@@ -192,9 +192,21 @@ watch video at this time
   };
 
 
-  create timeout for chat 3:47:47 finish at 3:49:04
-  get message with method finde and sort , i use limit for 20 message video time 3:51:46
+  create timeout for chat 3:47:47 finish at 3:49:04 => done
+  get message with method finde and sort , i use limit for 20 message video time 3:51:46 => done
+  diplay message , set state Uimessage coming data from server and now have diplay message in display 
+  3:52:18 => done
 
+  اقا داخل همون استیت که داشتیم مسیج هارو مپ می کردیم به اسم 
+  uiMessage
+  الان امدیم مسیج های که درون دیتابیس هست رو گت کردیم
+  بعد ست کردیم داخل همین استیت 
+  uiMessage 
+
+  حالا دیگه مسیج ها از سمت دیتا بیس میان رفرش هم شه دیگه پیام ها هست 
+  ولی لیمیت گذاشتم براشون تا 20 نشون میده هیمنطور سورت هم شده که ا اخرین مسیج به اولی هست
+
+fixed send long message like lorem at 3:58:09 about uniq id 
 //proplembs : 
 
 
