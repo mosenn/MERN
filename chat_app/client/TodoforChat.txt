@@ -193,6 +193,8 @@ watch video at this time
 
 
   create timeout for chat 3:47:47 finish at 3:49:04
+  get message with method finde and sort , i use limit for 20 message video time 3:51:46
+
 //proplembs : 
 
 
