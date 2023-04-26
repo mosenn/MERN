@@ -10,11 +10,11 @@ const colors = [
 ];
 
 const Avatar = ({ username, id }) => {
-  console.log(id);
+  // console.log(id);
   const userIdBase16 = parseInt(id, 16);
   const colorIndex = userIdBase16 % colors.length;
   const color = colors[colorIndex];
-  console.log(color);
+  // console.log(color);
 
   return (
     <div

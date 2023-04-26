@@ -66,7 +66,12 @@ export const Chat = () => {
     setWs(socket);
     socket.addEventListener("message", handleMessage);
     socket.addEventListener("close", () => console.log("close"));
-    socket.addEventListener("close", () => connectToWebSocket());
+    socket.addEventListener("close", () => {
+      setTimeout(() => {
+        console.log("Disconnected , try to reconnect");
+        connectToWebSocket();
+      }, 1000);
+    });
   };
   useEffect(() => {
     connectToWebSocket();

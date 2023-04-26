@@ -87,6 +87,6 @@ socket.on("connection", (connection, req) => {
   console.log(userInfo);
 
   userClinet.forEach((clinet) => {
-    clinet.send(JSON.stringify({ userInfo }));
+    clinet.send(JSON.stringify({ userInfo })) ;
   });
 });

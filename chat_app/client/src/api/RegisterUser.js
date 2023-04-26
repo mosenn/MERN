@@ -31,5 +31,5 @@ export const Profile = async (setUserId, setUser) => {
   const userDataResponse = await axios.get("/profile");
   setUser(userDataResponse.data.name);
   setUserId(userDataResponse.data.userId);
-  console.log(userDataResponse.data, "prfoile user info");
+  // console.log(userDataResponse.data, "prfoile user info");
 };

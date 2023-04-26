@@ -190,7 +190,9 @@ watch video at this time
     socket.addEventListener("close", () => console.log("close"));
     socket.addEventListener("close", () => connectToWebSocket());
   };
-  
+
+
+  create timeout for chat 3:47:47 finish at 3:49:04
 //proplembs : 
 
 
