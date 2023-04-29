@@ -138,7 +138,7 @@ export const Chat = () => {
   //*check online pepole
   const getPepole = async () => {
     const data = await axios.get("http://localhost:4010/pepole/");
-    console.log(data, "pepole");
+    console.log(data, "pepoles");
   };
   useEffect(() => {
     getPepole();
