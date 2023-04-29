@@ -95,4 +95,8 @@ const onlinePepole = async (req, res) => {
   return res.status(200).json(userOnline);
 };
 
-module.exports = { registerUser, userProfile, login, onlinePepole };
+const logoutUser = async (req, res) => {
+  res.cookie("token", "", { sameSite: "none", secure: true }).json("ok");
+};
+
+module.exports = { registerUser, userProfile, login, onlinePepole, logoutUser };
