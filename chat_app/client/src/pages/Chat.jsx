@@ -136,9 +136,13 @@ export const Chat = () => {
   const ControllMessages = uniqBy(uiMessage, "_id");
 
   //*check online pepole
+
   const getPepole = async () => {
     const data = await axios.get("http://localhost:4010/pepole/");
-    console.log(data, "pepoles");
+
+    console.log(data.data, "pepoles");
+    const offlineUser = data?.data?.filter((p) => p._id !== userId);
+    console.log(offlineUser, "offlineUser");
   };
   useEffect(() => {
     getPepole();
