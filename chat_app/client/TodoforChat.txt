@@ -212,7 +212,13 @@ add online circel for user online at 3:59:40 finish at 4:01:0
 
 
 start watch video at this time :
-start show offline user at 4:04:11
+start show offline user at 4:04:11 finisth at 4:35:54 => done but with my way not video
+
+create logout btn at clinete and define route start at 4:35:57 finish at 4:40:34 => done
+show user information about online and show username at btn logout at 4:41:01 finish at 4:44:21
+
+send fine button at 4:50:41
+create function 4:54:03
 //proplembs : 
 
 

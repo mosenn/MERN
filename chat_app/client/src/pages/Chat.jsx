@@ -232,7 +232,7 @@ export const Chat = () => {
           );
         })}
 
-        <button onClick={logoutUser}>Logout</button>
+        <button onClick={logoutUser}> hi {user} if u want Logout click</button>
       </div>
       <ScrollToBottom className="border border-red-500  w-full md:w-2/3 flex  bg-blue-50 flex-col  justify-between">
         <section>
