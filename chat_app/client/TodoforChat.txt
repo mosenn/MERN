@@ -208,7 +208,11 @@ watch video at this time
 
 fixed send long message like lorem at 3:58:09 about uniq id 
 
-add online circel for user online at 3:59:40
+add online circel for user online at 3:59:40 finish at 4:01:0 
+
+
+start watch video at this time :
+start show offline user at 4:04:11
 //proplembs : 
 
 

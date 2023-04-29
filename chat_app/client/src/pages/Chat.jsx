@@ -135,6 +135,15 @@ export const Chat = () => {
   // //*controll dublicate show message on screen
   const ControllMessages = uniqBy(uiMessage, "_id");
 
+  //*check online pepole
+  const getPepole = async () => {
+    const data = await axios.get("http://localhost:4010/pepole/");
+    console.log(data, "pepole");
+  };
+  useEffect(() => {
+    getPepole();
+  }, [online]);
+
   return (
     <section className="flex h-screen">
       <div className="bg-white w-1/2 md:w-1/3 p-4 ">

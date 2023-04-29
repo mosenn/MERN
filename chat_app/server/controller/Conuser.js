@@ -89,4 +89,10 @@ const userProfile = async (req, res) => {
   // }
 };
 
-module.exports = { registerUser, userProfile, login };
+//*Check online user
+const onlinePepole = async (req, res) => {
+  const userOnline = await User.find({}, { _id: 1, username: 1 });
+  return res.status(200).json(userOnline);
+};
+
+module.exports = { registerUser, userProfile, login, onlinePepole };
