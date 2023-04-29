@@ -7,11 +7,12 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import axios from "axios";
 export const Chat = () => {
   const [message, setMessage] = useState("");
-  const { user, userId } = useGlobalcontext();
+  const { user, userId, setUserId, setUser } = useGlobalcontext();
   const [ws, setWs] = useState(null);
   const [online, setOnline] = useState([]);
   const [selectedId, setselectedId] = useState();
   const [uiMessage, setUiMessage] = useState([]);
+  const [offlineUser, setOfflineUser] = useState([]);
   //*controll dublicate show message on screen
   const [latesMessage, setLatesMessage] = useState(null);
 
@@ -142,16 +143,24 @@ export const Chat = () => {
 
     console.log(data.data, "pepoles");
     const offlineUser = data?.data?.filter((p) => p._id !== userId);
-    console.log(offlineUser, "offlineUser");
+    setOfflineUser(offlineUser);
+
+    // console.log(offlineUser, "test");
   };
   useEffect(() => {
     getPepole();
   }, [online]);
-
+  // *last
+  const logoutUser = async () => {
+    await axios.post("http://localhost:4010/logout");
+    setUserId(null);
+    setUser(null);
+  };
   return (
     <section className="flex h-screen">
       <div className="bg-white w-1/2 md:w-1/3 p-4 ">
         <Logo />
+
         <div className="text-blue-300 p-4 font-bold text-2xl">Users online</div>
         {online.length > 0 &&
           onlinePepoleExcolOurUser.map((users) => {
@@ -193,6 +202,37 @@ export const Chat = () => {
             </div>
           );
         })} */}
+
+        {offlineUser?.map((users) => {
+          // console.log(users.username, "users");
+          return (
+            <div
+              key={users._id}
+              className={
+                "flex items-center gap-2 border-b border-gray-100 cursor-pointer " +
+                (users._id === selectedId ? "bg-blue-50" : "")
+              }
+              onClick={() => {
+                setselectedId(users.id);
+              }}
+            >
+              {users._id === selectedId && (
+                <div className="w-1 bg-blue-500 h-20 rounded-r-md pl-2"></div>
+              )}
+              <div className="flex items-center gap-2 p-2">
+                <Avatar
+                  username={users.name}
+                  offuser={users.username}
+                  id={users._id}
+                  onlineUser={true}
+                />
+                <p className="text-xl font-bold m-2">{users.username}</p>
+              </div>
+            </div>
+          );
+        })}
+
+        <button onClick={logoutUser}>Logout</button>
       </div>
       <ScrollToBottom className="border border-red-500  w-full md:w-2/3 flex  bg-blue-50 flex-col  justify-between">
         <section>

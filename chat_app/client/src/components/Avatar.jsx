@@ -8,7 +8,7 @@ const colors = [
   "bg-yellow-100",
 ];
 
-const Avatar = ({ username, id, onlineUser }) => {
+const Avatar = ({ username, id, onlineUser, offuser }) => {
   // console.log(id);
   const userIdBase16 = parseInt(id, 16);
   const colorIndex = userIdBase16 % colors.length;
@@ -22,9 +22,12 @@ const Avatar = ({ username, id, onlineUser }) => {
         color
       }
     >
-      {username[0]}
+      {username ? username[0] : offuser[0]}
       {onlineUser && (
         <div className="absolute w-3 h-3 bg-green-500 bottom-2 rounded-full right-0"></div>
+      )}
+      {offuser && (
+        <div className="absolute w-3 h-3 bg-gray-500 bottom-2 rounded-full right-0"></div>
       )}
     </div>
   );
