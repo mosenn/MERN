@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import googleOneTap from "google-one-tap";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const options = {
+    client_id:
+      "845524452469-96ntqo560ee26fbsdq0u5ma5hh2l48fi.apps.googleusercontent.com",
+    auto_select: false,
+    cancel_on_tab_outside: false,
+    context: "signin",
+  };
 
+  const [googelData, setGoogelData] = useState(
+    localStorage.getItem("logingoogle")
+      ? JSON.parse(localStorage.getItem("logingoogle"))
+      : null
+  );
+
+  const loginWithGoogle = () => {
+    googleOneTap(options, (response) => {
+      // Send response to server
+      console.log(response);
+    });
+  };
+  useEffect(() => {
+    try {
+      loginWithGoogle();
+    } catch (err) {
+      console.log("err", err);
+    }
+  }, []);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <section className="App">
+      <h1>Hello system login</h1>
+    </section>
+  );
 }
 
-export default App
+export default App;
