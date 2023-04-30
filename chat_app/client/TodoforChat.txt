@@ -218,7 +218,9 @@ create logout btn at clinete and define route start at 4:35:57 finish at 4:40:34
 show user information about online and show username at btn logout at 4:41:01 finish at 4:44:21
 
 send fine button at 4:50:41
-create function 4:54:03
+create function 4:54:03 finish at 5:21:36 
+
+END
 //proplembs : 
 
 

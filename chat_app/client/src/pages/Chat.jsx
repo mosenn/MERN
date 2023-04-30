@@ -143,6 +143,7 @@ export const Chat = () => {
 
     console.log(data.data, "pepoles");
     const offlineUser = data?.data?.filter((p) => p._id !== userId);
+
     setOfflineUser(offlineUser);
 
     // console.log(offlineUser, "test");
