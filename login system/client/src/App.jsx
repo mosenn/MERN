@@ -1,38 +1,26 @@
-import { useEffect, useState } from "react";
-import googleOneTap from "google-one-tap";
 import "./App.css";
-
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { useEffect } from "react";
+import Product from "./component/Product";
+import Login from "./component/Login";
 function App() {
-  const options = {
-    client_id:
-      "845524452469-96ntqo560ee26fbsdq0u5ma5hh2l48fi.apps.googleusercontent.com",
-    auto_select: false,
-    cancel_on_tab_outside: false,
-    context: "signin",
-  };
 
-  const [googelData, setGoogelData] = useState(
-    localStorage.getItem("logingoogle")
-      ? JSON.parse(localStorage.getItem("logingoogle"))
-      : null
-  );
-
-  const loginWithGoogle = () => {
-    googleOneTap(options, (response) => {
-      // Send response to server
-      console.log(response);
-    });
-  };
+  
   useEffect(() => {
-    try {
-      loginWithGoogle();
-    } catch (err) {
-      console.log("err", err);
-    }
+    console.log("hi");
+    // console.log(new URLSearchParams());
+    // fetch("http://localhost:3000/login/github/callback").then((response) => {
+    //   console.log(response);
+    // });
   }, []);
   return (
     <section className="App">
-      <h1>Hello system login</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/product" element={<Product />} />
+        </Routes>
+      </BrowserRouter>
     </section>
   );
 }
