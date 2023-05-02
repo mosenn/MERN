@@ -1,55 +1,55 @@
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Product = () => {
-  const [token, setToken] = useState("");
-  const query = new URLSearchParams(location.search);
-  const code = query.get("code");
+  const [githubData, setGithubData] = useState({});
 
-  const getAccessToken = async () => {
-    try {
-      const data = axios.get("http://localhost:3000/login/github/callback");
-      console.log(data, "data");
-      console.log("data");
-      //   const access_token_url = "https://github.com/login/oauth/access_token";
-      //   const params = new URLSearchParams({
-      //     client_id: "373605aaa0df2e4fecde",
-      //     client_secret: "badf3526e253134654713e907d82b3436c53849e",
-      //     code: code,
-      //   });
+  const navigate = useNavigate();
+  let localtoken = localStorage.getItem("tokens");
 
-      //   const response = await axios.post(access_token_url, params, {
-      //     headers: {
-      //       "Content-Type": "application/x-www-form-urlencoded",
-      //       Accept: "application/json",
-      //       "User-Agent": "register login github react",
-      //     },
-      //   });
-      //   const token = new URLSearchParams(response.data).get("access_token");
-      //   console.log("token:", token);
-      //   setToken(token);
-    } catch (err) {
-      console.log(err);
+  const logout = () => {
+    console.log("logout");
+    localStorage.removeItem("tokens");
+    if (!localStorage.getItem("tokens")) {
+      navigate("/login");
     }
   };
 
+  const gitUserData = JSON.parse(localStorage.getItem("gitData"));
+  const userGitData = gitUserData.data;
+  // console.log(gitUserData.data, "localgitUserDAta");
   useEffect(() => {
-    if (code) {
-      getAccessToken();
+    console.log(localtoken, "localtoken");
+    if (!localStorage.getItem("tokens")) {
+      navigate("/login");
     }
-  }, [code]);
-
-  if (token) {
-    return (
-      <div>
-        <h1>PRODUCT</h1>
-      </div>
-    );
-  }
-
+  }, []);
   return (
     <div>
-      <h1>First login pls</h1>
+      {localtoken ? (
+        <>
+          <button
+            onClick={() => {
+              logout();
+            }}
+          >
+            logout
+          </button>
+          <h1>welcome {userGitData?.login}</h1>
+          <h2>{userGitData?.blog ? userGitData?.blog : ""}</h2>
+          <figure>
+            <img
+              src={userGitData?.avatar_url}
+              style={{ borderRadius: "50%", width: "150px", height: "150px" }}
+              alt=""
+            />
+          </figure>
+          <Link to={userGitData?.html_url}>{userGitData?.html_url}</Link>
+          <h1>PRODUCT PAGE</h1>{" "}
+        </>
+      ) : (
+        navigate("/login")
+      )}
     </div>
   );
 };

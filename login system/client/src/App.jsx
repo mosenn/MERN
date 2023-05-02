@@ -3,9 +3,8 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { useEffect } from "react";
 import Product from "./component/Product";
 import Login from "./component/Login";
+import Access from "./component/Access";
 function App() {
-
-  
   useEffect(() => {
     console.log("hi");
     // console.log(new URLSearchParams());
@@ -18,7 +17,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/product" element={<Product />} />
+          <Route path={"/product"} element={<Product />} />
+          <Route path="/acess" element={<Access />} />
         </Routes>
       </BrowserRouter>
     </section>
