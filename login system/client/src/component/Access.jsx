@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useLoginContext } from "../context/Context";
 const Access = () => {
   const [token, setToken] = useState("");
-  const { githubUserData } = useLoginContext();
   const navigate = useNavigate();
 
   const getUserdata = async (token) => {
     console.log(token, "in getuserdata");
+
     const userData = await axios.get("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${token}`, // add 'Bearer' before token
@@ -22,6 +21,7 @@ const Access = () => {
     // }
     console.log("userdata", userData);
   };
+
   const handleGithubLogin = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
@@ -34,11 +34,16 @@ const Access = () => {
       );
       const token = await response.data.token;
       console.log("token in handleGithubLogin :", token);
-      await getUserdata(token);
+      if (token) {
+        getUserdata(token);
+      }
+
       // Store the token in state
+      //*for logout and refresh
       setToken(token);
     }
   };
+  //* set in local for logout and if i refrash login page userData is not despare
   localStorage.setItem("tokens", token);
   const localtoken = localStorage.getItem("tokens", token);
   console.log(localtoken, "localtoken");
@@ -54,7 +59,6 @@ const Access = () => {
   }
   return (
     <div>
-      {/* {name} */}
       <h1>Loading...</h1>
     </div>
   );

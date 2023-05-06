@@ -1,11 +1,7 @@
 import { Link } from "react-router-dom";
-import { useLoginContext } from "../context/Context";
-
 const Login = () => {
-  const { name } = useLoginContext();
   return (
     <div>
-      <h1>{name}</h1>
       <Link to="https://github.com/login/oauth/authorize?client_id=373605aaa0df2e4fecde">
         Login with github
       </Link>
