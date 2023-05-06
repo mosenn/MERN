@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.29.5",
     "axios": "^1.4.0",
     "google-one-tap": "^1.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-github-login-button": "^1.0.1",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.0"
   },
   "devDependencies": {

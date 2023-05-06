@@ -1,29 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 const Product = () => {
-  const [githubData, setGithubData] = useState({});
-
   const navigate = useNavigate();
   let localtoken = localStorage.getItem("tokens");
+  const gitUserData = JSON.parse(localStorage.getItem("gitData"));
+
+  console.log(gitUserData?.data, "localgitUserDAta");
+  const userGitData = gitUserData?.data;
+  console.log(userGitData, "userdata in uselayout");
 
   const logout = () => {
     console.log("logout");
     localStorage.removeItem("tokens");
-    if (!localStorage.getItem("tokens")) {
+    localStorage.removeItem("gitData");
+    if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
       navigate("/login");
     }
   };
 
-  const gitUserData = JSON.parse(localStorage.getItem("gitData"));
-  const userGitData = gitUserData.data;
-  // console.log(gitUserData.data, "localgitUserDAta");
   useEffect(() => {
     console.log(localtoken, "localtoken");
     if (!localStorage.getItem("tokens")) {
       navigate("/login");
     }
   }, []);
+
   return (
     <div>
       {localtoken ? (
@@ -48,7 +50,12 @@ const Product = () => {
           <h1>PRODUCT PAGE</h1>{" "}
         </>
       ) : (
-        navigate("/login")
+        <div>
+          <h2> sry dont finde user data</h2>
+          {/* {setTimeout(() => {
+            navigate("/login");
+          }, 3000)} */}
+        </div>
       )}
     </div>
   );
