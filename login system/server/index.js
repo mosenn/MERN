@@ -58,8 +58,8 @@ app.get("/getAccessToken", async (req, res) => {
     const token = await getAccessToken(code);
     console.log("token in route getAccessToken :", token);
     // Store the token in the session
-    req.session.token = token;
-    console.log(req.session.token, "coockie set at getAccessToken");
+    // req.session.token = token;
+    // console.log(req.session.token, "coockie set at getAccessToken");
     return res.json({ token });
   } catch (err) {
     console.log(err, "err");
@@ -74,8 +74,8 @@ app.get("/getUserData", async (req, res) => {
     req.get("Authorization"); //Bearer token
     const userData = await axios.get("https://api.github.com/user", {
       headers: {
-        // Authorization: `Bearer ${token}`, // add 'Bearer' before token
-        Authorization: req.get("Authorization"), // add 'Bearer' before token
+        Authorization: `Bearer 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`, // add 'Bearer' before token
+        // Authorization: req.get("Authorization"), // add 'Bearer' before token
       },
     });
     // console.log("userData", userData);

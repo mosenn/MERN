@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getToken } from "../../_api";
 const Access = () => {
   const [token, setToken] = useState("");
   const navigate = useNavigate();
@@ -29,20 +30,17 @@ const Access = () => {
 
     // Get the access token using the code
     if (code && !token) {
-      const response = await axios.get(
-        `http://localhost:3000/getAccessToken?code=${code}`
-      );
-      const token = await response.data.token;
-      console.log("token in handleGithubLogin :", token);
-      if (token) {
-        getUserdata(token);
-      }
-
-      // Store the token in state
+      //add function from _api
+      // console.log("token in handleGithubLogin :", token);
       //*for logout and refresh
-      setToken(token);
+      getToken(code, setToken);
+      // setToken(token);
+    }
+    if (token) {
+      getUserdata(token);
     }
   };
+
   //* set in local for logout and if i refrash login page userData is not despare
   localStorage.setItem("tokens", token);
   const localtoken = localStorage.getItem("tokens", token);
