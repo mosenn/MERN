@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 const Product = () => {
   const navigate = useNavigate();
+  //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
   const gitUserData = JSON.parse(localStorage.getItem("gitData"));
 
@@ -21,14 +22,14 @@ const Product = () => {
 
   useEffect(() => {
     console.log(localtoken, "localtoken");
-    if (!localStorage.getItem("tokens")) {
+    if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
       navigate("/login");
     }
   }, []);
 
   return (
     <div>
-      {localtoken ? (
+      {localtoken && userGitData ? (
         <>
           <button
             onClick={() => {
