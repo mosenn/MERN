@@ -16,6 +16,7 @@ export const GetToken = async (code, setToken) => {
 export const getInfomationGithubUser = async (token, setGetUserData) => {
   try {
     console.log(token, "tokenss in getinformation githubuser api.js");
+    //* if handel 401 https status
     if (token) {
       const userData = await axios.get("https://api.github.com/user", {
         headers: {
