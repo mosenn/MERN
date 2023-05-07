@@ -51,12 +51,7 @@ const UserProfile = () => {
           <h1>Profile Page</h1>{" "}
         </>
       ) : (
-        <div>
-          <h2> sry dont finde user data</h2>
-          {/* {setTimeout(() => {
-            navigate("/login");
-          }, 3000)} */}
-        </div>
+        ""
       )}
     </div>
   );

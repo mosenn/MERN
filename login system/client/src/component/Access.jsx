@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GetToken, getInfomationGithubUser } from "../../_api";
-
+import RejectLogin from "./RejectLogin";
+import Loading from "./Loading";
 const Access = () => {
   const [token, setToken] = useState("");
   const [getUserData, setGetUserData] = useState("");
   const [userDataGithub, setUserDataGithub] = useState("");
-  const [denieLogin, setDenieLogin] = useState(false);
+  const [rejectLogin, setRejectLogin] = useState(false);
+
   const navigate = useNavigate();
 
+  //* get clinet_id & run handleGithubLogin
   const getCodeinUrl = () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
     handleGithubLogin(code);
   };
 
-  const setUserDataToLocal = async (token) => {
+  const setUserDataToLocal = (token) => {
     console.log(token, "in getuserdata");
     localStorage.setItem("gitData", JSON.stringify(getUserData));
     setUserDataGithub(getUserData);
@@ -23,45 +26,30 @@ const Access = () => {
   };
 
   const handleGithubLogin = (code) => {
-    // console.log(code, "code ");
-    //*this change to new function getCodeinUrl
-    // const param = new URLSearchParams(window.location.search);
-    // const code = param.get("code");
-    // console.log(token, "before set GetToken");
-
+    //*_api_function
     getInfomationGithubUser(token, setGetUserData);
     setUserDataToLocal();
     if (code && !token) {
+      //*_api_function
       GetToken(code, setToken);
-      console.log("token in handleGithubLogin :", token);
     }
   };
 
   localStorage.setItem("tokens", token);
   const localtoken = localStorage.getItem("tokens", token);
 
+  const controlLogin = () => {
+    return setTimeout(() => {
+      setRejectLogin(true);
+    }, 3000);
+  };
+
   useEffect(() => {
-    // handleGithubLogin();
     getCodeinUrl();
-    // if (userDataGithub && localtoken) {
-    //   navigate("/profile");
-    // }
-    userDataGithub && localtoken
-      ? navigate("/profile")
-      : setTimeout(() => {
-          setDenieLogin(true);
-        }, 3000);
+    userDataGithub && localtoken ? navigate("/profile") : controlLogin();
   });
 
-  return (
-    <div>
-      {denieLogin ? (
-        <Link to="/login">back to login page</Link>
-      ) : (
-        <h1>Loading...</h1>
-      )}
-    </div>
-  );
+  return <div>{rejectLogin ? <RejectLogin /> : <Loading />}</div>;
 };
 
 export default Access;
