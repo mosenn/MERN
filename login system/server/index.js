@@ -23,7 +23,6 @@ app.get("/", (req, res) => {
 
 const clinet_id = process.env.CLIENT_ID;
 const clinet_secret = process.env.CLIENT_SECRET;
-const Ridirect_URL = `https://github.com/login/oauth/authorize?client_id=373605aaa0df2e4fecde`;
 
 async function getAccessToken(code) {
   try {
@@ -66,24 +65,6 @@ app.get("/getAccessToken", async (req, res) => {
   }
 });
 
-app.get("/getUserData", async (req, res) => {
-  try {
-    // Retrieve the token from the session
-    const token = req.session.token;
-    console.log(token, "coockie token userdata route");
-    req.get("Authorization"); //Bearer token
-    const userData = await axios.get("https://api.github.com/user", {
-      headers: {
-        Authorization: `Bearer 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`, // add 'Bearer' before token
-        // Authorization: req.get("Authorization"), // add 'Bearer' before token
-      },
-    });
-    // console.log("userData", userData);
-    return res.status(200).send(userData);
-  } catch (err) {
-    console.log(err, "err");
-  }
-});
 
 const port = 3000 || process.env.PORT;
 app.listen(port, () => {
