@@ -13,7 +13,10 @@ app.use(
   })
 );
 
-app.use(cors());
+app.use(
+  cors()
+  //*add orgin after deploy
+);
 app.use(express.json());
 app.use("/", require("./rootes/user"));
 
