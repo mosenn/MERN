@@ -25,10 +25,18 @@ const UserProfile = () => {
     if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
       navigate("/login");
     }
-  }, []);
+  });
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <h1>Profile Page</h1>{" "}
       {localtoken && userGitData ? (
         <>
           <button
@@ -38,7 +46,7 @@ const UserProfile = () => {
           >
             logout
           </button>
-          <h1>welcome {userGitData?.login}</h1>
+          <h2>welcome {userGitData?.login}</h2>
           <h2>{userGitData?.blog ? userGitData?.blog : ""}</h2>
           <figure>
             <img
@@ -48,7 +56,6 @@ const UserProfile = () => {
             />
           </figure>
           <Link to={userGitData?.html_url}>{userGitData?.html_url}</Link>
-          <h1>Profile Page</h1>{" "}
         </>
       ) : (
         ""
