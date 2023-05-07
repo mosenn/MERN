@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const Product = () => {
+const UserProfile = () => {
   const navigate = useNavigate();
   //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
@@ -48,7 +48,7 @@ const Product = () => {
             />
           </figure>
           <Link to={userGitData?.html_url}>{userGitData?.html_url}</Link>
-          <h1>PRODUCT PAGE</h1>{" "}
+          <h1>Profile Page</h1>{" "}
         </>
       ) : (
         <div>
@@ -62,4 +62,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default UserProfile;

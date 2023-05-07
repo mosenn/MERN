@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GetToken, getInfomationGithubUser } from "../../Api";
+import { GetToken, getInfomationGithubUser } from "../../_api";
 
 const Access = () => {
   const [token, setToken] = useState("");
@@ -8,19 +8,10 @@ const Access = () => {
   const [userDataGithub, setUserDataGithub] = useState("");
   const navigate = useNavigate();
 
+
+  
   const setUserdataToLocal = async (token) => {
     console.log(token, "in getuserdata");
-
-    //*Edit this to function
-    // const userData = await axios.get("https://api.github.com/user", {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`, // add 'Bearer' before token
-    //   },
-    // });
-
-    // localStorage.setItem("gitData", JSON.stringify(userData));
-    // setUserDataGithub(userData);
-    // console.log("userdata", userData);
     localStorage.setItem("gitData", JSON.stringify(getUserData));
     setUserDataGithub(getUserData);
     console.log("userdata", getUserData);
@@ -29,9 +20,9 @@ const Access = () => {
   const handleGithubLogin = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
-    console.log(code, "code ");
+    // console.log(code, "code ");
 
-    console.log(token, "before set GetToken");
+    // console.log(token, "before set GetToken");
 
     await getInfomationGithubUser(token, setGetUserData);
     await setUserdataToLocal();
@@ -47,7 +38,7 @@ const Access = () => {
   useEffect(() => {
     handleGithubLogin();
     if (userDataGithub && localtoken) {
-      navigate("/product");
+      navigate("/profile");
     }
   });
 
