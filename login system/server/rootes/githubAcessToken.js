@@ -1,5 +1,5 @@
 const userRoute = require("express").Router();
-const { AccessTokenGithub } = require("../controller/user");
+const { AccessTokenGithub } = require("../controller/githubLogin");
 userRoute.get("/getAccessToken", AccessTokenGithub);
 
 //*test route
