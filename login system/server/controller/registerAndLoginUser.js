@@ -1,5 +1,5 @@
 const userModel = require("../model/user");
-
+const { compare } = require("../middleware/bcrypt");
 const register = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
   try {
@@ -21,12 +21,14 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const login = await userModel.findOne({
       email,
-      password,
     });
-    if (login) {
+    const passwordIsOkey = await compare(password, login.password);
+    console.log(passwordIsOkey , 'passisoky')
+    if (login && passwordIsOkey) {
       return res.status(200).send(login);
     }
     throw Error("email or password is worng");
