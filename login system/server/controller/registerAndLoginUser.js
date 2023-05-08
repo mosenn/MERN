@@ -3,16 +3,16 @@ const userModel = require("../model/user");
 const register = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
   try {
-    const registerUser = await userModel.create({
-      email,
-      password,
-      confirmPassword,
-    });
+    if (password === confirmPassword) {
+      const registerUser = await userModel.create({
+        email,
+        password,
+        confirmPassword,
+      });
 
-    return res.status(201).send(registerUser);
-    // if (password === confirmPassword) {
-    // }
-    // throw Error("passwords is not match");
+      return res.status(201).send(registerUser);
+    }
+    throw Error("passwords is not match");
   } catch (err) {
     console.log(err.message);
     return res.status(400).send(err.message);
