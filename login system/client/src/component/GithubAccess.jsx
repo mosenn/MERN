@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GetToken, getInfomationGithubUser } from "../../_api";
-import RejectLogin from "./RejectLogin";
+import { GetToken, getInfomationGithubUser } from "../api/github";
+// import RejectLogin from "./RejectLogin";
+import RejectGithubLogin from "./rejectGithubLogin";
 import Loading from "./Loading";
-const Access = () => {
+const GithubAccess = () => {
   const [token, setToken] = useState("");
   const [getUserData, setGetUserData] = useState("");
   const [userDataGithub, setUserDataGithub] = useState("");
@@ -49,7 +50,7 @@ const Access = () => {
     userDataGithub && localtoken ? navigate("/profile") : controlLogin();
   });
 
-  return <div>{rejectLogin ? <RejectLogin /> : <Loading />}</div>;
+  return <div>{rejectLogin ? <RejectGithubLogin /> : <Loading />}</div>;
 };
 
-export default Access;
+export default GithubAccess;

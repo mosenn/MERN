@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const UserProfile = () => {
+const GithubUserProfile = () => {
   const navigate = useNavigate();
   //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
@@ -64,4 +64,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default GithubUserProfile;

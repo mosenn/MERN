@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Loading from "./Loading";
-const RejectLogin = () => {
+const RejectGithubLogin = () => {
   return (
     <div
       style={{
@@ -13,11 +13,11 @@ const RejectLogin = () => {
       }}
     >
       <Link to="/login">
-        <h2>Wait 3 seconds, click if you are not logged in </h2>
+        <h2>Wait seconds, if you are not logged in Click </h2>
         <Loading />
       </Link>
     </div>
   );
 };
 
-export default RejectLogin;
+export default RejectGithubLogin;
