@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "./component/Login";
 import Home from "./component/Home";
 import GithubAccess from "./component/GithubAccess";
-import GithubUserProfile from "./component/githubUserProfile";
+import GithubUserProfile from "./component/GithubUserProfile";
 function App() {
   return (
     <section className="App">

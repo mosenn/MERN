@@ -3,10 +3,11 @@ import { useEffect } from "react";
 
 const GithubUserProfile = () => {
   const navigate = useNavigate();
+
   //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
   const gitUserData = JSON.parse(localStorage.getItem("gitData"));
-
+  console.log(gitUserData?.email, "userData");
   console.log(gitUserData?.data, "localgitUserDAta");
   const userGitData = gitUserData?.data;
   console.log(userGitData, "userdata in uselayout");
@@ -15,6 +16,9 @@ const GithubUserProfile = () => {
     console.log("logout");
     localStorage.removeItem("tokens");
     localStorage.removeItem("gitData");
+    const gitUserData = JSON.parse(localStorage.getItem("gitData"));
+
+    console.log(gitUserData);
     if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
       navigate("/login");
     }
@@ -36,16 +40,16 @@ const GithubUserProfile = () => {
         flexDirection: "column",
       }}
     >
-      <h1>Profile Page</h1>{" "}
+      <button
+        onClick={() => {
+          logout();
+        }}
+      >
+        logout
+      </button>
+      <h1>Profile Pages</h1>{" "}
       {localtoken && userGitData ? (
         <>
-          <button
-            onClick={() => {
-              logout();
-            }}
-          >
-            logout
-          </button>
           <h2>welcome {userGitData?.login}</h2>
           <h2>{userGitData?.blog ? userGitData?.blog : ""}</h2>
           <figure>
@@ -60,6 +64,10 @@ const GithubUserProfile = () => {
       ) : (
         ""
       )}
+      <div>
+        {gitUserData?.email}
+        <p> {gitUserData?.password}</p>
+      </div>
     </div>
   );
 };
