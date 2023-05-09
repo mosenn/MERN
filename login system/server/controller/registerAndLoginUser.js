@@ -17,7 +17,9 @@ const register = async (req, res) => {
     // console.log(err.errors, "errors");
     //*error for same email(unique email in schema)
     if (err.keyPattern) {
-      return res.status(400).send("email has exist chose another email");
+      return res
+        .status(400)
+        .send([err.errors, "email has exist chose another email"]);
     }
     return res.status(400).send(err.errors);
   }
