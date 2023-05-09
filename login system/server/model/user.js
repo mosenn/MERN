@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { HashingPW, hash } = require("../middleware/bcrypt");
+const userValidation = require("../middleware/userValidation");
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -16,6 +17,13 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+//*validation
+userSchema.statics.userValidation = (reqBody) => {
+  return userValidation.validate(reqBody, { abortEarly: false });
+};
+
+//*hash passwird
 userSchema.pre("save", async function (next) {
   if (!this.isModified) {
     next();

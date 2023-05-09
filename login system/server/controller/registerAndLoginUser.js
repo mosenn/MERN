@@ -3,19 +3,23 @@ const { compare } = require("../middleware/bcrypt");
 const register = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
   try {
-    if (password === confirmPassword) {
-      const registerUser = await userModel.create({
-        email,
-        password,
-        confirmPassword,
-      });
-
-      return res.status(201).send(registerUser);
-    }
-    throw Error("passwords is not match");
+    //*validation register
+    await userModel.userValidation(req.body);
+    //*create user(register)
+    const registerUser = await userModel.create({
+      email,
+      password,
+      confirmPassword,
+    });
+    return res.status(201).send(registerUser);
   } catch (err) {
-    console.log(err.message);
-    return res.status(400).send(err.message);
+    // console.log(err.keyPattern, "errors");
+    // console.log(err.errors, "errors");
+    //*error for same email(unique email in schema)
+    if (err.keyPattern) {
+      return res.status(400).send("email has exist chose another email");
+    }
+    return res.status(400).send(err.errors);
   }
 };
 
@@ -27,7 +31,7 @@ const login = async (req, res) => {
       email,
     });
     const passwordIsOkey = await compare(password, login.password);
-    console.log(passwordIsOkey , 'passisoky')
+    console.log(passwordIsOkey, "passisoky");
     if (login && passwordIsOkey) {
       return res.status(200).send(login);
     }
