@@ -28,33 +28,17 @@ export const registerUser = async (
   }
 };
 
-// let data = JSON.stringify({
-//   email: "mohsen45@gmail.com",
-//   password: "Aw2$377779",
-//   confirmPassword: "Aw2$377779",
-// });
+export const loginUser = async (loginValue, setLoginData) => {
+  const { email, password } = loginValue;
+  console.log(email, password, "in login user api");
 
-// export const registerUser = (registerValue) => {
-//   const { email, password, confirmPassword } = registerValue;
-//   let config = {
-//     method: "post",
-//     maxBodyLength: Infinity,
-//     url: "http://localhost:3000/register",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     data: JSON.stringify({
-//       email: email,
-//       password: password,
-//       confirmPassword: confirmPassword,
-//     }),
-//   };
-//   axios
-//     .request(config)
-//     .then((response) => {
-//       console.log(JSON.stringify(response.data));
-//     })
-//     .catch((error) => {
-//       console.log(error.response.data);
-//     });
-// };
+  try {
+    const loginData = await axios.post("http://localhost:3000/login", {
+      email,
+      password,
+    });
+    return setLoginData(loginData);
+  } catch (err) {
+    console.log(err);
+  }
+};
