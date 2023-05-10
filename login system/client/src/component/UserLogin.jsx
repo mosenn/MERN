@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { loginUser } from "../api/registerAndLogin";
+import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 const UserLogin = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState();
   const [loginValue, setLoginValue] = useState({
     email: "",
@@ -16,6 +19,10 @@ const UserLogin = () => {
   };
   useEffect(() => {
     console.log(loginData, "in use effect login data");
+    localStorage.setItem("gitData", JSON.stringify(loginData?.data));
+    if (loginData) {
+      navigate("/profile");
+    }
   }, [loginData]);
   return (
     <div>
