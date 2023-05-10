@@ -9,7 +9,10 @@ const UserLoginAndRegister = () => {
   return (
     <div>
       {showLogin ? <UserLogin /> : <UserRegister />}
-      <button onClick={toggelShowLogin}>you have account ?</button>
+      <button onClick={toggelShowLogin}>
+        {" "}
+        {showLogin ? "back to register" : "you have account?"}
+      </button>
     </div>
   );
 };
