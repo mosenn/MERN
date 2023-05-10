@@ -21,7 +21,6 @@ const UserLogin = () => {
 
   useEffect(() => {
     console.log(loginData, "in use effect login data");
-
     localStorage.setItem("userData", JSON.stringify(loginData?.data));
     if (loginData) {
       navigate("/profile");

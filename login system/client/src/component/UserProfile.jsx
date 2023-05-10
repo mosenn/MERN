@@ -67,6 +67,11 @@ const UserProfile = () => {
       <div>
         {gitUserData?.email}
         <p> {gitUserData?.password}</p>
+        <img
+          src={gitUserData?.pic}
+          alt=""
+          style={{ borderRadius: "50%", width: "150px", height: "150px" }}
+        />
       </div>
     </div>
   );

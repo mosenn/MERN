@@ -5,7 +5,7 @@ export const registerUser = async (
   setDataUserRegister,
   setUserRegisterError
 ) => {
-  const { email, password, confirmPassword } = registerValue;
+  const { email, password, confirmPassword, pic } = registerValue;
   try {
     const userData = await axios.post(
       "http://localhost:3000/register",
@@ -13,7 +13,9 @@ export const registerUser = async (
         email,
         password,
         confirmPassword,
+        pic,
       },
+
       {
         headers: {
           "Content-Type": "application/json",
@@ -29,13 +31,14 @@ export const registerUser = async (
 };
 
 export const loginUser = async (loginValue, setLoginData, setLoginError) => {
-  const { email, password } = loginValue;
-  console.log(email, password, "in login user api");
+  const { email, password, pic } = loginValue;
+  console.log(email, password, pic, "in login user api");
 
   try {
     const loginData = await axios.post("http://localhost:3000/login", {
       email,
       password,
+      pic,
     });
     return setLoginData(loginData);
   } catch (err) {

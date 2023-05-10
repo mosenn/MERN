@@ -8,6 +8,7 @@ const UserRegister = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    pic: "",
   });
   const [dataUserRegister, setDataUserRegister] = useState("");
   const [userRegisterError, setUserRegisterError] = useState([]);
@@ -19,8 +20,29 @@ const UserRegister = () => {
     //*if want show warning message in typing register inputs
     // registerUser(registerValue, setDataUserRegister, setUserRegisterError);
   };
+
+  //*
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file, "in on change file");
+    const imageData = new FormData();
+    imageData.append("image", file);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setRegisterValue({
+        ...registerValue,
+        pic: reader.result,
+      });
+    };
+    console.log("after reader ", registerValue);
+  };
+  //*
+
   const handleSubmit = async (form) => {
     form.preventDefault();
+    console.log(registerValue, "register value in submit");
     registerUser(registerValue, setDataUserRegister, setUserRegisterError);
   };
   useEffect(() => {
@@ -64,6 +86,13 @@ const UserRegister = () => {
           placeholder="confrim password"
           value={registerValue.confirmPassword}
           onChange={onchangeHandleRegister}
+        />
+
+        <input
+          type="file"
+          name="pic"
+          placeholder="uplod profile image"
+          onChange={handleFileChange}
         />
         <button type="submit">Register</button>
       </form>
