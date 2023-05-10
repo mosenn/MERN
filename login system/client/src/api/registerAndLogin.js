@@ -28,7 +28,7 @@ export const registerUser = async (
   }
 };
 
-export const loginUser = async (loginValue, setLoginData) => {
+export const loginUser = async (loginValue, setLoginData, setLoginError) => {
   const { email, password } = loginValue;
   console.log(email, password, "in login user api");
 
@@ -40,5 +40,6 @@ export const loginUser = async (loginValue, setLoginData) => {
     return setLoginData(loginData);
   } catch (err) {
     console.log(err);
+    setLoginError(err.response.status);
   }
 };

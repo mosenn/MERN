@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { loginUser } from "../api/registerAndLogin";
 import { useNavigate } from "react-router-dom";
-import Loading from "./Loading";
+
 const UserLogin = () => {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState();
@@ -9,24 +9,27 @@ const UserLogin = () => {
     email: "",
     password: "",
   });
+  const [loginError, setLoginError] = useState("");
   const onChangeHandelLogin = (inputs) => {
     setLoginValue({ ...loginValue, [inputs.target.name]: inputs.target.value });
   };
   const handleLoginForm = (form) => {
     form.preventDefault();
     console.log(loginValue, "login value");
-    loginUser(loginValue, setLoginData);
+    loginUser(loginValue, setLoginData, setLoginError);
   };
 
   useEffect(() => {
     console.log(loginData, "in use effect login data");
-    localStorage.setItem("gitData", JSON.stringify(loginData?.data));
+
+    localStorage.setItem("userData", JSON.stringify(loginData?.data));
     if (loginData) {
       navigate("/profile");
     }
   }, [loginData]);
   return (
     <div>
+      {loginError && <p>password or email is worng</p>}
       <form action="" onSubmit={handleLoginForm}>
         <input
           type="text"

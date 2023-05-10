@@ -1,32 +1,32 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const GithubUserProfile = () => {
+const UserProfile = () => {
   const navigate = useNavigate();
 
   //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
-  const gitUserData = JSON.parse(localStorage.getItem("gitData"));
+  const gitUserData = JSON.parse(localStorage.getItem("userData"));
   console.log(gitUserData?.email, "userData");
   console.log(gitUserData?.data, "localgitUserDAta");
-  const userGitData = gitUserData?.data;
-  console.log(userGitData, "userdata in uselayout");
+  const useruserData = gitUserData?.data;
+  console.log(useruserData, "userdata in uselayout");
 
   const logout = () => {
     console.log("logout");
     localStorage.removeItem("tokens");
-    localStorage.removeItem("gitData");
-    const gitUserData = JSON.parse(localStorage.getItem("gitData"));
+    localStorage.removeItem("userData");
+    const gitUserData = JSON.parse(localStorage.getItem("userData"));
 
     console.log(gitUserData);
-    if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
+    if (!localStorage.getItem("tokens") && !localStorage.getItem("userData")) {
       navigate("/login");
     }
   };
 
   useEffect(() => {
     console.log(localtoken, "localtoken");
-    if (!localStorage.getItem("tokens") && !localStorage.getItem("gitData")) {
+    if (!localStorage.getItem("tokens") && !localStorage.getItem("userData")) {
       navigate("/login");
     }
   });
@@ -48,18 +48,18 @@ const GithubUserProfile = () => {
         logout
       </button>
       <h1>Profile Pages</h1>{" "}
-      {localtoken && userGitData ? (
+      {localtoken && useruserData ? (
         <>
-          <h2>welcome {userGitData?.login}</h2>
-          <h2>{userGitData?.blog ? userGitData?.blog : ""}</h2>
+          <h2>welcome {useruserData?.login}</h2>
+          <h2>{useruserData?.blog ? useruserData?.blog : ""}</h2>
           <figure>
             <img
-              src={userGitData?.avatar_url}
+              src={useruserData?.avatar_url}
               style={{ borderRadius: "50%", width: "150px", height: "150px" }}
               alt=""
             />
           </figure>
-          <Link to={userGitData?.html_url}>{userGitData?.html_url}</Link>
+          <Link to={useruserData?.html_url}>{useruserData?.html_url}</Link>
         </>
       ) : (
         ""
@@ -72,4 +72,4 @@ const GithubUserProfile = () => {
   );
 };
 
-export default GithubUserProfile;
+export default UserProfile;

@@ -21,7 +21,7 @@ const GithubAccess = () => {
 
   const setUserDataToLocal = (token) => {
     console.log(token, "in getuserdata");
-    localStorage.setItem("gitData", JSON.stringify(getUserData));
+    localStorage.setItem("userData", JSON.stringify(getUserData));
     setUserDataGithub(getUserData);
     console.log("userdata", getUserData);
   };

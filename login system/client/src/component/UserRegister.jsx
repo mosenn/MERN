@@ -28,7 +28,7 @@ const UserRegister = () => {
     console.log(userRegisterError, "data err");
     if (dataUserRegister.data) {
       console.log(dataUserRegister.data, "data user register in submit");
-      localStorage.setItem("gitData", JSON.stringify(dataUserRegister.data));
+      localStorage.setItem("userData", JSON.stringify(dataUserRegister.data));
       navigate("/profile");
     }
   }, [dataUserRegister, userRegisterError]);

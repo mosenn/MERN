@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "./component/Login";
 import Home from "./component/Home";
 import GithubAccess from "./component/GithubAccess";
-import GithubUserProfile from "./component/GithubUserProfile";
+import UserProfile from "./component/UserProfile";
 function App() {
   return (
     <section className="App">
@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path={"/profile"} element={<GithubUserProfile />} />
+          <Route path={"/profile"} element={<UserProfile />} />
           <Route path="/acess" element={<GithubAccess />} />
         </Routes>
       </BrowserRouter>
