@@ -26,13 +26,14 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
     const login = await userModel.findOne({
       email,
     });
+    console.log(login, "this login in login controller");
     const passwordIsOkey = await compare(password, login.password);
+
     console.log(passwordIsOkey, "passisoky");
     if (login && passwordIsOkey) {
       return res.status(200).send(login);
