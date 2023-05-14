@@ -4,6 +4,7 @@ import Login from "./component/Login";
 import Home from "./component/Home";
 import GithubAccess from "./component/GithubAccess";
 import UserProfile from "./component/UserProfile";
+import LinkedinAccess from "./component/LinkedinAccess";
 function App() {
   return (
     <section className="App">
@@ -13,6 +14,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path={"/profile"} element={<UserProfile />} />
           <Route path="/acess" element={<GithubAccess />} />
+          <Route path="/accessLinkedin" element={<LinkedinAccess />} />
         </Routes>
       </BrowserRouter>
     </section>

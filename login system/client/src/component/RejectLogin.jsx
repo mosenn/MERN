@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Loading from "./Loading";
-const RejectGithubLogin = () => {
+const RejectLogin = () => {
   return (
     <div
       style={{
@@ -20,4 +20,4 @@ const RejectGithubLogin = () => {
   );
 };
 
-export default RejectGithubLogin;
+export default RejectLogin;

@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { registerUser } from "../api/registerAndLogin";
 import RecaptchaGoogle from "./RecaptchaGoogle";
-// import ReCAPTCHA from "react-google-recaptcha";
 import { postTokenRecapchaGoogle } from "../api/recapchaGoogle";
 
 const FormRegister = ({
@@ -47,8 +46,7 @@ const FormRegister = ({
     const token = refRecaptcha.current.getValue();
     const responseRecapcha = await postTokenRecapchaGoogle(token);
     setCheckRecapchaGoogle(responseRecapcha);
-    // console.log("recpatcha token in submit", token);
-    // console.log(registerValue, "register value in submit");
+
     registerUser(registerValue, setDataUserRegister, setUserRegisterError);
   };
 
