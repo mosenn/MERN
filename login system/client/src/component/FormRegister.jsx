@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
 import { registerUser } from "../api/registerAndLogin";
-import RecaptchaGoogle from "./RecaptchaGoogle";
+// import RecaptchaGoogle from "./RecaptchaGoogle";
 import ReCAPTCHA from "react-google-recaptcha";
+import { postTokenRecapchaGoogle } from "../api/recapchaGoogle";
 
-const FormRegister = ({ setDataUserRegister, setUserRegisterError }) => {
-
+const FormRegister = ({
+  setDataUserRegister,
+  setUserRegisterError,
+  setCheckRecapchaGoogle,
+}) => {
   const refRecaptcha = useRef(null);
   const [registerValue, setRegisterValue] = useState({
     email: "",
@@ -43,8 +47,10 @@ const FormRegister = ({ setDataUserRegister, setUserRegisterError }) => {
   const handleSubmit = async (form) => {
     form.preventDefault();
     const token = refRecaptcha.current.getValue();
-    console.log(token, "recpatcha token");
-    console.log(registerValue, "register value in submit");
+    const responseRecapcha = await postTokenRecapchaGoogle(token);
+    setCheckRecapchaGoogle(responseRecapcha);
+    // console.log("recpatcha token in submit", token);
+    // console.log(registerValue, "register value in submit");
     registerUser(registerValue, setDataUserRegister, setUserRegisterError);
   };
   return (
@@ -139,9 +145,9 @@ const FormRegister = ({ setDataUserRegister, setUserRegisterError }) => {
         </label>
         <button type="submit">Register</button>
         <ReCAPTCHA
-        sitekey="6LfgVQcmAAAAAAuo3QF9_6woJD-aVOkTRz86FZWu "
-        ref={refRecaptcha}
-      />
+          sitekey="6LfgVQcmAAAAAAuo3QF9_6woJD-aVOkTRz86FZWu "
+          ref={refRecaptcha}
+        />
       </form>
     </div>
   );
