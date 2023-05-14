@@ -15,7 +15,7 @@ app.use(
     cookie: { secure: true },
   })
 );
-
+app.use(express.urlencoded({ extended: false }));
 app.use(
   cors()
   //*add orgin after deploy
