@@ -1,0 +1,39 @@
+create mvc for server => done
+create login with data base => done
+hash password in server => done
+compare password => done
+validation for login in server => done
+show error message in clinet => done
+after register navigate to profile and show information user register => done 
+
+(can if user register show login first if user login then naviagte
+ to profile set this after login is done)
+
+work on login user and show error message => done
+if user is login agin naviagte to profile  => done
+
+create schema for user add picture in register => done
+handel pic in clinet users can add picture for profile => done
+show pic in profile page  => done
+
+add select form in clinet , set 4 image for profile image => done i handle with radio input
+
+add google recaptcha for login db . => done
+
+add login linkedin = first take user clinet_id and secret 
+then difine ridirect url , most be decalre in react AccessLinkedin Like github . 
+
+then take code in the params url . 
+then define post method for take token and userdata , 
+pass code in params to post api accesstoken => proply most be define in the server ., 
+then this api back response data user and token 
+back to react AccessToken Componet useEffect() and conditon for if token and userdata 
+saved to local userDAta , then navigate to profile . 
+
+
+
+deploy clinet and server in vercel
+set cors origin address client after deploy
+send link to other for test .
+create online document . 
+post in linkedin . 
