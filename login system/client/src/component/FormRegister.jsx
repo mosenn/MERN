@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { registerUser } from "../api/registerAndLogin";
-// import RecaptchaGoogle from "./RecaptchaGoogle";
-import ReCAPTCHA from "react-google-recaptcha";
+import RecaptchaGoogle from "./RecaptchaGoogle";
+// import ReCAPTCHA from "react-google-recaptcha";
 import { postTokenRecapchaGoogle } from "../api/recapchaGoogle";
 
 const FormRegister = ({
@@ -16,6 +16,7 @@ const FormRegister = ({
     confirmPassword: "",
     pic: "",
   });
+
   const onchangeHandleRegister = (inputs) => {
     setRegisterValue({
       ...registerValue,
@@ -29,9 +30,6 @@ const FormRegister = ({
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     console.log(file, "in on change file");
-    const imageData = new FormData();
-    imageData.append("image", file);
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -53,6 +51,7 @@ const FormRegister = ({
     // console.log(registerValue, "register value in submit");
     registerUser(registerValue, setDataUserRegister, setUserRegisterError);
   };
+
   return (
     <div>
       <form action="" onSubmit={handleSubmit}>
@@ -128,7 +127,6 @@ const FormRegister = ({
             style={{ width: "100px", height: "100px" }}
           />
         </label>
-
         <input
           type="radio"
           id="profile4"
@@ -144,10 +142,8 @@ const FormRegister = ({
           />
         </label>
         <button type="submit">Register</button>
-        <ReCAPTCHA
-          sitekey="6LfgVQcmAAAAAAuo3QF9_6woJD-aVOkTRz86FZWu "
-          ref={refRecaptcha}
-        />
+
+        <RecaptchaGoogle refRecaptcha={refRecaptcha} />
       </form>
     </div>
   );

@@ -7,23 +7,22 @@ const UserRegister = () => {
   const [dataUserRegister, setDataUserRegister] = useState("");
   const [userRegisterError, setUserRegisterError] = useState([]);
   const [checkRecapchaGoogle, setCheckRecapchaGoogle] = useState(false);
-
+  const [messageErrorRecapchaGoogle, setMessageErrorRecapchaGoogle] =
+    useState("");
   useEffect(() => {
-    // console.log(dataUserRegister, "data user register");
-    // console.log(userRegisterError, "data err");
-    // console.log(
-    //   checkRecapchaGoogle.data.success,
-    //   "checkRecapchaGoogle in use effect userRegister"
-    // );
     if (dataUserRegister.data && checkRecapchaGoogle.data.success) {
       console.log(dataUserRegister.data, "data user register in submit");
       localStorage.setItem("userData", JSON.stringify(dataUserRegister.data));
       navigate("/profile");
     }
+    if (!checkRecapchaGoogle?.data?.success) {
+      setMessageErrorRecapchaGoogle("accpet recapcha, if dont see refresh page");
+    }
   }, [dataUserRegister, userRegisterError]);
 
   return (
     <div>
+      {messageErrorRecapchaGoogle}
       {userRegisterError.length > 0 &&
         userRegisterError?.map((items, index) => {
           return (
