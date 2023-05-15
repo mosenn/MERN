@@ -1,26 +1,33 @@
-import { useEffect, useState } from "react";
-import { takeCodeAndPostToServerLinkedin } from "../api/linkedin";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  takeCodeAndPostToServerLinkedin,
+  getUserDataLinkedin,
+} from "../api/linkedin";
+// import { useNavigate } from "react-router-dom";
 
 const LinkedinAccess = () => {
-  const navigate = useNavigate();
-  const [linkedinData, setLinkedinData] = useState();
+  // const navigate = useNavigate();
+
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
-    const data = await takeCodeAndPostToServerLinkedin(code, setLinkedinData);
-    console.log(data.data?.error, "error");
-    console.log(data.data?.token, "token");
+    const data = await takeCodeAndPostToServerLinkedin(code);
+    console.log(data, "data");
+    const userData = await getUserDataLinkedin(data.data?.token);
+    console.log(userData, "userData");
 
     if (data.data?.token) {
       localStorage.setItem("tokens", data.data.token);
-      navigate("/profile");
+      const token = localStorage.getItem("tokens");
+      console.log("token in local linkedin", token);
+
+      // navigate("/profile");
     }
   };
 
   useEffect(() => {
     getLinkedinCodeinParamas();
-  }, []);
+  });
   return (
     <div>
       <h1>access code paramas linkedin</h1>
