@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
-import { takeCodeAndPostToServer } from "../api/linkedin";
+import { takeCodeAndPostToServerLinkedin } from "../api/linkedin";
+import { useNavigate } from "react-router-dom";
 
 const LinkedinAccess = () => {
-  const [codeLinkedin, setCodeLinkedin] = useState();
-  const getLinkedinCodeinParamas = () => {
+  const navigate = useNavigate();
+  const [linkedinData, setLinkedinData] = useState();
+  const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
-    console.log("code in conponet linkedin access", code);
-    setCodeLinkedin(codeLinkedin);
-    console.log("state code", codeLinkedin);
-    takeCodeAndPostToServer(code);
+    const data = await takeCodeAndPostToServerLinkedin(code, setLinkedinData);
+    console.log(data.data?.error, "error");
+    console.log(data.data?.token, "token");
+
+    if (data.data?.token) {
+      localStorage.setItem("tokens", data.data.token);
+      navigate("/profile");
+    }
   };
 
   useEffect(() => {
