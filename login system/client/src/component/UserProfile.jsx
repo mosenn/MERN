@@ -6,19 +6,19 @@ const UserProfile = () => {
 
   //*get token and user data from local
   let localtoken = localStorage.getItem("tokens");
-  const gitUserData = JSON.parse(localStorage.getItem("userData"));
-  console.log(gitUserData?.email, "userData");
-  console.log(gitUserData?.data, "localgitUserDAta");
-  const useruserData = gitUserData?.data;
-  console.log(useruserData, "userdata in uselayout");
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  console.log(userData?.email, "userData");
+  console.log(userData?.data, "localgitUserDAta");
+  const GetuserDataLocal = userData?.data;
+  console.log(GetuserDataLocal, "userdata in uselayout");
 
   const logout = () => {
     console.log("logout");
     localStorage.removeItem("tokens");
     localStorage.removeItem("userData");
-    const gitUserData = JSON.parse(localStorage.getItem("userData"));
+    const userData = JSON.parse(localStorage.getItem("userData"));
 
-    console.log(gitUserData);
+    console.log(userData);
     if (!localStorage.getItem("tokens") && !localStorage.getItem("userData")) {
       navigate("/login");
     }
@@ -48,31 +48,34 @@ const UserProfile = () => {
         logout
       </button>
       <h1>Profile Pages</h1>{" "}
-      {localtoken && useruserData ? (
+      {localtoken && GetuserDataLocal ? (
         <>
-          <h2>welcome {useruserData?.login}</h2>
-          <h2>{useruserData?.blog ? useruserData?.blog : ""}</h2>
+          <h2>welcome {GetuserDataLocal?.login}</h2>
+          <h2>{GetuserDataLocal?.blog ? GetuserDataLocal?.blog : ""}</h2>
           <figure>
             <img
-              src={useruserData?.avatar_url}
+              src={GetuserDataLocal?.avatar_url}
               style={{ borderRadius: "50%", width: "150px", height: "150px" }}
               alt=""
             />
           </figure>
-          <Link to={useruserData?.html_url}>{useruserData?.html_url}</Link>
+          {userData?.email}
+          <Link to={GetuserDataLocal?.html_url}>
+            {GetuserDataLocal?.html_url}
+          </Link>
         </>
       ) : (
         ""
       )}
-      <div>
-        {gitUserData?.email}
-        <p> {gitUserData?.password}</p>
-        <img
-          src={gitUserData?.pic}
-          alt=""
-          style={{ borderRadius: "50%", width: "150px", height: "150px" }}
-        />
-      </div>
+      {userData.pic && (
+        <div>
+          <figure>
+            <img src={userData.pic} alt="prfoile_image" />
+          </figure>
+          <p>{userData.email}</p>
+          <p>{userData.password}</p>
+        </div>
+      )}
     </div>
   );
 };

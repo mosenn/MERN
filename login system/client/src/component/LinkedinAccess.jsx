@@ -24,10 +24,10 @@ const LinkedinAccess = () => {
       // navigate("/profile");
     }
   };
+  getLinkedinCodeinParamas();
+  // useEffect(() => {
 
-  useEffect(() => {
-    getLinkedinCodeinParamas();
-  });
+  // });
   return (
     <div>
       <h1>access code paramas linkedin</h1>
