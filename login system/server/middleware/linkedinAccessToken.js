@@ -20,10 +20,13 @@ const getTokenAccessLinkedin = async (code) => {
         },
       }
     );
-    console.log(token, "token in middlware post to api linkedin");
-    return token;
+    console.log(
+      token.data.access_token,
+      "token in middlware post to api linkedin"
+    );
+    return token.data.access_token;
   } catch (err) {
-    console.log(err, "err in middelware");
+    console.log(err.response.data.error_description);
   }
 };
 

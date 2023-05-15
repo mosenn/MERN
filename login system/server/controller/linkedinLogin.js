@@ -4,10 +4,10 @@ const accessTokenLinkedin = async (req, res) => {
     const code = req.query.code;
     // console.log("code in controller linkedin", code);
     const linkedinToken = await getTokenAccessLinkedin(code);
-    return res.send(linkedinToken);
+    return res.status(200).json({linkedinToken});
   } catch (err) {
-    console.log(err);
-    return res.send(err.data, "in controller");
+    console.log(err , 'err in controller');
+    return res.status(400).send(err);
   }
 };
 
