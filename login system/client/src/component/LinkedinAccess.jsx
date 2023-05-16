@@ -5,13 +5,15 @@ const LinkedinAccess = () => {
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
-    const data = await takeCodeAndPostToServerLinkedin(code);
-    console.log(data);
+    if (code) {
+      const data = await takeCodeAndPostToServerLinkedin(code);
+      console.log(data);
+    }
   };
 
   useEffect(() => {
     getLinkedinCodeinParamas();
-  }, []);
+  });
 
   return (
     <div>

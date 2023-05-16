@@ -3,7 +3,7 @@ import UserLoginAndRegister from "./UserLoginAndRegister";
 const Login = () => {
   console.log(import.meta.env.VITE_CLINET_ID);
   const CLINET_ID = import.meta.env.VITE_CLINET_ID;
-  const LinkeDin_CLINET_ID = "78go2ars92ov02";
+
   return (
     <div>
       <UserLoginAndRegister />

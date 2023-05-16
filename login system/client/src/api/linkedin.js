@@ -5,7 +5,10 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   // console.log(code, "code in api clinet"); //* have log code
   try {
     const response = await axios.post(
-      `http://localhost:3000/accessTokenLinkedin?code=${code}`
+      `http://localhost:3000/accessTokenLinkedin?code=${code}`,
+      // {
+      //   method: "post",
+      // }
     );
     const data = await response.data;
     // console.log(linkedinData, "linkedin response at _api.js"); //*have log here
