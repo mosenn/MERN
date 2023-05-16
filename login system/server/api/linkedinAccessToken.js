@@ -1,7 +1,12 @@
 const axios = require("axios");
 
+
+//* take token and then response user data 
+
+
+
 //* take code and return response token
-const getTokenAccessLinkedin = async (code) => {
+const getCodeAccessLinkedin = async (code) => {
   try {
     // console.log(code, "code in accesslinkedin in middleware");
     const paramas = new URLSearchParams({
@@ -28,4 +33,4 @@ const getTokenAccessLinkedin = async (code) => {
   }
 };
 
-module.exports = { getTokenAccessLinkedin };
+module.exports = { getCodeAccessLinkedin };
