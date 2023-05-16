@@ -23,13 +23,24 @@ add google recaptcha for login db . => done
 add login linkedin = first take user clinet_id and secret 
 then difine ridirect url , most be decalre in react AccessLinkedin Like github . 
 
-then take code in the params url . 
-then define post method for take token and userdata , 
-pass code in params to post api accesstoken => proply most be define in the server ., 
-then this api back response data user and token 
+then take code in the params url . => done
+then define post method for take token , => done
+pass code in params to post api accesstoken => proply most be define in the server =>done ., 
+then this api back response  token => done
 back to react AccessToken Componet useEffect() and conditon for if token and userdata 
-saved to local userDAta , then navigate to profile . 
+saved to local userDAta , then navigate to profile . => done 
 
+setLoading for Linkedin login before go to profile 
+set message for back to login if user dont be have token loading . 
+serach for how can get email or image linkedin user profile and show to website . 
+
+//* 
+1 - create api function 
+2 - pass token to api function 
+3 - pass response api function to controller function for route res.send response to clinet
+4 - define route for controller function 
+5 - take data in clinet with route 
+//*
 
 
 deploy clinet and server in vercel
