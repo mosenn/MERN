@@ -1,4 +1,4 @@
-const getAccessToken = require("../middleware/githubAccessToken");
+const getAccessToken = require("../api/githubAccessToken");
 
 const AccessTokenGithub = async (req, res) => {
   try {

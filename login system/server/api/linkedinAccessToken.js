@@ -1,9 +1,9 @@
 const axios = require("axios");
 
+//* take code and return response token
 const getTokenAccessLinkedin = async (code) => {
   try {
     // console.log(code, "code in accesslinkedin in middleware");
-
     const paramas = new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
@@ -20,7 +20,7 @@ const getTokenAccessLinkedin = async (code) => {
         },
       }
     );
-    console.log(token.data, "token in middlware post to api linkedin");
+    console.log("Take Code return Token in api:", token.data);
     return { token: token.data.access_token };
   } catch (err) {
     console.log(err.response.data.error_description);
@@ -28,4 +28,4 @@ const getTokenAccessLinkedin = async (code) => {
   }
 };
 
-module.exports = getTokenAccessLinkedin;
+module.exports = { getTokenAccessLinkedin };
