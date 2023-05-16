@@ -1,10 +1,50 @@
 const axios = require("axios");
+const { response } = require("express");
 
+//* take token and then response user data
+// const getTokenAccessUserDataLinkedin = async (token) => {
+//   try {
+//     const data = await axios.get("https://api.linkedin.com/v2/me", {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
 
-//* take token and then response user data 
+//     if (response.status === 200) {
+//       console.log(response.data, "response data");
+//       console.log(data.response, "data.response");
+//       console.log(data, "data");
+//       return response.data;
+//     } else {
+//       console.log(`Error: ${response.status} ${response.statusText}`);
+//     }
 
+//     return data;
+//   } catch (err) {
+//     console.log(err.message, "someting worng");
+//     console.log(err, "someting worng");
+//   }
+// };
+//* chat gpt code for function take user data 
+const getTokenAccessUserDataLinkedin = async (token) => {
+  try {
+    const response = await axios.get("https://api.linkedin.com/v2/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
+    if (response.status === 200) {
+      console.log(response.data, "response data");
+      console.log(response, "response");
+      
+      return response.data;
+    } else {
+      console.log(`Error: ${response.status} ${response.statusText}`);
+    }
 
+    return response;
+  } catch (err) {
+    console.log(err.message, "something went wrong");
+    console.log(err, "error object");
+  }
+};
 //* take code and return response token
 const getCodeAccessLinkedin = async (code) => {
   try {
@@ -25,6 +65,7 @@ const getCodeAccessLinkedin = async (code) => {
         },
       }
     );
+    getTokenAccessUserDataLinkedin(token.data.access_token);
     console.log("Take Code return Token in api:", token.data);
     return { token: token.data.access_token };
   } catch (err) {
