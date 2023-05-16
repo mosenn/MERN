@@ -1,28 +1,31 @@
 const axios = require("axios");
 
-//* chat gpt code for function take user data
+//* code for function take user data
 const getTokenAccessUserDataLinkedin = async (token) => {
-  try {
+  console.log("TOKEN IN CHATGPT FUNCTION :", token); //* have token here
+  if (token) {
+    console.log("true token here");
+     try {
     const response = await axios.get("https://api.linkedin.com/v2/me", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
     if (response.status === 200) {
       console.log(response.data, "response data");
-      console.log(response, "response");
-
       return response.data;
     } else {
       console.log(
         `Error: ${response.status} ${response.statusText} ${response.message}`
       );
     }
-
+    console.log(response);
     return response;
   } catch (err) {
-    console.log(err.message, "something went wrong");
+    console.error(err.response.data, "something went wrong");
     // console.log(err, "error object");
   }
+  }
+ 
 };
 //* take code and return response token
 const getCodeAccessLinkedin = async (code) => {
@@ -39,6 +42,7 @@ const getCodeAccessLinkedin = async (code) => {
       "https://www.linkedin.com/oauth/v2/accessToken",
       paramas,
       {
+        // method: "post",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
@@ -53,4 +57,4 @@ const getCodeAccessLinkedin = async (code) => {
   }
 };
 
-module.exports = { getCodeAccessLinkedin };
+module.exports = { getCodeAccessLinkedin, getTokenAccessUserDataLinkedin };

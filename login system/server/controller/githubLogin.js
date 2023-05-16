@@ -6,7 +6,8 @@ const AccessTokenGithub = async (req, res) => {
     console.log("code : ", code);
     const token = await getAccessToken(code);
     console.log("token in route getAccessToken :", token);
-    //* Store the token in the session
+
+    //* Store the token
     return res.json({ token });
   } catch (err) {
     console.log(err);
