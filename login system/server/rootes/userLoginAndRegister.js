@@ -1,7 +1,10 @@
 const loginRegisterRouter = require("express").Router();
 const { register, login } = require("../controller/registerAndLoginUser");
 const googleRecapcha = require("../controller/googelRecapcha");
-const { accessTokenLinkedin } = require("../controller/linkedinLogin");
+const {
+  accessTokenLinkedin,
+  userDataLinkedin,
+} = require("../controller/linkedinLogin");
 const multer = require("multer");
 
 const upload = multer({
@@ -18,4 +21,6 @@ loginRegisterRouter.post("/login", login);
 loginRegisterRouter.post("/recapcha", googleRecapcha);
 //*linkedin
 loginRegisterRouter.post("/accessTokenLinkedin", accessTokenLinkedin);
+//*get user data linkedin
+loginRegisterRouter.get("/userLinkedin", userDataLinkedin);
 module.exports = loginRegisterRouter;

@@ -1,31 +1,33 @@
 const axios = require("axios");
+const { userDataLinkedin } = require("../controller/linkedinLogin");
 
 //* code for function take user data
 const getTokenAccessUserDataLinkedin = async (token) => {
   console.log("TOKEN IN CHATGPT FUNCTION :", token); //* have token here
-  if (token) {
-    console.log("true token here");
-    try {
-      const response = await axios.get("https://api.linkedin.com/v2/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      if (response.status === 200) {
-        console.log(response.data, "response data");
-        return response.data;
-      } else {
-        console.log(
-          `Error: ${response.status} ${response.statusText} ${response.message}`
-        );
+  console.log("true token here");
+  try {
+    // https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))
+    // https://api.linkedin.com/v2/me
+    const response = await axios.get(
+      "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))",
+      {
+        headers: { Authorization: `Bearer ${token}` },
       }
-      console.log(response);
-      return response;
-    } catch (err) {
-      console.error(err.response.data, "something went wrong");
-      // console.log(err, "error object");
+    );
+
+    if (response.status === 200) {
+      //* two here call model.create for save token to mongodb
+      console.log(response.data, "response data");
+      return response.data;
     }
+  } catch (err) {
+    return err?.response?.data;
+    console.error(err?.response?.data, "something went wrong");
+    // return err?.response?.data;
   }
 };
+
 //* take code and return response token
 const getCodeAccessLinkedin = async (code) => {
   try {
@@ -47,7 +49,9 @@ const getCodeAccessLinkedin = async (code) => {
         },
       }
     );
+    //* first here call model.create for save token to mongodb
     getTokenAccessUserDataLinkedin(token.data.access_token);
+
     console.log("Take Code return Token in api:", token.data);
     return { token: token.data.access_token };
   } catch (err) {
