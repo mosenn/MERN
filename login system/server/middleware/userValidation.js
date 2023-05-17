@@ -24,7 +24,7 @@ const validUser = yup.object().shape({
     .oneOf([yup.ref("password"), null], "password do not match")
     .trim()
     .required("repeat password"),
-  pic: yup.string(),
+  pic: yup.string().required("upload image or chose avatar"),
 });
 
 module.exports = validUser;

@@ -1,6 +1,6 @@
 const axios = require("axios");
-const clinet_id = process.env.CLIENT_ID;
-const clinet_secret = process.env.CLIENT_SECRET;
+const clinet_id = process.env.CLIENT_ID_GITHUB;
+const clinet_secret = process.env.SECRET_GITHUB;
 async function getAccessToken(code) {
   try {
     const access_token_url = "https://github.com/login/oauth/access_token";

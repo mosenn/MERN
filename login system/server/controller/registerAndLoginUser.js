@@ -1,23 +1,25 @@
 const userModel = require("../model/user");
 const { compare } = require("../middleware/bcrypt");
-const multer = require("multer");
 
 const register = async (req, res) => {
   const { email, password, confirmPassword, pic } = req.body;
   // console.log(req.file, "req.file in register");
   try {
     //*validation register
-    await userModel.userValidation(req.body);
+    const validate = await userModel.userValidation(req.body);
     //*create user(register)
+    // if (validate) {
+    // }
     const registerUser = await userModel.create({
       email,
       password,
       confirmPassword,
       pic,
     });
+    return res.status(201).send(registerUser);
+
     // const readStream = fs.createReadStream(req.file.path);
     // readStream.pipe(res);
-    return res.status(201).send(registerUser);
   } catch (err) {
     // console.log(err.keyPattern, "errors");
     // console.log(err.errors, "errors");
