@@ -42,6 +42,16 @@ serach for how can get email or image linkedin user profile and show to website 
 5 - take data in clinet with route 
 //*
 
+//* found solotion 
+: note : all api linkedin for sigin not login all user can just one time to sigin with linkedin
+1 - create model for take token 
+2 - import model in api file 
+3 - call model.create in getTokenAccessUserDataLinkedin or getCodeAccessLinkedin
+4 - take token from mongodb in controller in the userDataLinkedin function 
+5 - pass token to  function getTokenAccessUserDataLinkedin for get user data 
+
+//* 
+
 
 deploy clinet and server in vercel
 set cors origin address client after deploy
