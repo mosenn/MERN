@@ -22,5 +22,5 @@ loginRegisterRouter.post("/recapcha", googleRecapcha);
 //*linkedin
 loginRegisterRouter.post("/accessTokenLinkedin", accessTokenLinkedin);
 //*get user data linkedin
-loginRegisterRouter.get("/userLinkedin", userDataLinkedin);
+loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
 module.exports = loginRegisterRouter;

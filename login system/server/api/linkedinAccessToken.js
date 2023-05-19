@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { userDataLinkedin } = require("../controller/linkedinLogin");
+const linkdinModel = require("../model/linkedin");
 
 //* code for function take user data
 const getTokenAccessUserDataLinkedin = async (token) => {
@@ -18,6 +19,8 @@ const getTokenAccessUserDataLinkedin = async (token) => {
 
     if (response.status === 200) {
       //* two here call model.create for save token to mongodb
+      await linkdinModel.create({ token: token.data.access_token });
+
       console.log(response.data, "response data");
       return response.data;
     }
@@ -27,7 +30,6 @@ const getTokenAccessUserDataLinkedin = async (token) => {
     // return err?.response?.data;
   }
 };
-
 //* take code and return response token
 const getCodeAccessLinkedin = async (code) => {
   try {
