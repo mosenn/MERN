@@ -3,6 +3,7 @@ const { compare } = require("../middleware/bcrypt");
 
 const register = async (req, res) => {
   const { email, password, confirmPassword, pic } = req.body;
+  const messageError = [];
   // console.log(req.file, "req.file in register");
   try {
     //*validation register
@@ -10,6 +11,10 @@ const register = async (req, res) => {
     //*create user(register)
     // if (validate) {
     // }
+    const checkEmail = await userModel.findOne({ email: req.body.email });
+    if (checkEmail) {
+      throw messageError.push("Email already exists");
+    }
     const registerUser = await userModel.create({
       email,
       password,
@@ -17,18 +22,21 @@ const register = async (req, res) => {
       pic,
     });
     return res.status(201).send(registerUser);
-
-    // const readStream = fs.createReadStream(req.file.path);
-    // readStream.pipe(res);
   } catch (err) {
-    // console.log(err.keyPattern, "errors");
+    console.log(err, "err");
+    // console.log(err.keyPattern, "err.keyPattern");
     // console.log(err.errors, "errors");
     //*error for same email(unique email in schema)
-    if (err.keyPattern) {
-      return res
-        .status(400)
-        .send([err.errors, "email has exist chose another email"]);
+    if (messageError.length > 0) {
+      console.log(err.errors, "in if messageError");
+      return res.status(400).send([err.errors, messageError[0]]);
     }
+    // if (err.keyPattern) {
+    //   return res
+    //     .status(400)
+    //     .send([err.errors, "email has exist chose another email"]);
+    // }
+    console.log(err.errors);
     return res.status(400).send(err.errors);
   }
 };
