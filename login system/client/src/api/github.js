@@ -2,7 +2,8 @@ import axios from "axios";
 export const GetToken = async (code, setToken) => {
   try {
     const response = await axios.get(
-      `https://mern-one-sigma.vercel.app/acess?code=${code}`
+      `https://mern-pmfsmihoj-rizemizeeee-gmailcom.vercel.app/getAccessToken?code=${code}`
+      
     );
     const token = await response.data.token;
     console.log(token, "this token from getToken at _api.js");
