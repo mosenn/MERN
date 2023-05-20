@@ -5,6 +5,7 @@ import Home from "./component/Home";
 import GithubAccess from "./component/GithubAccess";
 import UserProfile from "./component/UserProfile";
 import LinkedinAccess from "./component/LinkedinAccess";
+import GoogleAcess from "./component/GoogleAcess";
 function App() {
   return (
     <section className="App">
@@ -15,6 +16,7 @@ function App() {
           <Route path={"/profile"} element={<UserProfile />} />
           <Route path="/acess" element={<GithubAccess />} />
           <Route path="/accessLinkedin" element={<LinkedinAccess />} />
+          <Route path="/accessGoogle" element={<GoogleAcess />} />
         </Routes>
       </BrowserRouter>
     </section>

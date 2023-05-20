@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div>
-      <Link to="/login">go for login {`->`}</Link>
+      <Link to={"/login"}>go for login {"->"}</Link>
     </div>
   );
 };
