@@ -16,10 +16,12 @@ const GithubAccess = () => {
   const getCodeinUrl = () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
+    console.log("hi code", code);
     handleGithubLogin(code);
   };
 
   const setUserDataToLocal = (token) => {
+    console.log("buy");
     console.log(token, "in getuserdata");
     localStorage.setItem("userData", JSON.stringify(getUserData));
     setUserDataGithub(getUserData);
@@ -48,7 +50,7 @@ const GithubAccess = () => {
   useEffect(() => {
     getCodeinUrl();
     userDataGithub && localtoken ? navigate("/profile") : controlLogin();
-  });
+  },[]);
 
   return <div>{rejectLogin ? <RejectLogin /> : <Loading />}</div>;
 };

@@ -2,8 +2,7 @@ import axios from "axios";
 export const GetToken = async (code, setToken) => {
   try {
     const response = await axios.get(
-      `https://mern-pmfsmihoj-rizemizeeee-gmailcom.vercel.app/getAccessToken?code=${code}`
-      
+      `https://loginsystemtest.vercel.app/acess/getAccessToken?code=${code}`
     );
     const token = await response.data.token;
     console.log(token, "this token from getToken at _api.js");

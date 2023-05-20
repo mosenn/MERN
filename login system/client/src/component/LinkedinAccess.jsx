@@ -3,8 +3,9 @@ import { takeCodeAndPostToServerLinkedin } from "../api/linkedin";
 
 const LinkedinAccess = () => {
   const getLinkedinCodeinParamas = async () => {
-    const param =  new URLSearchParams(window.location.search);
-    const code =  param.get("code");
+    const param = new URLSearchParams(window.location.search);
+    const code = param.get("code");
+
     if (code) {
       const data = await takeCodeAndPostToServerLinkedin(code);
       console.log(data);
