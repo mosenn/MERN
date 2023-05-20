@@ -7,9 +7,9 @@ const linkdinModel = require("../model/linkedin");
 let likedinToken;
 const accessTokenLinkedin = async (req, res, next) => {
   try {
-    code = req.query.code;
-    console.log("CODE in accessToken Linkedin Controller:", code);
-    likedinToken = await getCodeAccessLinkedin(code);
+    const code = req.query.code;
+    // console.log("CODE in accessToken Linkedin Controller:", code);
+    const likedinToken = await getCodeAccessLinkedin(code);
 
     return res.status(200).json(likedinToken);
   } catch (err) {
@@ -20,25 +20,29 @@ const accessTokenLinkedin = async (req, res, next) => {
 
 const userDataLinkedin = async (req, res, next) => {
   try {
-    // console.log(code, "CODE in userDataLinkedin function");
     // //*Todo findbyOne Token in mongodb but need first token for this .
-    // const data = await getCodeAccessLinkedin(code);
-    // // console.log(linkedinToken);
+    //*find token in db same in token is response
     const tokenInMongodb = await linkdinModel.findOne({
       token: likedinToken.token,
     });
-    // console.log(tokenInMongodb, "tokenInMongodb");
-    // const Userdata = await getTokenAccessUserDataLinkedin(tokenInMongodb.token);
+    if (tokenInMongodb) {
+      console.log("true token in mongodb");
+    }
+    //* if status 200 in api most be have both tokens
     console.log("linkedin token in userdataLinkeidn func", likedinToken.token);
     console.log("TOKEN COMING FROM MONGODB", tokenInMongodb.token);
+    //* if status 200 in api most be have both tokens
+    // console.log(tokenInMongodb, "tokenInMongodb");
+    //* pass mongodb token to this function for get user data
+    // const Userdata = await getTokenAccessUserDataLinkedin(tokenInMongodb.token);
+    const Userdata = await getTokenAccessUserDataLinkedin(likedinToken.token);
+
+    console.log("USERDATA IN FUNC userDataLinkedin", Userdata);
     // return res.status(200).send(tokenInMongodb);
-    return res.status(200).send(tokenInMongodb.token);
+    return res.status(200).send(Userdata);
   } catch (err) {
     console.log(err.message);
-    return res.status(400).send(err.message);
+    return res.status(404).send(err.message);
   }
 };
 module.exports = { accessTokenLinkedin, userDataLinkedin };
-
-//this token give me result in post man most be set to function getTokenAccessUserDataLinkedin()
-// "AQU8WE-bPPEIiLlS0y6jdTk_ogakc_ueVUrdEz6tO88Zuo2R5Zag66_sra02Ekf8MoeCevzhV2PvaBysAgwCQZPvK7U3bdzOBsOG9CfeNmdEg5CFpARk7Dt5i81JVYrUvxVZ8jCIBfhnHiTp_j00JjUVRTsRE_6W0lH4Z_BGHiNkE__ivz2w6wgjm2cZS58BtfE43Oys-xdKhF9VJ4U_M423CNRXqyG3DU9PsQeWtTRURMjAROV8m-jcyspJDMiKK2czj7uH485nuLoqeLAlWRV2iUhZLk4NdC8iXo3YzdhJHTSCXg3fJFAwaYklY12kE-XzLyyP3ysxwoAJyOL65J1x3KBr-g"

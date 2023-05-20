@@ -1,5 +1,5 @@
 const axios = require("axios");
-console.log(process.env.SECRET_KEY_RECAPCHA)
+// console.log(process.env.SECRET_KEY_RECAPCHA)
 const googleRecapcha = async (req, res) => {
   try {
     const token = await req.body.googleRecapchaToken;

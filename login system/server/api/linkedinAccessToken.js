@@ -1,61 +1,50 @@
 const axios = require("axios");
-const { userDataLinkedin } = require("../controller/linkedinLogin");
 const linkdinModel = require("../model/linkedin");
 
-//* code for function take user data
-const getTokenAccessUserDataLinkedin = async (token) => {
-  console.log("TOKEN IN CHATGPT FUNCTION :", token); //* have token here
+const getTokenAccessUserDataLinkedin = async (response) => {
+  const accessToken = response.data.access_token;
+  console.log("Access token:", accessToken);
 
-  console.log("true token here");
   try {
-    // https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))
-    // https://api.linkedin.com/v2/me
-    const response = await axios.get(
-      "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-    if (response.status === 200) {
-      //* two here call model.create for save token to mongodb
+    if (userDataResponse.status === 200) {
       await linkdinModel.create({ token: token.data.access_token });
-
-      console.log(response.data, "response data");
-      return response.data;
+      console.log(userDataResponse.data, "response data");
+      return userDataResponse.data;
     }
   } catch (err) {
-    return err?.response?.data;
     console.error(err?.response?.data, "something went wrong");
-    // return err?.response?.data;
+    return err?.response?.data;
   }
 };
-//* take code and return response token
 const getCodeAccessLinkedin = async (code) => {
   try {
-    // console.log(code, "code in accesslinkedin in middleware");
-    const paramas = new URLSearchParams({
+    const params = new URLSearchParams({
       grant_type: "authorization_code",
       code: code,
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
       redirect_uri: "http://127.0.0.1:5173/accessLinkedin",
     });
-    const token = await axios.post(
+    const response = await axios.post(
       "https://www.linkedin.com/oauth/v2/accessToken",
-      paramas,
+      params,
       {
-        // method: "post",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
-    //* first here call model.create for save token to mongodb
-    getTokenAccessUserDataLinkedin(token.data.access_token);
 
-    console.log("Take Code return Token in api:", token.data);
-    return { token: token.data.access_token };
+    const userData = await getTokenAccessUserDataLinkedin(response);
+    console.log("LinkedIn user data:", userData);
+
+    return response.data;
   } catch (err) {
     console.log(err.response.data.error_description);
     return { error: err.response.data.error_description };
