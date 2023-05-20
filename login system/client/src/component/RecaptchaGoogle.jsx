@@ -4,7 +4,7 @@ const RecaptchaGoogle = ({ refRecaptcha }) => {
   return (
     <div>
       <ReCAPTCHA
-        sitekey="6LfgVQcmAAAAAAuo3QF9_6woJD-aVOkTRz86FZWu"
+        sitekey="6Lf0KCUmAAAAAEd4nE3jN-P3q6kk604hqXPvJnlZ"
         ref={refRecaptcha}
       />
     </div>
