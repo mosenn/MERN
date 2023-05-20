@@ -23,7 +23,7 @@ const Login = () => {
       </Link>
 
       <Link
-        to={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=789w0zpn0e11a6&redirect_uri=http://127.0.0.1:5173/accessLinkedin&state=foobar&scope=r_liteprofile%20r_emailaddress%20w_member_social`}
+        to={`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=789w0zpn0e11a6&redirect_uri="https://mern-dwaqz3m7g-rizemizeeee-gmailcom.vercel.app/accessLinkedin&state=foobar&scope=r_liteprofile%20r_emailaddress%20w_member_social`}
       >
         Login with linkedin
       </Link>
