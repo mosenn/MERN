@@ -16,15 +16,21 @@ const UserRegister = () => {
       navigate("/profile");
     }
     if (!checkRecapchaGoogle?.data?.success) {
-      setMessageErrorRecapchaGoogle("accpet recapcha, if dont see refresh page");
+      setMessageErrorRecapchaGoogle(
+        "accpet recapcha, if dont see refresh page"
+      );
     }
   }, [dataUserRegister, userRegisterError]);
-
+  const handlelog = () => {
+    console.log(userRegisterError);
+  };
   return (
     <div>
+      <button onClick={handlelog}>log</button>
       {messageErrorRecapchaGoogle}
       {userRegisterError.length > 0 &&
         userRegisterError?.map((items, index) => {
+          console.log(items, "errors in user register clinet");
           return (
             <div key={index}>
               <p>{items}</p>
