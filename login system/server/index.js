@@ -19,7 +19,7 @@ app.use(cors());
 //*data base connection
 // connecetToDb();
 
-// mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", false);
 
 const connecetToDb = async () => {
   try {
@@ -31,12 +31,13 @@ const connecetToDb = async () => {
     process.exit(1);
   }
 };
-connecetToDb()
-// mongoose.set("strictQuery", false);
+connecetToDb();
+
 // //*test
-
-
-const port = process.env.PORT || 3002;
+app.get("/", (req, res) => {
+  return res.status(200).send("this server for login system try to deploy");
+});
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`local server is runing at ${port}`);
 });
