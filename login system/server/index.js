@@ -2,19 +2,19 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
-const session = require("express-session");
+// const session = require("express-session");
 const connecetToDb = require("./connection/db");
 const bodyParser = require("body-parser");
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  })
-);
+app.use(bodyParser.json({ limit: "4mb" }));
+app.use(bodyParser.urlencoded({ limit: "4mb", extended: true }));
+// app.use(
+//   session({
+//     secret: "your-secret-key",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true },
+//   })
+// );
 
 app.use(express.urlencoded({ extended: false }));
 app.use(
