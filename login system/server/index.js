@@ -1,9 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-// const mongoose = require("mongoose");
-// const { static } = require("./path/path");
 const app = express();
+const cors = require("cors");
+require("dotenv").config();
+// const session = require("express-session");
+const connecetToDb = require("./connection/db");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json({ limit: "4mb" }));
+app.use(bodyParser.urlencoded({ limit: "4mb", extended: true }));
 
 app.use(bodyParser.json());
 // cors
@@ -11,7 +14,7 @@ app.use(cors());
 // const carRoute = require("./router/car");
 // const page404 = require("./router/404");
 app.get("/", (req, res) => {
-  return res.status(200).send("hellow this test for vercel");
+  return res.status(200).send("bodyParser.json({ limit: 4mb");
 });
 // routes
 // app.use("/cars", carRoute);
