@@ -35,7 +35,7 @@ app.use(cors());
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect(process.env.DB_URL)
+  .connect("mongodb+srv://mnazgul:qse8303893@cluster0.zutazhf.mongodb.net/loginSystem")
   .then(() => {
     console.log(`db is connect at ${connect.connection.host}`);
   })
