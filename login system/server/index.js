@@ -1,39 +1,41 @@
 const express = require("express");
-const app = express();
+const bodyParser = require("body-parser");
 const cors = require("cors");
-require("dotenv").config();
-// const session = require("express-session");
-const connecetToDb = require("./connection/db");
-// const bodyParser = require("body-parser");
-// app.use(bodyParser.json({ limit: "4mb" }));
-// app.use(bodyParser.urlencoded({ limit: "4mb", extended: true }));
-// app.use(
-//   session({
-//     secret: "your-secret-key",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: true },
-//   })
-// );
+// const mongoose = require("mongoose");
+// const { static } = require("./path/path");
+const app = express();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(
-  cors()
-  //*add orgin after deploy
-);
-//*data base connection
-connecetToDb();
-
-app.use(express.json());
+app.use(bodyParser.json());
+// cors
+app.use(cors());
+// const carRoute = require("./router/car");
+// const page404 = require("./router/404");
 app.get("/", (req, res) => {
-  return res
-    .status(200)
-    .send("this Test Message for Vercel Deploy in login system server");
+  return res.status(200).send("hellow this test for vercel");
 });
-// app.use("/", require("./rootes/githubAcessToken"));
-// app.use("/", require("./rootes/userLoginAndRegister"));
+// routes
+// app.use("/cars", carRoute);
+// app.use(page404);
 
-const port = 3000 || process.env.PORT;
+// mongoose.set("strictQuery", false);
+
+// mongoose
+//   .connect(
+//     "mongodb+srv://mnazgul:qse8313656@cluster0.zutazhf.mongodb.net/carDatabase"
+//   )
+//   .then(() => {
+//     console.log("data base is conect");
+//   })
+//   .catch((err) => console.log("someting wrong", err));
+
+// acesse
+// static(app);
+
+// view ejs
+// app.set("view engine", "ejs");
+// app.set("views", "view");
+
+const port = process.env.PORT || 3002;
 app.listen(port, () => {
-  console.log(`server is runing at ${port}`);
+  console.log(`local server is runing at ${port}`);
 });
