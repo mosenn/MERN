@@ -52,6 +52,19 @@ serach for how can get email or image linkedin user profile and show to website 
 
 //* 
 
+//*linkedin
+clinet > api > linkedin.js > add server address this route server/accessTokenLinkedin?code
+
+client > login.jsx => add redirect address (client/accessLinkedin) //https://loginsystemtest.vercel.app/accessGithub
+server  > api > linkedinAccessToken > add redirect address (client/accessLinkedin) //https://loginsystemtest.vercel.app/accessGithub
+
+//*github
+clinet > api > github.js > add server route for take code   server/AccessTokenGithub
+
+//*recaptcha google
+clinet > api > rechpcha google add server address main 
+localhost:3000/recapcha
+newaddress/recapcha
 
 deploy clinet and server in vercel
 set cors origin address client after deploy
