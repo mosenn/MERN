@@ -4,9 +4,9 @@ const cors = require("cors");
 require("dotenv").config();
 // const session = require("express-session");
 const connecetToDb = require("./connection/db");
-const bodyParser = require("body-parser");
-app.use(bodyParser.json({ limit: "4mb" }));
-app.use(bodyParser.urlencoded({ limit: "4mb", extended: true }));
+// const bodyParser = require("body-parser");
+// app.use(bodyParser.json({ limit: "4mb" }));
+// app.use(bodyParser.urlencoded({ limit: "4mb", extended: true }));
 // app.use(
 //   session({
 //     secret: "your-secret-key",
