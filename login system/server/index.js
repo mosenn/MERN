@@ -33,7 +33,7 @@ const connecetToDb = async () => {
 };
 connecetToDb();
 
-// //*test
+//*testing
 app.get("/", (req, res) => {
   return res.status(200).send("this server for login system try to deploy");
 });
