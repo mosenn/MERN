@@ -25,8 +25,13 @@ app.use(
 connecetToDb();
 
 app.use(express.json());
-app.use("/", require("./rootes/githubAcessToken"));
-app.use("/", require("./rootes/userLoginAndRegister"));
+app.get("/", (req, res) => {
+  return res
+    .status(200)
+    .send("this Test Message for Vercel Deploy in login system server");
+});
+// app.use("/", require("./rootes/githubAcessToken"));
+// app.use("/", require("./rootes/userLoginAndRegister"));
 
 const port = 3000 || process.env.PORT;
 app.listen(port, () => {
