@@ -7,7 +7,7 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   // sort perfect working with number - id is number in mongodb
   const data = await carsModel.find().sort({ id: 1 });
-  res.send(data);
+  res.status(200).send("here cars");
 });
 
 router.get("/:id", async (req, res) => {
