@@ -50,7 +50,7 @@ const GithubAccess = () => {
   useEffect(() => {
     getCodeinUrl();
     userDataGithub && localtoken ? navigate("/profile") : controlLogin();
-  },[]);
+  });
 
   return <div>{rejectLogin ? <RejectLogin /> : <Loading />}</div>;
 };
