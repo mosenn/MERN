@@ -33,7 +33,7 @@ app.use(cors());
 // };
 
 mongoose.set("strictQuery", false);
-
+//*test
 mongoose
   .connect("mongodb+srv://mnazgul:qse8303893@cluster0.zutazhf.mongodb.net/loginSystem")
   .then(() => {
