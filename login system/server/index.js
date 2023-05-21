@@ -23,9 +23,11 @@ mongoose.set("strictQuery", false);
 
 const connecetToDb = async () => {
   try {
-    const connect = await mongoose.connect(process.env.DB_URL);
+    const connect = await mongoose.connect(
+      "mongodb+srv://mnazgul:qse8303893@cluster0.zutazhf.mongodb.net/loginSystem"
+    );
 
-    console.log(`db is connect at ${connect.connection.host}`);
+    console.log(`db is connect  `);
   } catch (err) {
     console.log(err.message, "data base cant connect");
     process.exit(1);
