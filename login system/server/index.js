@@ -27,10 +27,7 @@ connecetToDb();
 app.use(express.json());
 app.use("/", require("./rootes/githubAcessToken"));
 app.use("/", require("./rootes/userLoginAndRegister"));
-//*for test depoly
-app.get("/", (req, res) => {
-  return res.send("Login System");
-});
+
 const port = 3000 || process.env.PORT;
 app.listen(port, () => {
   console.log(`server is runing at ${port}`);
