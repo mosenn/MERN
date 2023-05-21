@@ -7,8 +7,8 @@ const connecetToDb = require("./connection/db");
 const bodyParser = require("body-parser");
 // app.use(bodyParser.json({ limit: "50mb" }));
 // app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-app.use(bodyParser.json({ limit: "1mb" }));
-app.use(bodyParser.urlencoded({ limit: "1mb", extended: true }));
+app.use(bodyParser.json({ limit: "4.5mb" }));
+app.use(bodyParser.urlencoded({ limit: "4.5mb", extended: true }));
 
 app.use(bodyParser.json());
 // cors
@@ -16,7 +16,7 @@ app.use(cors());
 // const carRoute = require("./router/car");
 // const page404 = require("./router/404");
 app.get("/", (req, res) => {
-  return res.status(200).send("bodyParser.json({ limit: 1mb");
+  return res.status(200).send("bodyParser.json({ limit: 4.5mb");
 });
 // routes
 // app.use("/cars", carRoute);
