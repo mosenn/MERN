@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
+const mongoose = require("mongoose");
 // const session = require("express-session");
 
-const connecetToDb = require("./connection/db");
+// const connecetToDb = require("./connection/db");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
@@ -16,7 +17,22 @@ app.use(cors());
 // const page404 = require("./router/404");
 
 //*data base connection
-connecetToDb();
+// connecetToDb();
+
+mongoose.set("strictQuery", false);
+
+const connecetToDb = async () => {
+  try {
+    const connect = await mongoose.connect(process.env.DB_URL);
+
+    console.log(`db is connect at ${connect.connection.host}`);
+  } catch (err) {
+    console.log(err.message, "data base cant connect");
+    process.exit(1);
+  }
+};
+
+module.exports = connecetToDb;
 
 app.get("/", (req, res) => {
   return res.status(200).send("add connect to db");
@@ -24,9 +40,6 @@ app.get("/", (req, res) => {
 // routes
 // app.use("/cars", carRoute);
 // app.use(page404);
-
-
-
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
