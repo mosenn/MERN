@@ -11,6 +11,7 @@ const connecetToDb = async () => {
 
     console.log(`db is connect at ${connect.connection.host}`);
   } catch (err) {
+    console.log(err ,'ERROR IS GENERATE BUY ME DB CANT CONNECT');
     console.log(err.message, "data base cant connect");
     process.exit(1);
   }
