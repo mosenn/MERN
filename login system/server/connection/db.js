@@ -1,5 +1,5 @@
-const dotEnv = require("dotenv");
-dotEnv.config({ path: "./config.env" });
+// const dotEnv = require("dotenv");
+// dotEnv.config({ path: "./config.env" });
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
