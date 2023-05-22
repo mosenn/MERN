@@ -1,5 +1,7 @@
 const axios = require("axios");
 const clinet_id = process.env.CLIENT_ID_GITHUB;
+// CLIENT_ID_GITHUB 
+// SECRET_GITHUB
 const clinet_secret = process.env.SECRET_GITHUB;
 async function getAccessToken(code) {
   console.log(code , 'code in githubacessToken')
