@@ -5,12 +5,25 @@ const {
   accessTokenLinkedin,
   userDataLinkedin,
 } = require("../controller/linkedinLogin");
+// const multer = require("multer");
 const multer = require("multer");
+const path = require("path");
 
-const upload = multer({
-  dest: "uploads/",
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "public", "uploads")); // Change the destination directory here
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
-
+// const upload = multer({
+//   dest: "uploads/",
+// });
+const upload = multer({ storage });
 //
 //*register
 loginRegisterRouter.post("/register", upload.single("image"), register);
