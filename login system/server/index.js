@@ -2,9 +2,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-// const dotEnv = require("dotenv");
-// // const session = require("express-session");
-// dotEnv.config({ path: "./config.env" });
 require("dotenv").config({ path: "./config.env" });
 const connecetToDb = require("./connection/db");
 const bodyParser = require("body-parser");
@@ -21,8 +18,12 @@ app.use(cors());
 connecetToDb();
 
 app.get("/", (req, res) => {
-  return res.status(200).send("this server for login system try to deploy");
+  return res.status(200).send("server is success depoly on vercel");
 });
+
+app.use("/", require("./rootes/githubAcessToken"));
+app.use("/", require("./rootes/userLoginAndRegister"));
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`local server is runing at ${port}`);
