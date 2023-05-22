@@ -1,11 +1,13 @@
+const dotEnv = require("dotenv");
+dotEnv.config({ path: "./config.env" });
 const mongoose = require("mongoose");
-
 mongoose.set("strictQuery", false);
 
 const connecetToDb = async () => {
   try {
-
-    const connect = await mongoose.connect(process.env.DB_URL);
+    const connect = await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/loginSystem`
+    );
 
     console.log(`db is connect at ${connect.connection.host}`);
   } catch (err) {
