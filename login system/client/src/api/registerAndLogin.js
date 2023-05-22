@@ -8,7 +8,7 @@ export const registerUser = async (
   const { email, password, confirmPassword, pic } = registerValue;
   try {
     const userData = await axios.post(
-      "http://localhost:3000/register",
+      "https://serverloginsystem.vercel.app/register",
       {
         email,
         password,

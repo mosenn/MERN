@@ -7,8 +7,8 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
     const response = await axios.post(
       //*set route server for get code
       // accessTokenLinkedin
-      `server/accessTokenLinkedin?code=${code}`
-
+      // `server/accessTokenLinkedin?code=${code}`
+      `https://serverloginsystem.vercel.app/accessTokenLinkedin?code=${code}`
       // {
       //   method: "post",
       // }
