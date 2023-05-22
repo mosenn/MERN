@@ -17,9 +17,15 @@ app.use(cors());
 //*data base connection
 connecetToDb();
 
-app.get("/", (req, res) => {
-  return res.status(200).send("server is success depoly on vercel");
-});
+// app.get("/", (req, res) => {
+//   return res.status(200).send("server is success depoly on vercel");
+// });
+
+// const githubAcessRoute = require("./rootes/githubAcessToken");
+// const users = require("./rootes/userLoginAndRegister");
+
+// app.use("/github", githubAcessRoute);
+// app.use("/users", users);
 
 app.use("/", require("./rootes/githubAcessToken"));
 app.use("/", require("./rootes/userLoginAndRegister"));
