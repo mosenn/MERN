@@ -21,13 +21,13 @@ connecetToDb();
 //   return res.status(200).send("server is success depoly on vercel");
 // });
 
-const githubAcessRoute = require("./rootes/githubAcessToken");
-const users = require("./rootes/userLoginAndRegister");
+// const githubAcessRoute = require("./rootes/githubAcessToken");
+// const users = require("./rootes/userLoginAndRegister");
 
-app.use("/github", githubAcessRoute);
-app.use("/users", users);
+// app.use("/github", githubAcessRoute);
+// app.use("/users", users);
 
-// app.use("/", require("./rootes/githubAcessToken"));
+app.use("/", require("./rootes/githubAcessToken"));
 // app.use("/", require("./rootes/userLoginAndRegister"));
 
 const port = process.env.PORT || 3000;
