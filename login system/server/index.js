@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
-const dotEnv = require("dotenv");
-// const session = require("express-session");
-dotEnv.config({ path: "./config.env" });
+// const dotEnv = require("dotenv");
+// // const session = require("express-session");
+// dotEnv.config({ path: "./config.env" });
+require("dotenv").config({ path: "./config.env" });
 const connecetToDb = require("./connection/db");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "10mb" }));
