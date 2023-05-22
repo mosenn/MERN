@@ -30,7 +30,8 @@ const getCodeAccessLinkedin = async (code) => {
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
       redirect_uri:
-        "clinet_address/accessLinkedin",
+        // "clinet_address/accessLinkedin",
+        "https://loginsystemtest.vercel.app/accessLinkedin",
     });
     const response = await axios.post(
       "https://www.linkedin.com/oauth/v2/accessToken",
