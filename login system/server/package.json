@@ -4,8 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
-  },
+    "prep": "npm install next react react-dom eslint rimraf -g && yarn add --dev eslint",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "format": "prettier --ignore-path .prettierignore --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "lint": "eslint --ignore-path .eslintignore . --ext ts --ext tsx --ext js --ext jsx",
+    "lint:fix": "yarn format & next lint --dir src",
+    "clean-cache": "rimraf .next",
+    "rimraf": "./node_modules/rimraf/bin.js",
+    "clean": "yarn prep && rimraf node_modules"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {
