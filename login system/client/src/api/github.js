@@ -4,7 +4,7 @@ export const GetToken = async (code, setToken) => {
     const response = await axios.get(
       //*add server address for send code 
       // server/AccessTokenGithub
-      `https://loginsystemtest.vercel.app/acess/getAccessToken?code=${code}`
+      `https://serverloginsystem.vercel.app/getAccessToken?code=${code}`
     );
     const token = await response.data.token;
     console.log(token, "this token from getToken at _api.js");
