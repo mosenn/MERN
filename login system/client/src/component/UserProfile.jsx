@@ -67,13 +67,13 @@ const UserProfile = () => {
       ) : (
         ""
       )}
-      {userData.pic && (
+      {userData?.pic && (
         <div>
           <figure>
-            <img src={userData.pic} alt="prfoile_image" />
+            <img src={userData?.pic} alt="prfoile_image" />
           </figure>
-          <p>{userData.email}</p>
-          <p>{userData.password}</p>
+          <p>{userData?.email}</p>
+          <p>{userData?.password}</p>
         </div>
       )}
     </div>
