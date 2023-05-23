@@ -55,7 +55,7 @@ const UserProfile = () => {
           <figure>
             <img
               src={GetuserDataLocal?.avatar_url}
-              style={{ borderRadius: "50%", width: "150px", height: "150px" }}
+              style={{ borderRadius: "50%", width: "80px", height: "80px" }}
               alt=""
             />
           </figure>
@@ -70,7 +70,11 @@ const UserProfile = () => {
       {userData?.pic && (
         <div>
           <figure>
-            <img src={userData?.pic} alt="prfoile_image" />
+            <img
+              src={userData?.pic}
+              alt="prfoile_image"
+              style={{ borderRadius: "50%", width: "80px", height: "80px" }}
+            />
           </figure>
           <p>{userData?.email}</p>
           <p>{userData?.password}</p>
