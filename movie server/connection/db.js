@@ -3,7 +3,7 @@ mongoose.set("strictQuery", false);
 const connectingToDatabase = async () => {
   try {
     const connect = await mongoose.connect(
-      "mongodb+srv://mnazgul:qse8303893@cluster0.zutazhf.mongodb.net/movies"
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/movies`
     );
     console.log(`data base is connect at ${connect.connection.host}`);
   } catch (err) {
