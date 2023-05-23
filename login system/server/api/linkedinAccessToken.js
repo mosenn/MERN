@@ -2,11 +2,10 @@ const axios = require("axios");
 const linkdinModel = require("../model/linkedin");
 
 const getTokenAccessUserDataLinkedin = async (response) => {
-  const accessToken = response.data.access_token;
-  console.log("response in api:", response);
-  console.log("Access token in api:", accessToken);
-
   try {
+    const accessToken = response.data.access_token;
+    console.log("response in api:", response);
+    console.log("Access token in api:", accessToken);
     const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -14,13 +13,13 @@ const getTokenAccessUserDataLinkedin = async (response) => {
     });
 
     if (userDataResponse.status === 200) {
-      await linkdinModel.create({ token: token.data.access_token });
+      await linkdinModel.create({ token: response.data.access_token });
       console.log(userDataResponse.data, "response data");
       return userDataResponse.data;
     }
   } catch (err) {
     console.error(
-      "ERROR IN > api > etTokenAccessUserDataLinkedin function ",
+      "ERROR IN > api > getTokenAccessUserDataLinkedin function ",
       err
     );
     console.error(err?.response?.data, "something went wrong");
