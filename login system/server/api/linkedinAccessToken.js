@@ -3,7 +3,7 @@ const linkdinModel = require("../model/linkedin");
 
 const getTokenAccessUserDataLinkedin = async (response) => {
   const accessToken = response.data.access_token;
-  console.log("Access token:", accessToken);
+  console.log("Access token in etTokenAccessUserDataLinkedin:", accessToken);
 
   try {
     const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
@@ -18,6 +18,10 @@ const getTokenAccessUserDataLinkedin = async (response) => {
       return userDataResponse.data;
     }
   } catch (err) {
+    console.error(
+      "ERROR IN > api > etTokenAccessUserDataLinkedin function ",
+      err
+    );
     console.error(err?.response?.data, "something went wrong");
     return err?.response?.data;
   }
@@ -43,7 +47,10 @@ const getCodeAccessLinkedin = async (code) => {
     );
 
     const userData = await getTokenAccessUserDataLinkedin(response);
-    console.log("LinkedIn user data in api > getCodeAccessLinkedin function:", userData);
+    console.log(
+      "LinkedIn user data in api > getCodeAccessLinkedin function:",
+      userData
+    );
 
     return response.data;
   } catch (err) {
