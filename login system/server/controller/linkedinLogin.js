@@ -8,11 +8,15 @@ let likedinToken;
 const accessTokenLinkedin = async (req, res, next) => {
   try {
     const code = req.query.code;
-    // console.log("CODE in accessToken Linkedin Controller:", code);
+    console.log("CODE in accessToken Linkedin Controller:", code);
     const likedinToken = await getCodeAccessLinkedin(code);
-
+    console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
     return res.status(200).json(likedinToken);
   } catch (err) {
+    console.log(
+      "ERROR FOR LINKEDIN IN Controller>accessTokenLinkedin function",
+      err
+    );
     console.log(err.response, "err in controller");
     return res.status(400).send(err);
   }

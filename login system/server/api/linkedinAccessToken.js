@@ -29,9 +29,8 @@ const getCodeAccessLinkedin = async (code) => {
       code: code,
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
-      redirect_uri:
-        // "clinet_address/accessLinkedin",
-        "https://loginsystemtest.vercel.app/accessLinkedin",
+      redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin",
+      // "clinet_address/accessLinkedin",
     });
     const response = await axios.post(
       "https://www.linkedin.com/oauth/v2/accessToken",
@@ -44,7 +43,7 @@ const getCodeAccessLinkedin = async (code) => {
     );
 
     const userData = await getTokenAccessUserDataLinkedin(response);
-    console.log("LinkedIn user data:", userData);
+    console.log("LinkedIn user data in api > getCodeAccessLinkedin function:", userData);
 
     return response.data;
   } catch (err) {
