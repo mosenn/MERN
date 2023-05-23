@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//*register user
 export const registerUser = async (
   registerValue,
   setDataUserRegister,
@@ -30,16 +31,20 @@ export const registerUser = async (
   }
 };
 
+//*login user
 export const loginUser = async (loginValue, setLoginData, setLoginError) => {
   const { email, password, pic } = loginValue;
   console.log(email, password, pic, "in login user api");
 
   try {
-    const loginData = await axios.post("http://localhost:3000/login", {
-      email,
-      password,
-      pic,
-    });
+    const loginData = await axios.post(
+      "https://serverloginsystem.vercel.app/login",
+      {
+        email,
+        password,
+        pic,
+      }
+    );
     return setLoginData(loginData);
   } catch (err) {
     console.log(err);
