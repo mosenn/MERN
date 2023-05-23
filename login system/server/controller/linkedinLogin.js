@@ -11,7 +11,8 @@ const accessTokenLinkedin = async (req, res, next) => {
     console.log("CODE in accessToken Linkedin Controller:", code);
     const likedinToken = await getCodeAccessLinkedin(code);
     console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
-    return res.status(200).json(likedinToken);
+    console.log("likedinToken.access_token in Controller>accessTokenLinkedin", likedinToken.access_token);
+    return res.status(200).json(likedinToken.access_token);
   } catch (err) {
     console.log(
       "ERROR FOR LINKEDIN IN Controller>accessTokenLinkedin function",
