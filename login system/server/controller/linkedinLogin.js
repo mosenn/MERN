@@ -8,9 +8,9 @@ let likedinToken;
 const accessTokenLinkedin = async (req, res, next) => {
   try {
     const code = req.query.code;
-    console.log("CODE in accessToken Linkedin Controller:", code);
+    // console.log("CODE in accessToken Linkedin Controller:", code);
     const likedinToken = await getCodeAccessLinkedin(code);
-    console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
+    // console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
     console.log(
       "likedinToken.access_token in Controller>accessTokenLinkedin",
       likedinToken.access_token

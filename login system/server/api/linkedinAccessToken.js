@@ -3,7 +3,8 @@ const linkdinModel = require("../model/linkedin");
 
 const getTokenAccessUserDataLinkedin = async (response) => {
   const accessToken = response.data.access_token;
-  console.log("Access token in etTokenAccessUserDataLinkedin:", accessToken);
+  console.log("response in api:", response);
+  console.log("Access token in api:", accessToken);
 
   try {
     const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
