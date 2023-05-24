@@ -21,12 +21,12 @@ const UserRegister = () => {
       );
     }
   }, [dataUserRegister, userRegisterError]);
-  const handlelog = () => {
-    console.log(userRegisterError);
-  };
+  // const handlelog = () => {
+  //   console.log(userRegisterError);
+  // };
   return (
     <div>
-      <button onClick={handlelog}>log</button>
+      {/* <button onClick={handlelog}>log</button> */}
       {messageErrorRecapchaGoogle}
       {userRegisterError.length > 0 &&
         userRegisterError?.map((items, index) => {
