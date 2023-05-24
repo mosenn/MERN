@@ -2,23 +2,27 @@ const axios = require("axios");
 const linkdinModel = require("../model/linkedin");
 
 const getTokenAccessUserDataLinkedin = async (response) => {
-
   try {
-    const accessToken = response.data.access_token;
-    console.log("response in api:", response);
-    console.log("Access token in api:", accessToken);
-    const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
-      headers: {
-        // Authorization: `Bearer ${accessToken}`,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    // const accessToken = response.data.access_token;
+    // console.log("response in api:", response);
+    // console.log("Access token in api:", accessToken);
+    const userDataResponse = await axios.get(
+      "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
+      {
+        headers: {
+          // Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${response}`,
+        },
+      }
+    );
 
-    if (userDataResponse.status === 200) {
-      await linkdinModel.create({ token: response.data.access_token });
-      console.log(userDataResponse.data, "response data");
-      return userDataResponse.data;
-    }
+    // if (userDataResponse.status === 200) {
+    //   // await linkdinModel.create({ token: response.data.access_token });
+    //   console.log(userDataResponse.data, "response data");
+    //   return userDataResponse.data;
+    // }
+    console.log(userDataResponse.data, "response data");
+    return userDataResponse.data;
   } catch (err) {
     console.error(
       "ERROR IN > api > getTokenAccessUserDataLinkedin function ",
@@ -35,7 +39,8 @@ const getCodeAccessLinkedin = async (code) => {
       code: code,
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
-      redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin",
+      // redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin", => for online
+      redirect_uri: "http://127.0.0.1:5173/accessLinkedin", //=> for local
       // "clinet_address/accessLinkedin",
     });
     const response = await axios.post(

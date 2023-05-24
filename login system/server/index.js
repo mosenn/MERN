@@ -23,8 +23,8 @@ connecetToDb();
 // });
 
 //*worked
-app.use("/", require("./rootes/githubAcessToken"));
-app.use("/", require("./rootes/userLoginAndRegister"));
+app.use("/", require("./routes/githubAcessToken"));
+app.use("/", require("./routes/userLoginAndRegister"));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
