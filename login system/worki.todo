@@ -52,22 +52,43 @@ serach for how can get email or image linkedin user profile and show to website 
 
 //* 
 
-//*linkedin
+deploy : => done
+check mongodb connection data base in index.js 
+with process env . if error remove env check with out env. 
+
+if deploy sucess , go for add routes or other files
+
+
+//*linkedin => done
 clinet > api > linkedin.js > add server address this route server/accessTokenLinkedin?code
 
-client > login.jsx => add redirect address (client/accessLinkedin) //https://loginsystemtest.vercel.app/accessGithub
+client > src > componnet > login.jsx => add redirect address (client/accessLinkedin) //https://loginsystemtest.vercel.app/accessGithub
 server  > api > linkedinAccessToken > add redirect address (client/accessLinkedin) //https://loginsystemtest.vercel.app/accessGithub
 
-//*github
-clinet > api > github.js > add server route for take code   server/AccessTokenGithub
+//*github => done
+clinet > api > github.js > add server route for take code   server/AccessTokenGithub 
 
-//*recaptcha google
+//*recaptcha google =>done
 clinet > api > rechpcha google add server address main 
 localhost:3000/recapcha
 newaddress/recapcha
 
-deploy clinet and server in vercel
+deploy clinet and server in vercel =>done
+
+send link to other for test . => its okey => done
+
+//* strategi login 
+
+first u have get token linkedin , 
+then have user data , save token , save user data like email or name
+now have btn login with linkedin in clinet 
+click on , login linkedin popup have input . take email or name 
+check in data base collection linkedinuser if email or name same , 
+then take token in database as same name or email input filed 
+pass token to api for get userdata agin , if everything is okey save to localstorge userdata and redirect to profile componet . 
+
+
 set cors origin address client after deploy
-send link to other for test .
+
 create online document . 
 post in linkedin . 

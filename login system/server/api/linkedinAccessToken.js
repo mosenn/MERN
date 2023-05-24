@@ -2,12 +2,14 @@ const axios = require("axios");
 const linkdinModel = require("../model/linkedin");
 
 const getTokenAccessUserDataLinkedin = async (response) => {
+
   try {
     const accessToken = response.data.access_token;
     console.log("response in api:", response);
     console.log("Access token in api:", accessToken);
     const userDataResponse = await axios.get("https://api.linkedin.com/v2/me", {
       headers: {
+        // Authorization: `Bearer ${accessToken}`,
         Authorization: `Bearer ${accessToken}`,
       },
     });
