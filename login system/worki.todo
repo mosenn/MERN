@@ -88,6 +88,12 @@ then take token in database as same name or email input filed
 pass token to api for get userdata agin , if everything is okey save to localstorge userdata and redirect to profile componet . 
 
 
+for get userdata linkedin with token in data base: 
+pass token to 3 function : 
+
+server > api > getTokenAccessUserDataLinkedin
+2 times use function this function getTokenAccessUserDataLinkedin
+1 itme server > controller > in this function userDataLinkedin > pass token to this function getTokenAccessUserDataLinkedin
 set cors origin address client after deploy
 
 create online document . 

@@ -3,8 +3,9 @@ const { register, login } = require("../controller/registerAndLoginUser");
 const googleRecapcha = require("../controller/googelRecapcha");
 const {
   accessTokenLinkedin,
-  userDataLinkedin,
-} = require("../controller/linkedinLogin");
+  /*userDataLinkedin*/
+  loginLikedin,
+} = require("../controller/linkedin");
 // const multer = require("multer");
 const multer = require("multer");
 const path = require("path");
@@ -32,9 +33,13 @@ loginRegisterRouter.post("/register", upload.single("image"), register);
 loginRegisterRouter.post("/login", login);
 //*google recapcha
 loginRegisterRouter.post("/recapcha", googleRecapcha);
-//*linkedin
+//*linkedin for take code from url parmas
 loginRegisterRouter.post("/accessTokenLinkedin", accessTokenLinkedin);
+
 //*get user data linkedin
-loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
+// loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
+
+//*login user linkedin
+loginRegisterRouter.post("/loginLinkedin", loginLikedin);
 
 module.exports = loginRegisterRouter;
