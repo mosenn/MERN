@@ -6,8 +6,8 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   try {
     const response = await axios.post(
       //*set route server for get code
-      // `https://serverloginsystem.vercel.app/accessTokenLinkedin?code=${code}` //=> for online linkdin sigin
-      `http://localhost:5000/accessTokenLinkedin?code=${code}` //=> for local  linkdin sigin
+      `https://serverloginsystem.vercel.app/accessTokenLinkedin?code=${code}` //=> for online linkdin sigin
+      // `http://localhost:5000/accessTokenLinkedin?code=${code}` //=> for local  linkdin sigin
     );
     const data = await response.data;
     // console.log(linkedinData, "linkedin response at _api.js"); //*have log here

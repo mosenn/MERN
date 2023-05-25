@@ -6,6 +6,13 @@ const linkedinSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
+  pic: {
+    type: String,
+  },
 });
 
 const linkdinModel = mongoose.model("linkedinToken", linkedinSchema);

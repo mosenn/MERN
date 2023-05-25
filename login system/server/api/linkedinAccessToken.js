@@ -10,9 +10,9 @@ let urls = [
 const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
   try {
     //*for  online
-    // const accessToken = accessTokenApi.data.access_token;
-    // console.log("response in api:", accessTokenApi);
-    // console.log("Access token in api:", accessToken);
+    const accessToken = accessTokenApi.data.access_token;
+    console.log("response in api:", accessTokenApi);
+    console.log("Access token in api:", accessToken);
     //*for  online
     // https://api.linkedin.com/v2/people/(id:{person ID})
     // https://api.linkedin.com/v2/me
@@ -43,23 +43,31 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
     //     },
     //   }
     // );
- const [userDataResponse1, userDataResponse2] = responses;
-      console.log("Sigin Data Response Linkedin : ", responses);
-      console.log("Profile user linkedin Sigin :", userDataResponse1?.data);
-      console.log("Email user Linkedin :", userDataResponse2?.data);
-      return [userDataResponse1?.data, userDataResponse2?.data];
-    if (responses.status === 200) {
-     
-      //*for sigin
-      // const createLinkedinUserData = await linkdinModel.create({
-      //   token: response.data.access_token,
-      //   email: response[0]["handle~"]?.emailAddress,
-      //   pic: response.data.profilePicture.displayImage,
-      // });
-      //*for sigin
 
+    if (responses[0].status === 200) {
+      console.log("Sigin status: ", responses[0].status);
+      const [userProfileApi, emailApi] = responses;
+
+      console.log("Profile user linkedin Sigin :", userProfileApi?.data);
+      console.log(
+        "Email user Linkedin :",
+        emailApi?.data?.elements[0]["handle~"].emailAddress
+      );
+      console.log(
+        "pic prfoile",
+        userProfileApi?.data?.profilePicture?.displayImage
+      );
+      console.log("Email user  :", emailApi?.data);
+      // return [userProfileApi?.data, emailApi?.data];
       //*for sigin
-      // return createLinkedinUserData;
+      const createLinkedinUserData = await linkdinModel.create({
+        token: accessTokenApi,
+        email: emailApi?.data.elements[0]["handle~"].emailAddress,
+        pic: userProfileApi?.data.profilePicture.displayImage,
+      });
+      //*for sigin
+      //*for sigin
+      return createLinkedinUserData;
       //*for sigin
       // return userDataResponse.data;
     }
@@ -81,8 +89,8 @@ const getCodeAccessLinkedin = async (code) => {
       code: code,
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
-      // redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin", => for online
-      redirect_uri: "http://127.0.0.1:5173/accessLinkedin", //=> for local
+      redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin", //=> for online
+      // redirect_uri: "http://127.0.0.1:5173/accessLinkedin", //=> for local
       // "clinet_address/accessLinkedin",
       // scope: ["r_emailaddress", "r_liteprofile"],
     });
@@ -98,11 +106,11 @@ const getCodeAccessLinkedin = async (code) => {
 
     //*take Token from api then return user infomation linkedin
     //*for sigin online
-    // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
+    const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
-    const userData = await getTokenAccessUserDataLinkedin(
-      "AQWhOZSi9c8HUDkkjBE7IcbUJ3a1JVvlqERhS4eJRTHS8vRhTLkUs3N-OlOxYgHyAyBvoXH6ljVdBwj-WAoZjvGS_7rvZiEiOANl73zxOS9pJ5sGpLnyzRb6ZgHu0BAYUbusE6CNqJ3v158gWG9ECsKBz5xCXubbk3kN_7EH4dkGSjk5BucLLxxNK3n2rEYXXyA3_Twbjmiw454YUr8XvxrZtRcl--UhEfpuKoDePiTarpdovKE3KEQYGEGWTeja32K_tHtEwyoymdduS4mSc7_dbzvkOgtk9K6ieOKbHquCklZPeNUA6w7DR7-n0ev8IW0SXMRzsWa8OwKBZ-qsTJvQ79mePg"
-    );
+    // const userData = await getTokenAccessUserDataLinkedin(
+    //   "AQX0i61Ko6eFO8kXEJCLzYQTqDWAeuHSFcIZbnAjNCat-dNH3044-a8dU013dadpBU1DoAFueHXJA7IcM1KJfH78RV6UmUtzwQmDvSCoMd-9fgYswFgEbnXuAE-JWmkjM7NYUBR9Exz8bhA9SeH4afKB-ZvbISL0iX_bMgrRb6kYZhTtYI6fuUT540Iwka6_yhp6mxGM5mqX7ibrqVGgcUWp70HSm_lsBVE_69OjFA0R34ZsXfrXJRGmq0egB4NbQo-DsYkDgWfqFx-HTTjVwWhzVzkxSVTAsfxSypr8FLVVJLymwP5Ds8YgAi6FdUVap3UKr34dggnosZcLFjKWR_M9IE80zw"
+    // );
     console.log(
       "LinkedIn user data in api > getCodeAccessLinkedin function:",
       userData

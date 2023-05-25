@@ -30,19 +30,19 @@ const accessTokenLinkedin = async (req, res, next) => {
 };
 
 //*for test
-const userDataLinkedin = async (req, res, next) => {
-  try {
-    const Userdata = await getTokenAccessUserDataLinkedin(
-      "AQWhOZSi9c8HUDkkjBE7IcbUJ3a1JVvlqERhS4eJRTHS8vRhTLkUs3N-OlOxYgHyAyBvoXH6ljVdBwj-WAoZjvGS_7rvZiEiOANl73zxOS9pJ5sGpLnyzRb6ZgHu0BAYUbusE6CNqJ3v158gWG9ECsKBz5xCXubbk3kN_7EH4dkGSjk5BucLLxxNK3n2rEYXXyA3_Twbjmiw454YUr8XvxrZtRcl--UhEfpuKoDePiTarpdovKE3KEQYGEGWTeja32K_tHtEwyoymdduS4mSc7_dbzvkOgtk9K6ieOKbHquCklZPeNUA6w7DR7-n0ev8IW0SXMRzsWa8OwKBZ-qsTJvQ79mePg"
-    );
-    console.log("USERDATA IN FUNC userDataLinkedin", Userdata.data);
-    // return res.status(200).send(tokenInMongodb);
-    return res.status(200).json(Userdata);
-  } catch (err) {
-    console.log(err.message);
-    return res.status(404).send(err.message);
-  }
-};
+// const userDataLinkedin = async (req, res, next) => {
+//   try {
+//     const Userdata = await getTokenAccessUserDataLinkedin(
+//       "AQX0i61Ko6eFO8kXEJCLzYQTqDWAeuHSFcIZbnAjNCat-dNH3044-a8dU013dadpBU1DoAFueHXJA7IcM1KJfH78RV6UmUtzwQmDvSCoMd-9fgYswFgEbnXuAE-JWmkjM7NYUBR9Exz8bhA9SeH4afKB-ZvbISL0iX_bMgrRb6kYZhTtYI6fuUT540Iwka6_yhp6mxGM5mqX7ibrqVGgcUWp70HSm_lsBVE_69OjFA0R34ZsXfrXJRGmq0egB4NbQo-DsYkDgWfqFx-HTTjVwWhzVzkxSVTAsfxSypr8FLVVJLymwP5Ds8YgAi6FdUVap3UKr34dggnosZcLFjKWR_M9IE80zw"
+//     );
+//     console.log("USERDATA IN FUNC userDataLinkedin", Userdata);
+//     // return res.status(200).send(tokenInMongodb);
+//     return res.status(200).json(Userdata);
+//   } catch (err) {
+//     console.log(err.message);
+//     return res.status(404).send(err);
+//   }
+// };
 //*for test
 
 //*login likedin
@@ -61,7 +61,9 @@ const loginLikedin = async (req, res) => {
   } catch (err) {
     console.log("Error from loginLinkedin", err);
     console.log(err.message, "err message for loginlindin controller");
-    return res.status(404).send([err.message ,"you are not log in with this email"]);
+    return res
+      .status(404)
+      .send([err.message, "you are not log in with this email"]);
   }
 };
-module.exports = { accessTokenLinkedin, userDataLinkedin, loginLikedin };
+module.exports = { accessTokenLinkedin, /*userDataLinkedin*/ loginLikedin };

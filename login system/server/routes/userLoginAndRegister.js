@@ -37,7 +37,7 @@ loginRegisterRouter.post("/recapcha", googleRecapcha);
 loginRegisterRouter.post("/accessTokenLinkedin", accessTokenLinkedin);
 
 //*get user data linkedin
-loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
+// loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
 
 //*login user linkedin
 loginRegisterRouter.post("/loginLinkedin", loginLikedin);
