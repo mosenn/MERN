@@ -29,19 +29,21 @@ const accessTokenLinkedin = async (req, res, next) => {
   }
 };
 
-// const userDataLinkedin = async (req, res, next) => {
-//   try {
-//     const Userdata = await getTokenAccessUserDataLinkedin(
-//       "AQVaBkqj_w7zIoMoVkyp5VbcWGcCi8qn3V0XoJL3ajMfsr6Wo3EzbIJdNh8IIEwmveUVD1BAh_U3wzQSD0QcrCrdNMF6xfWEmgPK-lktqpEacWltIlO77c8ibCX95Q6Z3bXciJFAK7bjQSIbXQrivvKTCTBy8GuSs8zpWKO6SyjzritKPbNsedXdGyOLU294oCjRy8DU6p-8rd7AjI7LIARGVP-iJ_81J53jUuUeZXCrlO54o4xi6yiBZe9e9jQHttSZXqzM56yzWN2de5OeqDnp9R0gZljpK_4LB85ccc1kozEuZ553Dmm4upHOCEcTP_zbsM9UrgIpYHZZvpJca0zMqRRSPg"
-//     );
-//     console.log("USERDATA IN FUNC userDataLinkedin", Userdata);
-//     // return res.status(200).send(tokenInMongodb);
-//     return res.status(200).send(Userdata);
-//   } catch (err) {
-//     console.log(err.message);
-//     return res.status(404).send(err.message);
-//   }
-// };
+//*for test
+const userDataLinkedin = async (req, res, next) => {
+  try {
+    const Userdata = await getTokenAccessUserDataLinkedin(
+      "AQWhOZSi9c8HUDkkjBE7IcbUJ3a1JVvlqERhS4eJRTHS8vRhTLkUs3N-OlOxYgHyAyBvoXH6ljVdBwj-WAoZjvGS_7rvZiEiOANl73zxOS9pJ5sGpLnyzRb6ZgHu0BAYUbusE6CNqJ3v158gWG9ECsKBz5xCXubbk3kN_7EH4dkGSjk5BucLLxxNK3n2rEYXXyA3_Twbjmiw454YUr8XvxrZtRcl--UhEfpuKoDePiTarpdovKE3KEQYGEGWTeja32K_tHtEwyoymdduS4mSc7_dbzvkOgtk9K6ieOKbHquCklZPeNUA6w7DR7-n0ev8IW0SXMRzsWa8OwKBZ-qsTJvQ79mePg"
+    );
+    console.log("USERDATA IN FUNC userDataLinkedin", Userdata.data);
+    // return res.status(200).send(tokenInMongodb);
+    return res.status(200).json(Userdata);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(404).send(err.message);
+  }
+};
+//*for test
 
 //*login likedin
 const loginLikedin = async (req, res) => {
@@ -62,4 +64,4 @@ const loginLikedin = async (req, res) => {
     return res.status(404).send([err.message ,"you are not log in with this email"]);
   }
 };
-module.exports = { accessTokenLinkedin, /*userDataLinkedin*/ loginLikedin };
+module.exports = { accessTokenLinkedin, userDataLinkedin, loginLikedin };

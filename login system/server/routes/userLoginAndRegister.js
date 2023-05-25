@@ -3,7 +3,7 @@ const { register, login } = require("../controller/registerAndLoginUser");
 const googleRecapcha = require("../controller/googelRecapcha");
 const {
   accessTokenLinkedin,
-  /*userDataLinkedin*/
+  userDataLinkedin,
   loginLikedin,
 } = require("../controller/linkedin");
 // const multer = require("multer");
@@ -37,7 +37,7 @@ loginRegisterRouter.post("/recapcha", googleRecapcha);
 loginRegisterRouter.post("/accessTokenLinkedin", accessTokenLinkedin);
 
 //*get user data linkedin
-// loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
+loginRegisterRouter.get("/userDataLinkedin", userDataLinkedin);
 
 //*login user linkedin
 loginRegisterRouter.post("/loginLinkedin", loginLikedin);

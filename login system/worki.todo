@@ -98,3 +98,13 @@ set cors origin address client after deploy
 
 create online document . 
 post in linkedin . 
+
+
+//*
+برای اینکه توکن جدید بگیریم برای ثبت نام با لینکدین
+باید بریم به قسمت 
+develpoer linkedin > doc and tools > oauth token tools 
+میایم یک توکن ایجاد می کنیم  oauth token tools داخل 
+حالا هم می تونیم از این توکن برای 
+خودمون استفاده کنیم  api 
+و مشخصات خودمون رو میده درون ریسپانس
