@@ -14,6 +14,6 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
 
     return data;
   } catch (err) {
-    console.log(err.data, "error in api clinet");
+    console.log(err.data, "err in api clinet");
   }
 };
