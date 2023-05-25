@@ -12,7 +12,7 @@ const accessTokenLinkedin = async (req, res, next) => {
   try {
     const code = req.query.code;
     // console.log("CODE in accessToken Linkedin Controller:", code);
-    const likedinToken = await getCodeAccessLinkedin(code);
+    likedinToken = await getCodeAccessLinkedin(code);
     // console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
     console.log(
       "likedinToken.access_token in Controller>accessTokenLinkedin",
@@ -29,21 +29,21 @@ const accessTokenLinkedin = async (req, res, next) => {
   }
 };
 
-//*for test
-// const userDataLinkedin = async (req, res, next) => {
-//   try {
-//     const Userdata = await getTokenAccessUserDataLinkedin(
-//       "AQX0i61Ko6eFO8kXEJCLzYQTqDWAeuHSFcIZbnAjNCat-dNH3044-a8dU013dadpBU1DoAFueHXJA7IcM1KJfH78RV6UmUtzwQmDvSCoMd-9fgYswFgEbnXuAE-JWmkjM7NYUBR9Exz8bhA9SeH4afKB-ZvbISL0iX_bMgrRb6kYZhTtYI6fuUT540Iwka6_yhp6mxGM5mqX7ibrqVGgcUWp70HSm_lsBVE_69OjFA0R34ZsXfrXJRGmq0egB4NbQo-DsYkDgWfqFx-HTTjVwWhzVzkxSVTAsfxSypr8FLVVJLymwP5Ds8YgAi6FdUVap3UKr34dggnosZcLFjKWR_M9IE80zw"
-//     );
-//     console.log("USERDATA IN FUNC userDataLinkedin", Userdata);
-//     // return res.status(200).send(tokenInMongodb);
-//     return res.status(200).json(Userdata);
-//   } catch (err) {
-//     console.log(err.message);
-//     return res.status(404).send(err);
-//   }
-// };
-//*for test
+//*for siginLinkedin return data to clinet
+const signinLinkedin = async (req, res, next) => {
+  try {
+    // console.log("likedinToken in siginLinkedin", likedinToken);
+    const Userdata = await getTokenAccessUserDataLinkedin(
+      "AQX0i61Ko6eFO8kXEJCLzYQTqDWAeuHSFcIZbnAjNCat-dNH3044-a8dU013dadpBU1DoAFueHXJA7IcM1KJfH78RV6UmUtzwQmDvSCoMd-9fgYswFgEbnXuAE-JWmkjM7NYUBR9Exz8bhA9SeH4afKB-ZvbISL0iX_bMgrRb6kYZhTtYI6fuUT540Iwka6_yhp6mxGM5mqX7ibrqVGgcUWp70HSm_lsBVE_69OjFA0R34ZsXfrXJRGmq0egB4NbQo-DsYkDgWfqFx-HTTjVwWhzVzkxSVTAsfxSypr8FLVVJLymwP5Ds8YgAi6FdUVap3UKr34dggnosZcLFjKWR_M9IE80zw"
+    );
+    console.log("USERDATA IN FUNC userDataLinkedin", Userdata.data);
+    // return res.status(200).send(tokenInMongodb);
+    return res.status(200).send(Userdata.data);
+  } catch (err) {
+    console.log("siginLinkedin :", err.message);
+    return res.status(404).send(err);
+  }
+};
 
 //*login likedin
 const loginLikedin = async (req, res) => {
@@ -66,4 +66,4 @@ const loginLikedin = async (req, res) => {
       .send([err.message, "you are not log in with this email"]);
   }
 };
-module.exports = { accessTokenLinkedin, /*userDataLinkedin*/ loginLikedin };
+module.exports = { accessTokenLinkedin, signinLinkedin, loginLikedin };
