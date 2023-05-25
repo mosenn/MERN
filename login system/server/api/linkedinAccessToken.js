@@ -25,7 +25,7 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
         axios.get(url, {
           headers: {
             //*for online
-            Authorization: `Bearer ${accessTokenApi}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
       )
@@ -61,7 +61,7 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       // return [userProfileApi?.data, emailApi?.data];
       //*for sigin
       const createLinkedinUserData = await linkdinModel.create({
-        token: accessTokenApi,
+        token: accessToken,
         email: emailApi?.data.elements[0]["handle~"].emailAddress,
         pic: userProfileApi?.data.profilePicture.displayImage,
       });
