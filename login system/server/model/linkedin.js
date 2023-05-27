@@ -4,7 +4,6 @@ const linkedinSchema = new mongoose.Schema({
   token: {
     type: String,
     required: true,
-    unique: true,
   },
   email: {
     type: String,
@@ -22,6 +21,6 @@ const linkedinSchema = new mongoose.Schema({
   },
 });
 
-const linkdinModel = mongoose.model("linkedinToken", linkedinSchema);
+const linkdinModel = mongoose.model("usersLinkedin", linkedinSchema);
 
 module.exports = linkdinModel;

@@ -17,7 +17,6 @@ const UserProfile = () => {
   //   userData.userProfile?.profilePicture?.displayImage,
   //   "image linkedin"
   // );
-
   console.log(userData);
 
   const GetuserDataLocal = userData?.data;
@@ -89,24 +88,22 @@ const UserProfile = () => {
               style={{ borderRadius: "50%", width: "80px", height: "80px" }}
             />
           </figure>
+          {/* <p>
+            userName:<span>{userData?.firstName} </span>
+            <span>{userData?.lastName}</span>
+          </p> */}
           <p>{userData?.email}</p>
           <p>{userData?.password}</p>
         </div>
       )}
       {/* user profile linkedin */}
-
-      {userData?.userProfile && userData?.userEmail ? (
+      {userData?.firstName && (
         <div>
           <p>
-            userName:<span>{userData.userProfile.localizedFirstName} </span>
-            <span>{userData.userProfile.localizedLastName}</span>
-          </p>
-          <p>
-            email : <span>{userData?.userEmail}</span>
+            user name : <span>{userData?.firstName} </span>
+            <span>{userData?.lastName}</span>
           </p>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );

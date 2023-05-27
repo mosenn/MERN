@@ -8,9 +8,23 @@ import {
 
 const LinkedinAccess = () => {
   const [sigineError, setSiginError] = useState("");
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const getUserInfoSiginLinkedin = async () => {
+    const data = await getUserDataSiginLinkedin(setSiginError, setUserInfo);
+    if (data && data?.data) {
+      localStorage.setItem("userData", JSON.stringify(userInfo.data));
+      setLoading(false);
+      navigate("/profile");
+    } else {
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/login");
+      }, 3000);
+    }
+  };
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
@@ -21,55 +35,16 @@ const LinkedinAccess = () => {
     }
   };
 
-  const getUserInfoSiginLinkedin = async () => {
-    await getUserDataSiginLinkedin(setSiginError, setUserInfo);
-    // setUserInfo(userInfoLinkedin);
-    // console.log(userInfoLinkedin?.data, "userinfolinkedin");
-  };
   useEffect(() => {
     getLinkedinCodeinParamas();
-  });
-  useEffect(() => {
     getUserInfoSiginLinkedin();
-  }, [sigineError, userInfo]);
-
-  //*set linkedin data to localstroge
-  //*log data
-  console.log("userInfo State", userInfo);
-
-  localStorage.setItem(
-    "userData",
-    JSON.stringify(
-      userInfo?.data
-      // firstName: userInfoLinkedin?.data.firstName,
-      // lastName: userInfoLinkedin?.data.lastName,
-      // userEmail: userInfoLinkedin?.data.email,
-      // pic: userInfoLinkedin?.data.pic,
-    )
-  );
-
-  //*control singin navigate
-  // if (userInfoLinkedin) {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //     navigate("/profile");
-  //   }, 2000);
-  // }
-  // console.log(sigineError);
-  // if (sigineError) {
-  //   return setTimeout(() => {
-  //     setLoading(false);
-  //     navigate("/login");
-  //   }, 4000);
-  // }
+  }, []);
 
   return (
     <div>
-      <h1>access code paramas linkedin</h1>
-      {/* {sigineError && (
-        <h1>you are sigin one time w8 for to redirect login page ✌</h1>
-      )}
-      {loading && <Loading />} */}
+      {/* <h1>access code paramas linkedin</h1> */}
+      {sigineError && <h3>you have account redirect to login page ✌</h3>}
+      {loading && <Loading />}
     </div>
   );
 };
