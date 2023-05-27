@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { hash } = require("../middleware/bcrypt");
 const userValidation = require("../middleware/userValidation");
+const { object } = require("yup");
 const userSchema = new mongoose.Schema({
   email: {
     type: String,

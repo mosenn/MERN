@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../component/Loading";
 import {
   takeCodeAndPostToServerLinkedin,
   getUserDataSiginLinkedin,
@@ -7,6 +8,8 @@ import {
 
 const LinkedinAccess = () => {
   const [sigineError, setSiginError] = useState("");
+  const [userInfo, setUserInfo] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
@@ -19,44 +22,54 @@ const LinkedinAccess = () => {
   };
 
   const getUserInfoSiginLinkedin = async () => {
-    const userInfoLinkedin = await getUserDataSiginLinkedin(setSiginError);
-    // console.log("user info linkedin data", userInfoLinkedin?.data);
-    // userInfoLinkedin?.data.userPrfoile;
-    // userInfoLinkedin?.data.userEmail;
-    // console.log(
-    //   userInfoLinkedin?.data.userPrfoile,
-    //   userInfoLinkedin?.data.userEmail.elements[0]["handle~"].emailAddress
-    // );
-
-    //*set linkedin data to localstroge
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        userProfile: userInfoLinkedin?.data.userPrfoile,
-        userEmail:
-          userInfoLinkedin?.data.userEmail.elements[0]["handle~"]?.emailAddress,
-        pic: userInfoLinkedin?.data?.userImage.profilePicture["displayImage~"]
-          ?.elements[0]?.identifiers[0]?.identifier,
-      })
-    );
-    setTimeout(() => {
-      navigate("/profile");
-    }, 2000);
-    // console.log(sigineError);
-    if (sigineError) {
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    }
+    await getUserDataSiginLinkedin(setSiginError, setUserInfo);
+    // setUserInfo(userInfoLinkedin);
+    // console.log(userInfoLinkedin?.data, "userinfolinkedin");
   };
   useEffect(() => {
     getLinkedinCodeinParamas();
+  });
+  useEffect(() => {
     getUserInfoSiginLinkedin();
-  }, [sigineError]);
+  }, [sigineError, userInfo]);
+
+  //*set linkedin data to localstroge
+  //*log data
+  console.log("userInfo State", userInfo);
+
+  localStorage.setItem(
+    "userData",
+    JSON.stringify(
+      userInfo?.data
+      // firstName: userInfoLinkedin?.data.firstName,
+      // lastName: userInfoLinkedin?.data.lastName,
+      // userEmail: userInfoLinkedin?.data.email,
+      // pic: userInfoLinkedin?.data.pic,
+    )
+  );
+
+  //*control singin navigate
+  // if (userInfoLinkedin) {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //     navigate("/profile");
+  //   }, 2000);
+  // }
+  // console.log(sigineError);
+  // if (sigineError) {
+  //   return setTimeout(() => {
+  //     setLoading(false);
+  //     navigate("/login");
+  //   }, 4000);
+  // }
 
   return (
     <div>
       <h1>access code paramas linkedin</h1>
+      {/* {sigineError && (
+        <h1>you are sigin one time w8 for to redirect login page ✌</h1>
+      )}
+      {loading && <Loading />} */}
     </div>
   );
 };

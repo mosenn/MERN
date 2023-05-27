@@ -30,37 +30,40 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       console.log("Sigin status: ", responses[0].status);
       const [userImage, userProfileApi, emailApi] = responses;
 
-      console.log("Profile user linkedin Sigin :", userProfileApi?.data);
-      console.log(
-        "Email user Linkedin :",
-        emailApi?.data?.elements[0]["handle~"].emailAddress
-      );
-      console.log("user image ", userImage?.data);
-      console.log("Email user  :", emailApi?.data);
+      // console.log("Profile user linkedin Sigin :", userProfileApi?.data);
+      // console.log(
+      //   "Email user Linkedin :",
+      //   emailApi?.data?.elements[0]["handle~"].emailAddress
+      // );
+      // console.log("user image ", userImage?.data);
+      // console.log("Email user  :", emailApi?.data);
       // return [userProfileApi?.data, emailApi?.data];
       //*for sigin
-      // const createLinkedinUserData = await linkdinModel.create({
-      //   token: accessToken,
-      // userProfile: userProfileApi?.data;
-      //   email: emailApi?.data.elements[0]["handle~"].emailAddress,
-      //   pic: userImage?.data?.userImage.profilePicture["displayImage~"]?.elements[0]?.identifiers[0]?.identifier,
-
-      // });
+      const createLinkedinUserData = await linkdinModel.create({
+        token: accessTokenApi,
+        email: emailApi?.data?.elements[0]["handle~"]?.emailAddress,
+        // userProfile: userProfileApi?.data,
+        firstName: userProfileApi?.data?.localizedFirstName,
+        lastName: userProfileApi?.data?.localizedLastName,
+        pic: userImage?.data?.profilePicture["displayImage~"]?.elements[0]
+          ?.identifiers[0]?.identifier,
+      });
       //*for sigin
       //*for sigin
-      // return createLinkedinUserData;
+      console.log("create", createLinkedinUserData);
+      return createLinkedinUserData;
       //*for sigin
-      return {
-        userImage: userImage.data,
-        userProfile: userProfileApi.data,
-        userEmail: emailApi.data,
-      };
+      // return {
+      //   userImage: userImage.data,
+      //   userProfile: userProfileApi.data,
+      //   userEmail: emailApi.data,
+      // };
     }
     // console.log("Sigin Data Response Linkedin : ", userDataResponse.data);
   } catch (err) {
     console.log(
       "ERROR IN > api > getTokenAccessUserDataLinkedin function ",
-      err.response.data
+      err?.response?.data
     );
     throw err;
     // return err?.response?.data;
@@ -93,7 +96,7 @@ const getCodeAccessLinkedin = async (code) => {
     // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
     const userData = await getTokenAccessUserDataLinkedin(
-      "AQWjy3NZBNxo5j6pSbCP2wpANrfetOvZkV0tbiIbzuwxvGc_GhOABxezB2gqxt2VvpI8lhHvdP_l36hyvRmXF-hxzFhIHQD_TtFZMDx2iL6jMWKB1d_y0lI7gk4eL3TMik-nbFgaxfbHfGyBDEY6u7i607yTmPlwR5-_LgTB-kLzBBtS858UZRJBlN97-ykhv92AG1_4_U-MR2wxYb8CpbEXaRalXnUUPgSalL_UImtt9m89xCYW2lPU31HPG4JWwChm7Vdmfd4xNwERXk15xHMG13eL_23FjYOIKUZKCmZqevIT7noKDMoo17rWiFg9UAeAQIj2gsKTDMCIi7889rkcks6bZg"
+      "AQWLQIv-ea6LygxjuNbpvGhQtIcyWBtNEdOU41d3Sg9TfFGWLNN2OZm6loax79EvSs5gqjTZaxLxrwA_miELs7IgIal9iongQqBWbbSKhednGr6iVLopuQvb9LiV2R3AFslcZBSKms8k5zOXquMrGCA1VXRvJj8rC1grrXbEJ8c6sJx_jbYxKZUQYrXNwLOMo2F1idq0XpCui-z5Etlo3knz6Hv9hPMZxJWq2qahEkbzRD91TWKnhOCy-Vwl3uroQU5mHWkA24rGEfF-zJWDS9A8tpzXuAg25ucGqfn8HmEhFSJZaUomeA-s25LvwsYvFeDMdwacmqvcgLk11_TyQcSLCRHgkg"
     );
     console.log(
       "LinkedIn user data in api > getCodeAccessLinkedin function:",

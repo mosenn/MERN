@@ -34,16 +34,18 @@ const signinLinkedin = async (req, res, next) => {
   try {
     // console.log("likedinToken in siginLinkedin", likedinToken);
     const Userdata = await getTokenAccessUserDataLinkedin(
-      "AQWjy3NZBNxo5j6pSbCP2wpANrfetOvZkV0tbiIbzuwxvGc_GhOABxezB2gqxt2VvpI8lhHvdP_l36hyvRmXF-hxzFhIHQD_TtFZMDx2iL6jMWKB1d_y0lI7gk4eL3TMik-nbFgaxfbHfGyBDEY6u7i607yTmPlwR5-_LgTB-kLzBBtS858UZRJBlN97-ykhv92AG1_4_U-MR2wxYb8CpbEXaRalXnUUPgSalL_UImtt9m89xCYW2lPU31HPG4JWwChm7Vdmfd4xNwERXk15xHMG13eL_23FjYOIKUZKCmZqevIT7noKDMoo17rWiFg9UAeAQIj2gsKTDMCIi7889rkcks6bZg"
+      "AQWLQIv-ea6LygxjuNbpvGhQtIcyWBtNEdOU41d3Sg9TfFGWLNN2OZm6loax79EvSs5gqjTZaxLxrwA_miELs7IgIal9iongQqBWbbSKhednGr6iVLopuQvb9LiV2R3AFslcZBSKms8k5zOXquMrGCA1VXRvJj8rC1grrXbEJ8c6sJx_jbYxKZUQYrXNwLOMo2F1idq0XpCui-z5Etlo3knz6Hv9hPMZxJWq2qahEkbzRD91TWKnhOCy-Vwl3uroQU5mHWkA24rGEfF-zJWDS9A8tpzXuAg25ucGqfn8HmEhFSJZaUomeA-s25LvwsYvFeDMdwacmqvcgLk11_TyQcSLCRHgkg"
     );
-    console.log("profile in signinLinkedin", Userdata?.userProfile);
-    console.log(" Email in signinLinkedin", Userdata?.userEmail);
+    // console.log("profile in signinLinkedin", Userdata?.userProfile);
+    // console.log(" Email in signinLinkedin", Userdata?.userEmail);
     // return res.status(200).send(tokenInMongodb);
-    return res.status(200).send({
-      userPrfoile: Userdata?.userProfile,
-      userEmail: Userdata?.userEmail,
-      userImage: Userdata?.userImage,
-    });
+    console.log("user data ", Userdata);
+    return res.status(200).send(Userdata);
+    // return res.status(200).send({
+    //   userPrfoile: Userdata?.userProfile,
+    //   userEmail: Userdata?.userEmail,
+    //   userImage: Userdata?.userImage,
+    // });
   } catch (err) {
     console.log("siginLinkedin :", err.message);
     return res.status(401).send({ error: err.message });

@@ -18,15 +18,15 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   }
 };
 
-export const getUserDataSiginLinkedin = async (setSiginError) => {
+export const getUserDataSiginLinkedin = async (setSiginError, setUserInfo) => {
   try {
     const userInfoLinkedin = await axios.get(
       "http://localhost:5000/signinLinkedin"
     );
-    return userInfoLinkedin;
+    return await setUserInfo(userInfoLinkedin);
   } catch (err) {
-    setSiginError(err.response.status)
-    // console.log("siginData err", err.response.data);
+    setSiginError(err.response.status);
+    console.log("siginData err", err?.response?.data);
     // console.log(err.response.status)
   }
 };

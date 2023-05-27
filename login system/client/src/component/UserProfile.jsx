@@ -10,13 +10,13 @@ const UserProfile = () => {
   console.log(userData?.email, "userData");
   console.log(userData?.data, "localgitUserDAta");
   //*linkedin
-  console.log(userData.userProfile);
-  console.log(userData.userEmail);
-  console.log(userData.userProfile.localizedFirstName);
-  console.log(
-    userData.userProfile?.profilePicture?.displayImage,
-    "image linkedin"
-  );
+  // console.log(userData?.userProfile);
+  // console.log(userData?.userEmail);
+  // console.log(userData?.userProfile?.localizedFirstName);
+  // console.log(
+  //   userData.userProfile?.profilePicture?.displayImage,
+  //   "image linkedin"
+  // );
 
   console.log(userData);
 
