@@ -20,25 +20,29 @@ const LinkedinAccess = () => {
 
   const getUserInfoSiginLinkedin = async () => {
     const userInfoLinkedin = await getUserDataSiginLinkedin(setSiginError);
-    console.log("user info linkedin data", userInfoLinkedin?.data);
-    userInfoLinkedin?.data.userPrfoile;
-    userInfoLinkedin?.data.userEmail;
-    console.log(
-      userInfoLinkedin?.data.userPrfoile,
-      userInfoLinkedin?.data.userEmail.elements[0]["handle~"].emailAddress
-    );
+    // console.log("user info linkedin data", userInfoLinkedin?.data);
+    // userInfoLinkedin?.data.userPrfoile;
+    // userInfoLinkedin?.data.userEmail;
+    // console.log(
+    //   userInfoLinkedin?.data.userPrfoile,
+    //   userInfoLinkedin?.data.userEmail.elements[0]["handle~"].emailAddress
+    // );
+
+    //*set linkedin data to localstroge
     localStorage.setItem(
       "userData",
       JSON.stringify({
         userProfile: userInfoLinkedin?.data.userPrfoile,
         userEmail:
-          userInfoLinkedin?.data.userEmail.elements[0]["handle~"].emailAddress,
+          userInfoLinkedin?.data.userEmail.elements[0]["handle~"]?.emailAddress,
+        pic: userInfoLinkedin?.data?.userImage.profilePicture["displayImage~"]
+          ?.elements[0]?.identifiers[0]?.identifier,
       })
     );
     setTimeout(() => {
       navigate("/profile");
     }, 2000);
-    console.log(sigineError);
+    // console.log(sigineError);
     if (sigineError) {
       setTimeout(() => {
         navigate("/login");

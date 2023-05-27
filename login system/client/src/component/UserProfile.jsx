@@ -9,6 +9,17 @@ const UserProfile = () => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   console.log(userData?.email, "userData");
   console.log(userData?.data, "localgitUserDAta");
+  //*linkedin
+  console.log(userData.userProfile);
+  console.log(userData.userEmail);
+  console.log(userData.userProfile.localizedFirstName);
+  console.log(
+    userData.userProfile?.profilePicture?.displayImage,
+    "image linkedin"
+  );
+
+  console.log(userData);
+
   const GetuserDataLocal = userData?.data;
   console.log(GetuserDataLocal, "userdata in uselayout");
 
@@ -47,7 +58,8 @@ const UserProfile = () => {
       >
         logout
       </button>
-      <h1>Profile Pages</h1>{" "}
+      <h1>Profile Pages</h1>
+      {/* user prfoile github */}
       {localtoken && GetuserDataLocal ? (
         <>
           <h2>welcome {GetuserDataLocal?.login}</h2>
@@ -67,6 +79,7 @@ const UserProfile = () => {
       ) : (
         ""
       )}
+      {/* register and login manual  */}
       {userData?.pic && (
         <div>
           <figure>
@@ -79,6 +92,21 @@ const UserProfile = () => {
           <p>{userData?.email}</p>
           <p>{userData?.password}</p>
         </div>
+      )}
+      {/* user profile linkedin */}
+
+      {userData?.userProfile && userData?.userEmail ? (
+        <div>
+          <p>
+            userName:<span>{userData.userProfile.localizedFirstName} </span>
+            <span>{userData.userProfile.localizedLastName}</span>
+          </p>
+          <p>
+            email : <span>{userData?.userEmail}</span>
+          </p>
+        </div>
+      ) : (
+        ""
       )}
     </div>
   );

@@ -34,7 +34,7 @@ const signinLinkedin = async (req, res, next) => {
   try {
     // console.log("likedinToken in siginLinkedin", likedinToken);
     const Userdata = await getTokenAccessUserDataLinkedin(
-      "AQVmmNThGRF2MD6-ds1HZxM5T-lKrgmkM89GVYjGNU60tIV-3KpWd12Prq9PhBKqNANo04E3cMc0TiqyOJquNUoRZ2C6pl-TdABdTf90HKMGbhSl4wzpOCm5uSAwQ3JVLe33xDwD9zjPIHjuxSBMxCkqB38oeQTZFG9uLdzxitI4uVxfCgqSvcKYeXVYLc1aV9pOdYweRQ6yIgMBGucmD5ZOXsKQTrpfJs1TAvhATm9vfjRcYeK-_apXSnVvxrHbbc9zFl-KORYOeQ3PD6Y8IxUx8AxssD6UKhmDRv_codrXQLi8enOPgSEBmn_rfWGeBj-lu9IgRuOL2h8ZG1tAKmRofFNuBA"
+      "AQWjy3NZBNxo5j6pSbCP2wpANrfetOvZkV0tbiIbzuwxvGc_GhOABxezB2gqxt2VvpI8lhHvdP_l36hyvRmXF-hxzFhIHQD_TtFZMDx2iL6jMWKB1d_y0lI7gk4eL3TMik-nbFgaxfbHfGyBDEY6u7i607yTmPlwR5-_LgTB-kLzBBtS858UZRJBlN97-ykhv92AG1_4_U-MR2wxYb8CpbEXaRalXnUUPgSalL_UImtt9m89xCYW2lPU31HPG4JWwChm7Vdmfd4xNwERXk15xHMG13eL_23FjYOIKUZKCmZqevIT7noKDMoo17rWiFg9UAeAQIj2gsKTDMCIi7889rkcks6bZg"
     );
     console.log("profile in signinLinkedin", Userdata?.userProfile);
     console.log(" Email in signinLinkedin", Userdata?.userEmail);
@@ -42,6 +42,7 @@ const signinLinkedin = async (req, res, next) => {
     return res.status(200).send({
       userPrfoile: Userdata?.userProfile,
       userEmail: Userdata?.userEmail,
+      userImage: Userdata?.userImage,
     });
   } catch (err) {
     console.log("siginLinkedin :", err.message);
