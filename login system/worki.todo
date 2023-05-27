@@ -99,6 +99,17 @@ set cors origin address client after deploy
 create online document . 
 post in linkedin . 
 
+//*
+server rdy for local . 
+now most back to clinet , get data from sigin linkedin api 
+if have data exist redirect to userProfile , and show infomation user 
+then create login part likedin for clinet haved api for login . 
+
+then finish they parts  , back server to online address api and redirect url 
+then check login first then register . 
+
+if every thing work login and sigin with linkedin is finish !
+
 
 //*
 برای اینکه توکن جدید بگیریم برای ثبت نام با لینکدین

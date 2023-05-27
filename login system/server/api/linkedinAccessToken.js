@@ -14,12 +14,6 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
     // console.log("response in api:", accessTokenApi);
     // console.log("Access token in api:", accessToken);
     //*for  online
-    // https://api.linkedin.com/v2/people/(id:{person ID})
-    // https://api.linkedin.com/v2/me
-    // https://api.linkedin.com/v2/me?projection=(id,profilePicture(displayImage~:playableStreams))
-    // "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
-    // https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))&oauth2_access_token=YOUR_ACCESS_TOKEN_HERE
-
     const responses = await Promise.all(
       urls.map((url) =>
         axios.get(url, {
@@ -55,16 +49,16 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       //*for sigin
       // return createLinkedinUserData;
       //*for sigin
-      return userProfileApi;
+      return { userProfile: userProfileApi.data, userEmail: emailApi.data };
     }
     // console.log("Sigin Data Response Linkedin : ", userDataResponse.data);
   } catch (err) {
-    console.error(
+    console.log(
       "ERROR IN > api > getTokenAccessUserDataLinkedin function ",
-      err
+      err.response.data
     );
-    // console.error(err?.response?.data, "something went wrong");
-    // // return err?.response?.data;
+    throw err;
+    // return err?.response?.data;
   }
 };
 
@@ -95,7 +89,7 @@ const getCodeAccessLinkedin = async (code) => {
     // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
     const userData = await getTokenAccessUserDataLinkedin(
-      "AQX0i61Ko6eFO8kXEJCLzYQTqDWAeuHSFcIZbnAjNCat-dNH3044-a8dU013dadpBU1DoAFueHXJA7IcM1KJfH78RV6UmUtzwQmDvSCoMd-9fgYswFgEbnXuAE-JWmkjM7NYUBR9Exz8bhA9SeH4afKB-ZvbISL0iX_bMgrRb6kYZhTtYI6fuUT540Iwka6_yhp6mxGM5mqX7ibrqVGgcUWp70HSm_lsBVE_69OjFA0R34ZsXfrXJRGmq0egB4NbQo-DsYkDgWfqFx-HTTjVwWhzVzkxSVTAsfxSypr8FLVVJLymwP5Ds8YgAi6FdUVap3UKr34dggnosZcLFjKWR_M9IE80zw"
+      "AQVmmNThGRF2MD6-ds1HZxM5T-lKrgmkM89GVYjGNU60tIV-3KpWd12Prq9PhBKqNANo04E3cMc0TiqyOJquNUoRZ2C6pl-TdABdTf90HKMGbhSl4wzpOCm5uSAwQ3JVLe33xDwD9zjPIHjuxSBMxCkqB38oeQTZFG9uLdzxitI4uVxfCgqSvcKYeXVYLc1aV9pOdYweRQ6yIgMBGucmD5ZOXsKQTrpfJs1TAvhATm9vfjRcYeK-_apXSnVvxrHbbc9zFl-KORYOeQ3PD6Y8IxUx8AxssD6UKhmDRv_codrXQLi8enOPgSEBmn_rfWGeBj-lu9IgRuOL2h8ZG1tAKmRofFNuBA"
     );
     console.log(
       "LinkedIn user data in api > getCodeAccessLinkedin function:",

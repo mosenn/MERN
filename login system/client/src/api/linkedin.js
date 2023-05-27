@@ -17,3 +17,16 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
     console.log(err.data, "err in api clinet");
   }
 };
+
+export const getUserDataSiginLinkedin = async (setSiginError) => {
+  try {
+    const userInfoLinkedin = await axios.get(
+      "http://localhost:5000/signinLinkedin"
+    );
+    return userInfoLinkedin;
+  } catch (err) {
+    setSiginError(err.response.status)
+    // console.log("siginData err", err.response.data);
+    // console.log(err.response.status)
+  }
+};
