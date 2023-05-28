@@ -34,12 +34,12 @@ const signinLinkedin = async (req, res, next) => {
   try {
     // console.log("likedinToken in siginLinkedin", likedinToken);
     const Userdata = await getTokenAccessUserDataLinkedin(
-      "AQUgbprzNkINIQQrmV8IZe9HEcW87B6H_NWsbmf9ufbjE25FJ0HMCYTlYOeakXxDmZOXMp0tpZrCPhdgIjQ2ZlhHrhWxoQeEPlLVBpLqhMkFIMxW1smuhgNLOI4rGmjFcXEW38HTUkFQcrcZ9st8OxjeDbLeAowuEI9GQPtBVuVFVi8sGznzlAZy5E8f14dD7tjMKGWQ6lmRzuUZf9y-nrwHk6OJKxQDQNn3c5iFBfsYyPU5eULcPU7Eyj-xPG1XYvfnw_CFTT_uZs_fYaUXZTNG4995jCQb33AirbHVHK5EonWQl6pFXSrabv4lqkJpVhZz3SW7dwxxtwEzymdyMpECJH9Iqw"
+      "AQWnaOZ10vIuPjBi2ola0Et2xuRLLwMn3nlVSr6ESx7bUPhtFLc6OFmJoP6K1iFQ_X_BkbLnI0vuxS1ik7NssRd59W9dWb_HIQ5gk6viGWGkf9VVEbUKIdBo8p19IC-jT0kzbRWEwy7sCNySaZsFSSJsaGe4oS3-Ih8qS10XVefA4YoKaFrJWG7ct1vOoDWqakY_qA1RzTfyO7SisYYdreol8wnz7dcS1XSF_o7lrruMn7oKFpV06QZGXlHNac1dUMthGNHsmU4opfT_a8icYzzsmHUCWUWrYxjxARfxdd6i70WvwHGhk2Pz92G28mZV1OZFoqckIhkQyE6kSogv_XOlL-fm3Q"
     );
     // console.log("profile in signinLinkedin", Userdata?.userProfile);
     // console.log(" Email in signinLinkedin", Userdata?.userEmail);
     // return res.status(200).send(tokenInMongodb);
-    console.log("user data ", Userdata);
+    // console.log("user data ", Userdata);
     return res.status(200).send(Userdata);
     // return res.status(200).send({
     //   userPrfoile: Userdata?.userProfile,
