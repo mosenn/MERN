@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { registerUser } from "../api/registerAndLogin";
 import RecaptchaGoogle from "./RecaptchaGoogle";
 import { postTokenRecapchaGoogle } from "../api/recapchaGoogle";
+import LinksForLoginAndSigin from "./LinksForLoginAndSigin";
 
 const FormRegister = ({
   setDataUserRegister,
@@ -143,6 +144,7 @@ const FormRegister = ({
 
         <RecaptchaGoogle refRecaptcha={refRecaptcha} />
       </form>
+      <LinksForLoginAndSigin />
     </div>
   );
 };

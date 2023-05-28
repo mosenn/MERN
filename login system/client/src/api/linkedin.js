@@ -30,3 +30,21 @@ export const getUserDataSiginLinkedin = async () => {
     // console.log(err.response.status)
   }
 };
+
+export const loginWithLinkedin = async (email) => {
+  try {
+    const sendEamil = await axios.post(
+      "http://localhost:5000/loginLinkedin",
+      { email: email },
+      {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log(sendEamil.data);
+    return sendEamil.data;
+  } catch (err) {
+    console.log("ERROR IN LOGIN LINKEDIN : ", err.response.data);
+    throw err.response.data;
+  }
+};
