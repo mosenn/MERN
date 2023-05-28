@@ -18,7 +18,7 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   }
 };
 
-export const getUserDataSiginLinkedin = async (setSiginError) => {
+export const getUserDataSiginLinkedin = async () => {
   try {
     const userInfoLinkedin = await axios.get(
       "http://localhost:5000/signinLinkedin"
@@ -26,7 +26,6 @@ export const getUserDataSiginLinkedin = async (setSiginError) => {
     console.log(userInfoLinkedin, "in api func data");
     return userInfoLinkedin;
   } catch (err) {
-    setSiginError(err.response.status);
     console.log("siginData err", err?.response?.data);
     // console.log(err.response.status)
   }

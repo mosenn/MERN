@@ -6,18 +6,15 @@ import {
 } from "../api/linkedin";
 import Loading from "./Loading";
 const LinkedinAccess = () => {
-  const [sigineError, setSiginError] = useState({});
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  // const [messageSigin, setMesssageSigin] = useState("");
+  const [messageSigin, setMesssageSigin] = useState(false);
 
   const getUserInfoSiginLinkedin = async () => {
     try {
       console.log("function is run getUserInfoSiginLinkedin");
-      console.log(sigineError, "sigineError");
-      //*test
 
-      const data = await getUserDataSiginLinkedin(setSiginError);
+      const data = await getUserDataSiginLinkedin();
 
       //*worked
       //*have data here
@@ -31,6 +28,7 @@ const LinkedinAccess = () => {
         }, 3000);
         return;
       }
+      setMesssageSigin(true);
       //*if dont have data redirect to login
       setTimeout(() => {
         navigate("/login");
@@ -58,8 +56,14 @@ const LinkedinAccess = () => {
 
   return (
     <div>
-      <h1>access code paramas linkedin</h1>
+      {/* <h1>access code paramas linkedin</h1> */}
       {/* work for error */}
+      {messageSigin && (
+        <div>
+          <h3>you are sigin before</h3>
+          <h4>redirect to login page wait..</h4>
+        </div>
+      )}
       {loading && <Loading />}
     </div>
   );

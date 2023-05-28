@@ -13,7 +13,7 @@ const Loading = () => {
       }}
     >
       {/* <h1>Loading...</h1> */}
-      <ClimbingBoxLoader color="#36d7b7" size={30} />
+      <ClimbingBoxLoader color="#36d7b7" size={15} />
     </div>
   );
 };
