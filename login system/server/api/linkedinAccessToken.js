@@ -96,7 +96,7 @@ const getCodeAccessLinkedin = async (code) => {
     // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
     const userData = await getTokenAccessUserDataLinkedin(
-      "AQWnaOZ10vIuPjBi2ola0Et2xuRLLwMn3nlVSr6ESx7bUPhtFLc6OFmJoP6K1iFQ_X_BkbLnI0vuxS1ik7NssRd59W9dWb_HIQ5gk6viGWGkf9VVEbUKIdBo8p19IC-jT0kzbRWEwy7sCNySaZsFSSJsaGe4oS3-Ih8qS10XVefA4YoKaFrJWG7ct1vOoDWqakY_qA1RzTfyO7SisYYdreol8wnz7dcS1XSF_o7lrruMn7oKFpV06QZGXlHNac1dUMthGNHsmU4opfT_a8icYzzsmHUCWUWrYxjxARfxdd6i70WvwHGhk2Pz92G28mZV1OZFoqckIhkQyE6kSogv_XOlL-fm3Q"
+      "AQVawNo5_tmgXAw7kKDyash_oyEMj5d1D18Enkt1oLuqR8lk2WsERO7cTjgSymdXX_vaqiqgzEboPrJhWy5NQ4tO18swyaBaIj1zWfu0OshXDospzBzByx469gAP1Mzjm-axPioiPYgiFol67DEMFUUJ5IW8MA3osjTiMa0KaOc7Ago-EUOWv9BuhanZJXfssh8f-WA3UkDkph04n7c45TxfpIAK5wJNFT9viicR4N-PnE7HEAeA_QoJhwDCfR19D0pcg1QJqcWBMbnBwdY-HsrhxzW3tI2JuvZO1oFBwCpUNT8UdXWgUCgs74myGSoIPppnjP39zd1CPO6DqtNTeH-PVp_q7g"
     );
     console.log(
       "LinkedIn user data in api > getCodeAccessLinkedin function:",
