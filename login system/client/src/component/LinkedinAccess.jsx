@@ -4,10 +4,13 @@ import {
   takeCodeAndPostToServerLinkedin,
   getUserDataSiginLinkedin,
 } from "../api/linkedin";
-
+import Loading from "./Loading";
 const LinkedinAccess = () => {
   const [sigineError, setSiginError] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  // const [messageSigin, setMesssageSigin] = useState("");
+
   const getUserInfoSiginLinkedin = async () => {
     try {
       console.log("function is run getUserInfoSiginLinkedin");
@@ -24,12 +27,14 @@ const LinkedinAccess = () => {
         localStorage.setItem("userData", JSON.stringify(data?.data));
         setTimeout(() => {
           navigate("/profile");
+          setLoading(false);
         }, 3000);
         return;
       }
       //*if dont have data redirect to login
       setTimeout(() => {
         navigate("/login");
+        setLoading(false);
       }, 3000);
       //*worked
     } catch (err) {
@@ -54,8 +59,8 @@ const LinkedinAccess = () => {
   return (
     <div>
       <h1>access code paramas linkedin</h1>
-      {/* {sigineError && <h3>you have account redirect to login page ✌</h3>}
-      {loading && <Loading />} */}
+      {/* work for error */}
+      {loading && <Loading />}
     </div>
   );
 };
