@@ -3,10 +3,10 @@ const { register, login } = require("../controller/registerAndLoginUser");
 const googleRecapcha = require("../controller/googelRecapcha");
 const {
   accessTokenLinkedin,
-  signinLinkedin,
+
   loginLikedin,
 } = require("../controller/linkedin");
-// const multer = require("multer");
+
 const multer = require("multer");
 const path = require("path");
 
@@ -21,9 +21,12 @@ const storage = multer.diskStorage({
     );
   },
 });
+//*for local worked
 // const upload = multer({
 //   dest: "uploads/",
 // });
+//*for local worked
+
 const upload = multer({ storage });
 //
 //*register

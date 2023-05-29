@@ -2,7 +2,6 @@ const axios = require("axios");
 const linkdinModel = require("../model/linkedin");
 
 //*getTokenAccessUserDataLinkedin & getCodeAccessLinkedin for singin linkedin
-// https://api.linkedin.com/v2/me?projection=(id,profilePicture(displayImage~:playableStreams))
 let urls = [
   "https://api.linkedin.com/v2/me?projection=(id,profilePicture(displayImage~:playableStreams))",
   "https://api.linkedin.com/v2/me",
@@ -62,7 +61,6 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       err
     );
     throw err;
-    // return err?.response?.data;
   }
 };
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-//*take url params code pass to api for take token
+//*take url params code pass to api for take token and return user data linkedin
 export const takeCodeAndPostToServerLinkedin = async (code) => {
   // console.log(code, "code in api clinet"); //* have log code
   try {
@@ -18,19 +18,7 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   }
 };
 
-export const getUserDataSiginLinkedin = async () => {
-  try {
-    const userInfoLinkedin = await axios.get(
-      "http://localhost:5000/signinLinkedin"
-    );
-    console.log(userInfoLinkedin, "in api func data");
-    return userInfoLinkedin;
-  } catch (err) {
-    console.log("siginData err", err?.response);
-    // console.log(err.response.status)
-  }
-};
-
+//*login linkedin
 export const loginWithLinkedin = async (email) => {
   try {
     const sendEamil = await axios.post(
