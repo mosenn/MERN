@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   takeCodeAndPostToServerLinkedin,
-  getUserDataSiginLinkedin,
+  // getUserDataSiginLinkedin,
 } from "../api/linkedin";
 import Loading from "./Loading";
 const LinkedinAccess = () => {
@@ -11,15 +12,11 @@ const LinkedinAccess = () => {
   const [messageSigin, setMesssageSigin] = useState(false);
 
   const getUserInfoSiginLinkedin = async () => {
+    //*change for update user just one time save in db
     try {
-      console.log("function is run getUserInfoSiginLinkedin");
+      const data = await axios.get("http://localhost:5000/signinLinkedin");
+      console.log(data, "in update function accesslinkedin.jsx");
 
-      const data = await getUserDataSiginLinkedin();
-
-      //*worked
-      //*have data here
-      console.log("data", data);
-      console.log(data?.data);
       if (data?.status === 200) {
         localStorage.setItem("userData", JSON.stringify(data?.data));
         setTimeout(() => {
@@ -28,17 +25,50 @@ const LinkedinAccess = () => {
         }, 3000);
         return;
       }
-      setMesssageSigin(true);
+      // setMesssageSigin(true);
       //*if dont have data redirect to login
-      setTimeout(() => {
-        navigate("/login");
-        setLoading(false);
-      }, 3000);
-      //*worked
     } catch (err) {
-      console.log(err, "errors");
+      console.log("siginData err", err?.response?.data);
+      // console.log(err.response.status)
+      setMesssageSigin(true);
+      setLoading(false);
+      // setTimeout(() => {
+      //   navigate("/login");
+      //   setLoading(false);
+      //   console.log("navigate login");
+      // }, 3000);
     }
+
+    //*old is working perfect
+    // try {
+    //   console.log("function is run getUserInfoSiginLinkedin");
+
+    //   const data = await getUserDataSiginLinkedin();
+
+    //   //*worked
+    //   //*have data here
+    //   console.log("data", data);
+    //   console.log(data?.data);
+    //   if (data?.status === 200) {
+    //     localStorage.setItem("userData", JSON.stringify(data?.data));
+    //     setTimeout(() => {
+    //       navigate("/profile");
+    //       setLoading(false);
+    //     }, 3000);
+    //     return;
+    //   }
+    //   setMesssageSigin(true);
+    //   //*if dont have data redirect to login
+    //   setTimeout(() => {
+    //     navigate("/login");
+    //     setLoading(false);
+    //   }, 3000);
+    //   //*worked
+    // } catch (err) {
+    //   console.log(err, "errors");
+    // }
   };
+
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");

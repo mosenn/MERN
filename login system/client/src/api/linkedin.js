@@ -18,19 +18,20 @@ export const takeCodeAndPostToServerLinkedin = async (code) => {
   }
 };
 
-export const getUserDataSiginLinkedin = async () => {
-  try {
-    const userInfoLinkedin = await axios.get(
-      "http://localhost:5000/signinLinkedin"
-    );
-    console.log(userInfoLinkedin, "in api func data");
-    return userInfoLinkedin;
-  } catch (err) {
-    console.log("siginData err", err?.response?.data);
-    // console.log(err.response.status)
-  }
-};
-
+//*work is perfect old
+// export const getUserDataSiginLinkedin = async () => {
+//   try {
+//     const userInfoLinkedin = await axios.get(
+//       "http://localhost:5000/signinLinkedin"
+//     );
+//     console.log(userInfoLinkedin, "in api func data");
+//     return userInfoLinkedin;
+//   } catch (err) {
+//     console.log("siginData err", err?.response?.data);
+//     // console.log(err.response.status)
+//   }
+// };
+//*work is perfect old
 export const loginWithLinkedin = async (email) => {
   try {
     const sendEamil = await axios.post(

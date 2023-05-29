@@ -12,35 +12,33 @@ let urls = [
 const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
   try {
     //*for  online
-    // const accessToken = accessTokenApi.data.access_token;
+    const accessToken = accessTokenApi.data.access_token;
     // console.log("response in api:", accessTokenApi);
-    // console.log("Access token in api:", accessToken);
+    console.log("Access token in api:", accessToken);
     //*for  online
     const responses = await Promise.all(
       urls.map((url) =>
         axios.get(url, {
           headers: {
             //*for online
-            Authorization: `Bearer ${accessTokenApi}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
       )
     );
-    if (responses[0].status === 200) {
+    // console.log("response data urls api", responses.data);
+    if (responses.every((response) => response.status === 200)) {
       console.log("Sigin status: ", responses[0].status);
       const [userImage, userProfileApi, emailApi] = responses;
-
-      // console.log("Profile user linkedin Sigin :", userProfileApi?.data);
-      // console.log(
-      //   "Email user Linkedin :",
-      //   emailApi?.data?.elements[0]["handle~"].emailAddress
-      // );
-      // console.log("user image ", userImage?.data);
-      // console.log("Email user  :", emailApi?.data);
-      // return [userProfileApi?.data, emailApi?.data];
+      // console.log("all data in if api", userImage, userProfileApi, emailApi);
       //*for sigin
       const createLinkedinUserData = await linkdinModel.create({
-        token: accessTokenApi,
+        //*for local
+        // token: accessTokenApi,
+        //*for local
+        //* for online
+        token: accessToken,
+        //* for online
         email: emailApi?.data?.elements[0]["handle~"]?.emailAddress,
         // userProfile: userProfileApi?.data,
         firstName: userProfileApi?.data?.localizedFirstName,
@@ -49,15 +47,9 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
           ?.identifiers[0]?.identifier,
       });
       //*for sigin
-      //*for sigin
+
       console.log("create", createLinkedinUserData);
       return createLinkedinUserData;
-      //*for sigin
-      // return {
-      //   userImage: userImage.data,
-      //   userProfile: userProfileApi.data,
-      //   userEmail: emailApi.data,
-      // };
     }
     // console.log("Sigin Data Response Linkedin : ", userDataResponse.data);
   } catch (err) {
@@ -90,18 +82,21 @@ const getCodeAccessLinkedin = async (code) => {
         },
       }
     );
-
+    // console.log(
+    //   "accessTokenApi in  getCodeAccessLinkedin api",
+    //   accessTokenApi.data
+    // );
     //*take Token from api then return user infomation linkedin
     //*for sigin online
-    // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
+    const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
-    const userData = await getTokenAccessUserDataLinkedin(
-      "AQWpewwSKlWRP1RQSsA5xf4MsKpGswnF7n3KwAVlhfifSuS_hzcAJWsHkOg1J58OhyGUcZV36jtzxDJdIsp7-TCSEduekJjCM2jA0oa0fVYVpmUuVv7LFUu6-xU_NDcY91hQ7shdYfLIFs_lZ96RO6Glqrtb-69A1pznFS4Y8fDRce_qIfP3zc53nNNvme7YwqIeTNTNQijygI9Li3_smpW1d-J75W3BrN3YWVydn8XFsxFcMBUjRPyJcu8xUSbH45c7fm8g_b9-GOWT_J2r3U-UJG4R40gpvv0uQ_04YSqCI3sSwiAc638G126uPKI9rmoSScxD4Dsx2X_lsa5I-eQZ3my-TA"
-    );
-    console.log(
-      "LinkedIn user data in api > getCodeAccessLinkedin function:",
-      userData
-    );
+    // const userData = await getTokenAccessUserDataLinkedin(
+    //   "AQWEYUTEsSFmwxQeohxOd6RFdb7yb0rBLcWYOaEzX3qA48NS_V4Ofv0Jst_3dhhUh4t6wm45vqaJQKb7TjAntAp4MRm__B4_F3EiKXWSQRGe25d5DLNZE5kv7qiNesfyObM3G_PZ3UAXCU5YeSP8VrxAAovSO6nxfo4I8OYBeHvGyRZhi15CF_oRZ_mxHM4dMejMNYIcEBm6Lg3RZnsRK7x4Za68jkvWscuYvspQTMMOH6mA2ywJn_zEZKlG3JhzhSWIXJ-kWflLhrI6bEkO0JxAELHDyIvoFj0e6jkFNR17M2IKR0JkglLH1oMSEbn1NQipF4tpThHRKF7xFwVNeKogRJfVow"
+    // );
+    // console.log(
+    //   "LinkedIn user data in api > getCodeAccessLinkedin function:",
+    //   userData
+    // );
 
     return accessTokenApi?.data;
   } catch (err) {
