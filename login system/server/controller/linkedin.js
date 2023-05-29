@@ -39,10 +39,14 @@ const signinLinkedin = async (req, res, next) => {
     // const Userdata = await getTokenAccessUserDataLinkedin(
     //   "AQWAonxr8ysVoFECafxrzSexcKTwqjV8-C8cwVEOgVCGI36qPOXOWSkHUFc_0IfWzvsghhdJ5A9XdFwRAoGTm-5KSxbKU_DgUp8JN6neGnzB0UEEMsikAtfpXkccX8Pmi-dPihxHWUvVfaX6mdDgKV_lm5gJDMZ3aLNP7KGRZRFRkj5edl9gOh1SNzpnSnpiH8rFbhnWAcD6YJi18S79M8tW9YKsIeApYt12soFcuzR9wsOUkpasEWZ3RUfmKumkm2NdUSQ1_edl2n-bM0HFE_ElDuyBlLxLdJQLrJkTxCAZ5WQYmPUylJcs9QKWs9Kcax4Tc6TLAp8_-BA5wpNA4J3txnIX4w"
     // );
+
     //*this old , work is perfect but i want save just one time user to db
     const userData = await linkdinModel.findOne({
       token: likedinToken.access_token,
     });
+    if (userData) {
+      console.log("user data here true");
+    }
     return res.status(200).send(userData);
   } catch (err) {
     console.log("siginLinkedin :", err.message);
