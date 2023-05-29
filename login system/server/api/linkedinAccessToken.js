@@ -38,7 +38,7 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
 
       console.log("checkUser", checkUser);
       if (checkUser) {
-        throw "you have account ✌";
+        throw Error("you have account ✌");
       }
       const createLinkedinUserData = await linkdinModel.create({
         token: accessToken,
@@ -59,7 +59,7 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
   } catch (err) {
     console.log(
       "ERROR IN > api > getTokenAccessUserDataLinkedin function ",
-      err?.response?.data
+      err
     );
     throw err;
     // return err?.response?.data;

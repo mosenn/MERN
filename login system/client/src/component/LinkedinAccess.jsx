@@ -37,13 +37,31 @@ const LinkedinAccess = () => {
       console.log(err, "errors");
     }
   };
-  
+
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
+
     if (code) {
       const data = await takeCodeAndPostToServerLinkedin(code);
-      console.log("this is Code : ", data);
+      console.log("this is user data : ", data);
+      if (data) {
+        localStorage.setItem("userData", JSON.stringify(data));
+        setTimeout(() => {
+          navigate("/profile");
+          setLoading(false);
+        }, 3000);
+        return;
+      }
+      //*redirect to login page
+      if (data === null) {
+        // console.log("alert");
+        setMesssageSigin(true);
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/login");
+        }, 3000);
+      }
     }
   };
 
@@ -55,15 +73,15 @@ const LinkedinAccess = () => {
 
   return (
     <div>
-      <h1>access code paramas linkedin</h1>
+      {/* <h1>access code paramas linkedin</h1> */}
       {/* work for error */}
-      {/* {messageSigin && (
+      {messageSigin && (
         <div>
-          <h3>you are sigin before</h3>
+          <h3>you are sigin before ✌</h3>
           <h4>redirect to login page wait..</h4>
         </div>
       )}
-      {loading && <Loading />} */}
+      {loading && <Loading />}
     </div>
   );
 };

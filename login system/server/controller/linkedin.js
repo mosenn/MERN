@@ -13,6 +13,7 @@ const accessTokenLinkedin = async (req, res, next) => {
     const code = req.query.code;
     // console.log("CODE in accessToken Linkedin Controller:", code);
     const token = await getCodeAccessLinkedin(code);
+    console.log(token, "token");
     // console.log("token before push", token);
     // likedinToken.push(token);
     // // console.log("likedinToken in Controller>accessTokenLinkedin", likedinToken);
@@ -23,7 +24,7 @@ const accessTokenLinkedin = async (req, res, next) => {
     const userData = await linkdinModel.findOne({ token: token.access_token });
     return res.status(200).json(userData);
   } catch (err) {
-    console.log(err, 'this err from')
+    console.log(err, "this err from");
     return res.status(401).send(err);
   }
 };
