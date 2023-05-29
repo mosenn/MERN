@@ -71,8 +71,8 @@ const getCodeAccessLinkedin = async (code) => {
       code: code,
       client_id: process.env.CLIENT_ID_LINKEDIN,
       client_secret: process.env.SECRET_LINKEDIN,
-      // redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin", //=> for online
-      redirect_uri: "http://127.0.0.1:5173/accessLinkedin", //=> for local
+      redirect_uri: "https://loginsystemtest.vercel.app/accessLinkedin", //=> for online
+      // redirect_uri: "http://127.0.0.1:5173/accessLinkedin", //=> for local
       // "clinet_address/accessLinkedin",
     });
     const accessTokenApi = await axios.post(
