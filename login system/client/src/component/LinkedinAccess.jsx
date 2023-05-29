@@ -13,32 +13,31 @@ const LinkedinAccess = () => {
   const getUserInfoSiginLinkedin = async () => {
     try {
       console.log("function is run getUserInfoSiginLinkedin");
-
       const data = await getUserDataSiginLinkedin();
-
       //*worked
       //*have data here
       console.log("data", data);
       console.log(data?.data);
-      if (data?.status === 200) {
-        localStorage.setItem("userData", JSON.stringify(data?.data));
-        setTimeout(() => {
-          navigate("/profile");
-          setLoading(false);
-        }, 3000);
-        return;
-      }
-      setMesssageSigin(true);
-      //*if dont have data redirect to login
-      setTimeout(() => {
-        navigate("/login");
-        setLoading(false);
-      }, 3000);
+      // if (data?.status === 200) {
+      //   localStorage.setItem("userData", JSON.stringify(data?.data));
+      //   setTimeout(() => {
+      //     navigate("/profile");
+      //     setLoading(false);
+      //   }, 3000);
+      //   return;
+      // }
+      // setMesssageSigin(true);
+      // //*if dont have data redirect to login
+      // setTimeout(() => {
+      //   navigate("/login");
+      //   setLoading(false);
+      // }, 3000);
       //*worked
     } catch (err) {
       console.log(err, "errors");
     }
   };
+  
   const getLinkedinCodeinParamas = async () => {
     const param = new URLSearchParams(window.location.search);
     const code = param.get("code");
@@ -56,15 +55,15 @@ const LinkedinAccess = () => {
 
   return (
     <div>
-      {/* <h1>access code paramas linkedin</h1> */}
+      <h1>access code paramas linkedin</h1>
       {/* work for error */}
-      {messageSigin && (
+      {/* {messageSigin && (
         <div>
           <h3>you are sigin before</h3>
           <h4>redirect to login page wait..</h4>
         </div>
       )}
-      {loading && <Loading />}
+      {loading && <Loading />} */}
     </div>
   );
 };

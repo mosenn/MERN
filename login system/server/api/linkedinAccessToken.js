@@ -12,7 +12,7 @@ let urls = [
 const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
   try {
     //*for  online
-    // const accessToken = accessTokenApi.data.access_token;
+    const accessToken = accessTokenApi.data.access_token;
     // console.log("response in api:", accessTokenApi);
     // console.log("Access token in api:", accessToken);
     //*for  online
@@ -21,7 +21,7 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
         axios.get(url, {
           headers: {
             //*for online
-            Authorization: `Bearer ${accessTokenApi}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
       )
@@ -30,17 +30,18 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       console.log("Sigin status: ", responses[0].status);
       const [userImage, userProfileApi, emailApi] = responses;
 
-      // console.log("Profile user linkedin Sigin :", userProfileApi?.data);
-      // console.log(
-      //   "Email user Linkedin :",
-      //   emailApi?.data?.elements[0]["handle~"].emailAddress
-      // );
-      // console.log("user image ", userImage?.data);
-      // console.log("Email user  :", emailApi?.data);
-      // return [userProfileApi?.data, emailApi?.data];
       //*for sigin
+
+      const checkUser = await linkdinModel.findOne({
+        email: emailApi?.data?.elements[0]["handle~"]?.emailAddress,
+      });
+
+      console.log("checkUser", checkUser);
+      if (checkUser) {
+        throw "you have account ✌";
+      }
       const createLinkedinUserData = await linkdinModel.create({
-        token: accessTokenApi,
+        token: accessToken,
         email: emailApi?.data?.elements[0]["handle~"]?.emailAddress,
         // userProfile: userProfileApi?.data,
         firstName: userProfileApi?.data?.localizedFirstName,
@@ -53,11 +54,6 @@ const getTokenAccessUserDataLinkedin = async (accessTokenApi) => {
       console.log("create", createLinkedinUserData);
       return createLinkedinUserData;
       //*for sigin
-      // return {
-      //   userImage: userImage.data,
-      //   userProfile: userProfileApi.data,
-      //   userEmail: emailApi.data,
-      // };
     }
     // console.log("Sigin Data Response Linkedin : ", userDataResponse.data);
   } catch (err) {
@@ -93,15 +89,15 @@ const getCodeAccessLinkedin = async (code) => {
 
     //*take Token from api then return user infomation linkedin
     //*for sigin online
-    // const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
+    const userData = await getTokenAccessUserDataLinkedin(accessTokenApi);
     //*for sigin online
-    const userData = await getTokenAccessUserDataLinkedin(
-      "AQWpewwSKlWRP1RQSsA5xf4MsKpGswnF7n3KwAVlhfifSuS_hzcAJWsHkOg1J58OhyGUcZV36jtzxDJdIsp7-TCSEduekJjCM2jA0oa0fVYVpmUuVv7LFUu6-xU_NDcY91hQ7shdYfLIFs_lZ96RO6Glqrtb-69A1pznFS4Y8fDRce_qIfP3zc53nNNvme7YwqIeTNTNQijygI9Li3_smpW1d-J75W3BrN3YWVydn8XFsxFcMBUjRPyJcu8xUSbH45c7fm8g_b9-GOWT_J2r3U-UJG4R40gpvv0uQ_04YSqCI3sSwiAc638G126uPKI9rmoSScxD4Dsx2X_lsa5I-eQZ3my-TA"
-    );
-    console.log(
-      "LinkedIn user data in api > getCodeAccessLinkedin function:",
-      userData
-    );
+    // const userData = await getTokenAccessUserDataLinkedin(
+    //   "AQWpewwSKlWRP1RQSsA5xf4MsKpGswnF7n3KwAVlhfifSuS_hzcAJWsHkOg1J58OhyGUcZV36jtzxDJdIsp7-TCSEduekJjCM2jA0oa0fVYVpmUuVv7LFUu6-xU_NDcY91hQ7shdYfLIFs_lZ96RO6Glqrtb-69A1pznFS4Y8fDRce_qIfP3zc53nNNvme7YwqIeTNTNQijygI9Li3_smpW1d-J75W3BrN3YWVydn8XFsxFcMBUjRPyJcu8xUSbH45c7fm8g_b9-GOWT_J2r3U-UJG4R40gpvv0uQ_04YSqCI3sSwiAc638G126uPKI9rmoSScxD4Dsx2X_lsa5I-eQZ3my-TA"
+    // );
+    // console.log(
+    //   "LinkedIn user data in api > getCodeAccessLinkedin function:",
+    //   userData
+    // );
 
     return accessTokenApi?.data;
   } catch (err) {
@@ -118,9 +114,9 @@ const LoginLinkedin = async (dataBaseTOken) => {
       {
         headers: {
           //*for online
-          // Authorization: `Bearer ${dataBaseTOken}`,
+          Authorization: `Bearer ${dataBaseTOken}`,
           //*for online
-          Authorization: `Bearer AQWpewwSKlWRP1RQSsA5xf4MsKpGswnF7n3KwAVlhfifSuS_hzcAJWsHkOg1J58OhyGUcZV36jtzxDJdIsp7-TCSEduekJjCM2jA0oa0fVYVpmUuVv7LFUu6-xU_NDcY91hQ7shdYfLIFs_lZ96RO6Glqrtb-69A1pznFS4Y8fDRce_qIfP3zc53nNNvme7YwqIeTNTNQijygI9Li3_smpW1d-J75W3BrN3YWVydn8XFsxFcMBUjRPyJcu8xUSbH45c7fm8g_b9-GOWT_J2r3U-UJG4R40gpvv0uQ_04YSqCI3sSwiAc638G126uPKI9rmoSScxD4Dsx2X_lsa5I-eQZ3my-TA`,
+          // Authorization: `Bearer AQWpewwSKlWRP1RQSsA5xf4MsKpGswnF7n3KwAVlhfifSuS_hzcAJWsHkOg1J58OhyGUcZV36jtzxDJdIsp7-TCSEduekJjCM2jA0oa0fVYVpmUuVv7LFUu6-xU_NDcY91hQ7shdYfLIFs_lZ96RO6Glqrtb-69A1pznFS4Y8fDRce_qIfP3zc53nNNvme7YwqIeTNTNQijygI9Li3_smpW1d-J75W3BrN3YWVydn8XFsxFcMBUjRPyJcu8xUSbH45c7fm8g_b9-GOWT_J2r3U-UJG4R40gpvv0uQ_04YSqCI3sSwiAc638G126uPKI9rmoSScxD4Dsx2X_lsa5I-eQZ3my-TA`,
         },
       }
     );

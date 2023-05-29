@@ -26,7 +26,7 @@ export const getUserDataSiginLinkedin = async () => {
     console.log(userInfoLinkedin, "in api func data");
     return userInfoLinkedin;
   } catch (err) {
-    console.log("siginData err", err?.response?.data);
+    console.log("siginData err", err?.response);
     // console.log(err.response.status)
   }
 };
