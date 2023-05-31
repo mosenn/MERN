@@ -25,6 +25,9 @@ const moviesSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  types: {
+    type: Array,
+  },
 });
 
 const moviesModel = mongoose.model("movie", moviesSchema);
