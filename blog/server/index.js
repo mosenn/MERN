@@ -2,11 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-require('dotenv').config({path:'./.env'})
+const connectToDb = require("./connection/db");
+require("dotenv").config({ path: "./.env" });
 const app = express();
 //*parser
 app.use(bodyParser.json());
-app.use(cookieParser())
+app.use(cookieParser());
 //*cors
 app.use(
   cors({
@@ -14,7 +15,8 @@ app.use(
     origin: "",
   })
 );
-
+//*mongod db connection
+connectToDb();
 //*testing route
 app.use("/", async (req, res) => {
   res.status(200).send("server is ok");
