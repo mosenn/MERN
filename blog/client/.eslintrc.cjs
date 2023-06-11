@@ -10,6 +10,9 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react-refresh/only-export-components": "warn",
-    "no-unused-var": "none",
+    "no-unused-var": 0,
+    "react/prop-types": 0,
+    "react-hook/rules-of-hooks": 0,
+    "react-refresh/only-export-components": "none",
   },
 };
