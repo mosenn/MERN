@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../components/button/Button";
-
+import { registerUser } from "../../api/users";
 const Register = () => {
   const [register, setRegister] = useState({
     username: "",
@@ -12,11 +12,11 @@ const Register = () => {
   const handleOnchnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRegister({ ...register, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    //*Todo i want send inputs value to server and save to data base in clinet
+     await registerUser(register);
     console.log("form submit");
-    console.log(register, "register values");
   };
   return (
     <div className="h-[90vh]  justify-center items-center flex">

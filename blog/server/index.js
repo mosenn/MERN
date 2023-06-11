@@ -12,15 +12,15 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "",
+    origin: "http://127.0.0.1:5173",
   })
 );
 //*mongod db connection
 connectToDb();
 //* routes
-// app.use("/", async (req, res) => {
-//   res.status(200).send("server is ok");
-// });
+app.use("/home", async (req, res) => {
+  res.status(200).send("server is ok");
+});
 
 app.use("/", require("./routes/user"));
 
