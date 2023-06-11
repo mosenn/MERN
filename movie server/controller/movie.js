@@ -21,4 +21,5 @@ const animations = async (req, res) => {
   }
 };
 
+
 module.exports = { allMovies, animations };

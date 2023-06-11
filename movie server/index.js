@@ -13,7 +13,9 @@ const port = process.env.PORT || 3000;
 
 //*routes
 app.use("/", require("./routes/movies"));
-
+app.use("/", require("./routes/recomend"));
+app.use("/", require("./routes/newmovie"));
+app.use("/", require("./routes/hotmovie"));
 
 //*test route
 app.get("/", (req, res) => {
