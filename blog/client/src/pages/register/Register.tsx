@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import Button from "../../components/button/Button";
 import { registerUser } from "../../api/users";
+import { uploadRegisterImage } from "../../api/uploadImage";
+//* address api for upload image
+const urluploadimg = `https://api.cloudinary.com/v1_1/dm6tmiksw/image/upload`;
+// https://api.cloudinary.com/v1_1/dm6tmiksw
+//* address api for upload image
+
 const Register = () => {
   const [register, setRegister] = useState({
     username: "",
@@ -10,14 +16,29 @@ const Register = () => {
   });
 
   const handleOnchnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "pic") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setRegister({
+            ...register,
+            [e.target.name]: reader.result as string,
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
     setRegister({ ...register, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //*Todo i want send inputs value to server and save to data base in clinet
-     await registerUser(register);
     console.log("form submit");
+    console.log("register", register);
+    uploadRegisterImage(register.pic);
   };
+
   return (
     <div className="h-[90vh]  justify-center items-center flex">
       <form
