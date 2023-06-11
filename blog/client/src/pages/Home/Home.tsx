@@ -1,5 +1,5 @@
 import React from "react";
-
+import Button from "../../components/button/Button";
 interface dataPostFake {
   id: number;
   postCover: string;
@@ -67,33 +67,35 @@ const fakeData: dataPostFake[] = [
 ];
 const Home = () => {
   return (
-    <section className="grid justify-center md:justify-center md:grid-cols-3 md:p-2 md:m-2 md:gap-2">
+    <section className="grid justify-center md:justify-center md:grid-cols-2 lg:grid-cols-3 md:p-2 md:m-2 md:gap-2 lg:gap-">
       {fakeData?.map((blog: any) => {
         return (
           <div
             key={blog.id}
-            className="flex flex-col items-center m-2 md:p-5 text-left"
+            className="border lg:p-0 lg:m-0 flex flex-col items-center m-2  text-left"
           >
             <h2 className="p-2 text-xl  font-semibold">{blog.postTitle}</h2>
 
             <figure className="flex flex-col items-center">
               <img
-                className="w-72 lg:w-96  rounded-s"
+                className="w-72 lg:w-96 md:w-[70%] rounded-s"
                 src={blog.postCover}
                 alt={blog.postTitle}
               />
-              <figcaption className=" w-72 md:w-72 lg:w-96 lg:justify-between flex mt-2 justify-between text-gray-400">
+              <figcaption className="p-3 md:w-[60%] w-72 lg:w-96 lg:justify-between flex mt-2 justify-between text-gray-400">
                 <p>{blog.postAuthor}</p>
                 <p>{blog.date}</p>
               </figcaption>
             </figure>
-            <p className="w-72 lg:w-96  text-left mt-1 mb-1">
+            <p className="w-72 md:text-center md:w-[250px] lg:w-96 text-left mt-1 mb-1 p-2 md:p-0 ">
               {blog.description.substring(0, 147)}
             </p>
-            <div className=" m-1 p-1 w-72  flex justify-start md:justify-center items-start">
-              <button className="bg-blue-500 hover:bg-blue-400 font-semibold text-white  py-2 px-4 rounded">
-                read post
-              </button>
+            <div className="p-2 w-[100%] flex justify-start md:justify-center">
+              <Button
+                className="bg-blue-500 md:w-[60%]  rounded p-3  text-zinc-50 font-semibold"
+                text="read more"
+                type="button"
+              />
             </div>
           </div>
         );
