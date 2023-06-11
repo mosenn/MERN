@@ -1,14 +1,15 @@
 const usersModel = require("../model/user");
 
 const registerUser = async (req, res) => {
-  const { username, confrimPassword, password, pic } = req.body;
+  const { username, confirmPassword, password, pic } = req.body;
   try {
     const users = await usersModel.create({
       username,
       password,
-      confrimPassword,
+      confirmPassword,
       pic,
     });
+    console.log(users);
     return res.status(201).json(users);
   } catch (err) {
     res.status(400).send("user is not create");
