@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import Button from "../../components/button/Button";
 import { registerUser } from "../../api/users";
 import { uploadRegisterImage } from "../../api/uploadImage";
-//* address api for upload image
-const urluploadimg = `https://api.cloudinary.com/v1_1/dm6tmiksw/image/upload`;
-// https://api.cloudinary.com/v1_1/dm6tmiksw
-//* address api for upload image
 
 const Register = () => {
   const [register, setRegister] = useState({
@@ -34,9 +30,10 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("form submit");
-    console.log("register", register);
-    uploadRegisterImage(register.pic);
+    // console.log("form submit");
+    // console.log("register", register);
+    await uploadRegisterImage(register.pic);
+    await registerUser(register);
   };
 
   return (
