@@ -30,8 +30,6 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log("form submit");
-    // console.log("register", register);
     await uploadRegisterImage(register.pic);
     await registerUser(register);
   };

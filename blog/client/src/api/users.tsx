@@ -21,5 +21,5 @@ export const registerUser = async (UserRegisterData: registeruserType) => {
       headers: { "Content-Type": "application/json" },
     }
   );
-  console.log(register.data, "response");
+  console.log("response", register.data);
 };
