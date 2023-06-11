@@ -17,10 +17,12 @@ app.use(
 );
 //*mongod db connection
 connectToDb();
-//*testing route
-app.use("/", async (req, res) => {
-  res.status(200).send("server is ok");
-});
+//* routes
+// app.use("/", async (req, res) => {
+//   res.status(200).send("server is ok");
+// });
+
+app.use("/", require("./routes/user"));
 
 //*listen
 const port = process.env.PORT || 3010;
