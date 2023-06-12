@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import { registerUser } from "../../api/users";
 import { uploadRegisterImage } from "../../api/uploadImage";
 
+interface ErrorRegister {
+  username?: string;
+  minUsername?: string;
+  password?: string;
+  confirmPassword?: string;
+}
 const Register = () => {
+  const [errorRegister, setErrorRegister] = useState<ErrorRegister>({});
   const [register, setRegister] = useState({
     username: "",
     password: "",
@@ -30,9 +37,11 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await uploadRegisterImage(register.pic);
-    await registerUser(register);
+    //*todo uploadRegisterImage most be move to other function click or onchage
+    // await uploadRegisterImage(register.pic);
+    await registerUser(register, setErrorRegister);
   };
+  console.log(errorRegister);
 
   return (
     <div className="h-[90vh]  justify-center items-center flex">
@@ -44,6 +53,8 @@ const Register = () => {
         <label className="ml-2 font-semibold text-gray-900" htmlFor="username">
           username
         </label>
+        {errorRegister ? "this user exist" : ""}
+        {errorRegister?.username}
         <input
           onChange={handleOnchnage}
           className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
@@ -55,6 +66,8 @@ const Register = () => {
         <label className="ml-2 font-semibold text-gray-900" htmlFor="password">
           password
         </label>
+        {errorRegister?.password}
+
         <input
           onChange={handleOnchnage}
           className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
@@ -68,6 +81,7 @@ const Register = () => {
         >
           confirm password
         </label>
+        {errorRegister?.confirmPassword}
         <input
           onChange={handleOnchnage}
           className="p-1 m-2 border border-solid border-gray-300 rounded-sm"

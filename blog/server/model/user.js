@@ -1,29 +1,29 @@
 const { hash } = require("../middleware/bcrypt");
 const mongoose = require("mongoose");
-// const bcrypt = require("bcryptjs");
+const userRegisterValid = require("../middleware/userValidation");
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
+    require: true,
     unique: true,
   },
   password: {
+    require: true,
     type: String,
-    required: true,
   },
   confirmPassword: {
-    type: String,
     require: true,
+    type: String,
   },
   pic: {
     type: String,
   },
 });
 
-// userSchema.statics.userValidation = (reqBody) => {
-//   return userValidation.validate(reqBody, { abortEraly: false });
-// };
+userSchema.statics.userRegisterValid = (reqBody) => {
+  return userRegisterValid.validate(reqBody, { abortEarly: false });
+};
 
 //*hash password
 userSchema.pre("save", async function (next) {
@@ -32,16 +32,13 @@ userSchema.pre("save", async function (next) {
   }
   //*new update for hasing most be get this in model
 
-    const { hashPassword, hashConfirmPassword } = await hash(
-      this.password,
-      this.confirmPassword
-    );
-    this.password = hashPassword;
-    this.confirmPassword = hashConfirmPassword;
-
+  const { hashPassword, hashConfirmPassword } = await hash(
+    this.password,
+    this.confirmPassword
+  );
+  this.password = hashPassword;
+  this.confirmPassword = hashConfirmPassword;
 });
-
-
 
 const userModel = mongoose.model("users", userSchema);
 
