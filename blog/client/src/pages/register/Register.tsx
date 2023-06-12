@@ -53,7 +53,7 @@ const Register = () => {
         <label className="ml-2 font-semibold text-gray-900" htmlFor="username">
           username
         </label>
-        {errorRegister ? "this user exist" : ""}
+
         {errorRegister?.username}
         <input
           onChange={handleOnchnage}
