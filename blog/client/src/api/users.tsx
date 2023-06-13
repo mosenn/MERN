@@ -26,6 +26,7 @@ export const registerUser = async (
   try {
     const register = await axios.post(
       `${baseUrl}/register`,
+
       {
         username,
         password,
@@ -56,6 +57,16 @@ export const loginUser = async (userLoginData: loginValue) => {
     // console.log(user, "login user data");
     return user;
   } catch (err) {
-    console.log("someting worng for login user ", err);
+    console.log(" login api err ", err);
+  }
+};
+
+export const profileUser = async () => {
+  try {
+    const user = await axios.get(`${baseUrl}/profile`);
+    console.log("PROFILE RESPONSE", user);
+    return user.data;
+  } catch (err) {
+    console.log(" profile api err", err);
   }
 };

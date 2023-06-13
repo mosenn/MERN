@@ -35,14 +35,14 @@ const loginUser = async (req, res) => {
     console.log(passowrdIsOky);
     if (passowrdIsOky) {
       const userToken = await jwt.sign(
-        "userLoginToken",
-        process.env.JWT_SECRET,
-        {},
         {
           id: user._id,
           username: user.username,
-        }
+        },
+        process.env.JWT_SECRET,
+        {}
       );
+
       return res
         .status(200)
         .cookie("userToken", userToken, {
@@ -50,12 +50,27 @@ const loginUser = async (req, res) => {
           sameSite: "none",
         })
         .json("ok");
+    } else {
+      throw "err";
     }
   } catch (err) {
     console.log(err);
+    return res.status(400).json("user or password is worng");
+  }
+};
+
+const profileUser = async (req, res) => {
+  try {
+    const { userToken } = req.cookies;
+
+    const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log("profile user err", err);
   }
 };
 module.exports = {
   registerUser,
   loginUser,
+  profileUser,
 };
