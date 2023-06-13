@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import { registerUser } from "../../api/users";
 import { uploadRegisterImage } from "../../api/uploadImage";
+import { useNavigate } from "react-router-dom";
 
+import "./register.css";
 interface ErrorRegister {
   username?: string;
   minUsername?: string;
   password?: string;
   confirmPassword?: string;
 }
+
 const Register = () => {
+  const navigate = useNavigate();
   const [errorRegister, setErrorRegister] = useState<ErrorRegister>({});
+  const [toast, setToast] = useState<Boolean>(false);
   const [register, setRegister] = useState({
     username: "",
     password: "",
@@ -39,12 +44,36 @@ const Register = () => {
     e.preventDefault();
     //*todo uploadRegisterImage most be move to other function click or onchage
     // await uploadRegisterImage(register.pic);
-    await registerUser(register, setErrorRegister);
+    const user = await registerUser(register, setErrorRegister);
+    console.log(user, "user");
+    if (user?.status === 201) {
+      setToast(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
   };
-  console.log(errorRegister);
+  // console.log(errorRegister);
 
   return (
     <div className="h-[90vh]  justify-center items-center flex">
+      {toast && (
+        <div
+          className={` bg-green-300 w-[250px] fixed text-center  p-[10px] rounded font-semibold text-[#6f6f6f]  ${
+            toast && "showToast"
+          } `}
+        >
+          <p>
+            <span>🎉</span> register is success redirect to login
+          </p>
+          <div
+            className={`absolute bg-blue-300 w- h-[3px] bottom-[-3px] left-0 rounded-sm ${
+              toast && "loadingRedirect"
+            }`}
+          ></div>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         action=""

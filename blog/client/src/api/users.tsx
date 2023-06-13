@@ -33,7 +33,8 @@ export const registerUser = async (
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log(register, "response user is register");
+    // console.log(register, "response user is register");
+    return register;
   } catch (err: any & { response?: unknown }) {
     console.log(err);
     const errors = err?.response?.data;
