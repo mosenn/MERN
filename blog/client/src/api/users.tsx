@@ -60,7 +60,7 @@ export const loginUser = async (userLoginData: loginValue) => {
     console.log(" login api err ", err);
   }
 };
-
+//* for profile user check user online api clinet
 export const profileUser = async () => {
   try {
     const user = await axios.get(`${baseUrl}/profile`);
@@ -68,5 +68,14 @@ export const profileUser = async () => {
     return user.data;
   } catch (err) {
     console.log(" profile api err", err);
+  }
+};
+
+//* logout user api clinet
+export const logoutUser = async () => {
+  try {
+    const user = axios.post(`${baseUrl}/logout`);
+  } catch (err) {
+    console.log(" logoutUser api err", err);
   }
 };

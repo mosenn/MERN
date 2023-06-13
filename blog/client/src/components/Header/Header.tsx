@@ -1,13 +1,13 @@
 import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
-import { profileUser } from "../../api/users";
+import { logoutUser, profileUser } from "../../api/users";
 interface setUserOnline {
   id: string;
   username: string;
   iat: number;
 }
 const Header = () => {
-  const [userOnline, setUserOnline] = useState<setUserOnline>({
+  const [userOnline, setUserOnline] = useState<setUserOnline | null>({
     id: "",
     username: "",
     iat: +"",
@@ -17,6 +17,10 @@ const Header = () => {
     if (user) {
       setUserOnline(user as setUserOnline);
     }
+  };
+  const logOut = async () => {
+    await logoutUser();
+    setUserOnline(null);
   };
   useEffect(() => {
     getuserOnline();
@@ -31,7 +35,9 @@ const Header = () => {
         {userOnline ? (
           <ul className="flex justify-end">
             <li className="mr-4">{userOnline?.username}</li>
-            <li className="mr-4">logout</li>
+            <li className="mr-4" onClick={logOut}>
+              logout
+            </li>
           </ul>
         ) : (
           <ul className="flex justify-end">
