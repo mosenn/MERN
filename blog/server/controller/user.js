@@ -43,7 +43,13 @@ const loginUser = async (req, res) => {
           username: user.username,
         }
       );
-      return res.status(200).json({ userToken: userToken });
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          secure: "false",
+          sameSite: "none",
+        })
+        .json("ok");
     }
   } catch (err) {
     console.log(err);

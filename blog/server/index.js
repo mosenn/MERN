@@ -6,9 +6,9 @@ const connectToDb = require("./connection/db");
 require("dotenv").config({ path: "./.env" });
 const app = express();
 //*parser
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
-app.use(cookieParser());
+app.use(cookieParser({ sameSite: "none" }));
 //*cors
 app.use(
   cors({
