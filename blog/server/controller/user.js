@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json("user or password is worng");
   }
 };
-
+//* for set profile user (Online user)
 const profileUser = async (req, res) => {
   try {
     const { userToken } = req.cookies;
@@ -69,8 +69,17 @@ const profileUser = async (req, res) => {
     console.log("profile user err", err);
   }
 };
+
+const logoutUser = async (req, res) => {
+  try {
+    return res.cookie("userToken", "").status(200).json("user is logout");
+  } catch (err) {
+    console.log("logout controll err", err);
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
   profileUser,
+  logoutUser,
 };
