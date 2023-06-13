@@ -1,10 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../components/button/Button";
+import { loginUser } from "../../api/users";
+import Toast from "../../components/toast/Toast";
+import { useNavigate } from "react-router-dom";
+
+interface loginValue {
+  username: string;
+  password: string;
+}
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [toast, setToast] = useState<Boolean>(false);
+
+  const [loginValue, setLoginValue] = useState<loginValue>({
+    username: "",
+    password: "",
+  });
+
+  const onchangeHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginValue({ ...loginValue, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await loginUser(loginValue);
+    console.log("login form is submit");
+    console.log(loginValue, "loginValue");
+    //* call api function for login
+    const user = await loginUser(loginValue);
+
+    if (user?.status === 200 && user.data === "ok") {
+      setToast(true);
+      console.log(user, "user is login.jsx");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  };
   return (
     <div className="h-[90vh]  justify-center items-center flex ">
+      {toast && <Toast toast={toast} text={"you are login"} />}
       <form
+        onSubmit={handleSubmit}
         action=""
         className=" w-[90%] bg-gray-300 rounded-lg grid p-3 m-2 md:w-[60%]"
       >
@@ -12,6 +49,8 @@ const Login = () => {
           username
         </label>
         <input
+          onChange={onchangeHandle}
+          value={loginValue.username}
           className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
           type="text"
           id="username"
@@ -22,6 +61,8 @@ const Login = () => {
           password
         </label>
         <input
+          onChange={onchangeHandle}
+          value={loginValue.password}
           className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
           type="text"
           id="password"
@@ -31,7 +72,7 @@ const Login = () => {
           <Button
             className="bg-blue-500 w-[99%] rounded p-3 text-zinc-50 font-semibold"
             text="Login"
-            type="button"
+            type="submit"
           />
         </div>
       </form>

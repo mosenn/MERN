@@ -5,6 +5,7 @@ import { uploadRegisterImage } from "../../api/uploadImage";
 import { useNavigate } from "react-router-dom";
 
 import "./register.css";
+import Toast from "../../components/toast/Toast";
 interface ErrorRegister {
   username?: string;
   minUsername?: string;
@@ -58,20 +59,7 @@ const Register = () => {
   return (
     <div className="h-[90vh]  justify-center items-center flex">
       {toast && (
-        <div
-          className={` bg-green-300 w-[250px] fixed text-center  p-[10px] rounded font-semibold text-[#6f6f6f]  ${
-            toast && "showToast"
-          } `}
-        >
-          <p>
-            <span>🎉</span> register is success redirect to login
-          </p>
-          <div
-            className={`absolute bg-blue-300 w- h-[3px] bottom-[-3px] left-0 rounded-sm ${
-              toast && "loadingRedirect"
-            }`}
-          ></div>
-        </div>
+        <Toast text={"register is success redirect to login"} toast={toast} />
       )}
 
       <form

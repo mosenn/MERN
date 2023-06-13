@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { Dispatch, SetStateAction } from "react";
 interface registeruserType {
   username: string;
@@ -12,7 +13,9 @@ interface ErrorRegister {
   password?: string;
   email?: string;
 }
-
+axios.defaults.withCredentials = true;
+const baseUrl = (axios.defaults.baseURL = "http://localhost:2023");
+//* register user api clinet
 export const registerUser = async (
   UserRegisterData: registeruserType,
 
@@ -22,7 +25,7 @@ export const registerUser = async (
   console.log(UserRegisterData);
   try {
     const register = await axios.post(
-      "http://localhost:2023/register",
+      `${baseUrl}/register`,
       {
         username,
         password,
@@ -39,5 +42,20 @@ export const registerUser = async (
     console.log(err);
     const errors = err?.response?.data;
     setErrorRegister(errors);
+  }
+};
+
+//* login user api clinet
+interface loginValue {
+  username: string;
+  password: string;
+}
+export const loginUser = async (userLoginData: loginValue) => {
+  try {
+    const user = await axios.post(`${baseUrl}/login`, userLoginData);
+    // console.log(user, "login user data");
+    return user;
+  } catch (err) {
+    console.log("someting worng for login user ", err);
   }
 };
