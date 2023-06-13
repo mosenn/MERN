@@ -12,8 +12,8 @@ const hash = async (password, ConfirmPassword) => {
   }
 };
 
-const compare = async (reqPassowrd, reqConfrimPassword) => {
-  return await bcrypt.compare(reqPassowrd, reqConfrimPassword);
+const compare = async (reqPassowrd, dbPassword) => {
+  return await bcrypt.compare(reqPassowrd, dbPassword);
 };
 
 module.exports = {
