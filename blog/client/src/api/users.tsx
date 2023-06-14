@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { Dispatch, SetStateAction } from "react";
+import { useGlobalContext } from "../context/context";
 interface registeruserType {
   username: string;
   password: string;
@@ -54,12 +55,15 @@ interface loginValue {
 export const loginUser = async (userLoginData: loginValue) => {
   try {
     const user = await axios.post(`${baseUrl}/login`, userLoginData);
+    localStorage.setItem("userInfoData", JSON.stringify(user.data));
+
     // console.log(user, "login user data");
     return user;
   } catch (err) {
     console.log(" login api err ", err);
   }
 };
+
 //* for profile user check user online api clinet
 export const profileUser = async () => {
   try {

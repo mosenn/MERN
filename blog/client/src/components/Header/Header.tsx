@@ -1,40 +1,41 @@
 import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser, profileUser } from "../../api/users";
-interface setUserOnline {
+import { useGlobalContext } from "../../context/context";
+
+interface userinfo {
   id: string;
   username: string;
   iat: number;
 }
 const Header = () => {
-  const [userOnline, setUserOnline] = useState<setUserOnline | null>({
-    id: "",
-    username: "",
-    iat: +"",
-  });
-  const getuserOnline = async () => {
-    const user: {} = await profileUser();
-    if (user) {
-      setUserOnline(user as setUserOnline);
-    }
-  };
+  let { userInfoOnline } = useGlobalContext();
+
   const logOut = async () => {
     await logoutUser();
-    setUserOnline(null);
+    //* can set loading for logout take effect
+    await localStorage.removeItem("userInfoData");
+    window.location.reload();
   };
-  useEffect(() => {
-    getuserOnline();
-  }, []);
 
-  console.log("state user online in header", userOnline);
+  const getDataLocalSTroge = localStorage?.getItem("userInfoData");
+  if (getDataLocalSTroge !== null) {
+    userInfoOnline = JSON.parse(getDataLocalSTroge);
+  }
+
+  console.log(
+    "user online from context and take local storge data",
+    userInfoOnline
+  );
   return (
     <header className="bg-red-300 flex justify-between p-4 text-lg font-bold">
       <div>logo</div>
 
       <nav>
-        {userOnline ? (
+        {userInfoOnline?.username ? (
           <ul className="flex justify-end">
-            <li className="mr-4">{userOnline?.username}</li>
+            <li className="mr-4">{userInfoOnline?.username}</li>
+
             <li className="mr-4" onClick={logOut}>
               logout
             </li>

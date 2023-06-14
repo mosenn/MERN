@@ -49,7 +49,10 @@ const loginUser = async (req, res) => {
           secure: "false",
           sameSite: "none",
         })
-        .json("ok");
+        .json({
+          id: user._id,
+          username,
+        });
     } else {
       throw "err";
     }

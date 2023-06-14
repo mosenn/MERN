@@ -3,13 +3,14 @@ import Button from "../../components/button/Button";
 import { loginUser } from "../../api/users";
 import Toast from "../../components/toast/Toast";
 import { useNavigate } from "react-router-dom";
-
+import { useGlobalContext } from "../../context/context";
 interface loginValue {
   username: string;
   password: string;
 }
 
 const Login = () => {
+  const { setUserInforOnline, userInfoOnline } = useGlobalContext();
   const navigate = useNavigate();
   const [toast, setToast] = useState<Boolean>(false);
 
@@ -29,7 +30,9 @@ const Login = () => {
     //* call api function for login
     const user = await loginUser(loginValue);
 
-    if (user?.status === 200 && user.data === "ok") {
+    if (user?.status === 200) {
+      console.log("User Info In If Login.tsx componet", user);
+      setUserInforOnline(user.data);
       setToast(true);
       console.log(user, "user is login.jsx");
       setTimeout(() => {
@@ -37,6 +40,7 @@ const Login = () => {
       }, 3000);
     }
   };
+  console.log("USER INFO CONTEXT IN LOGIN", userInfoOnline);
   return (
     <div className="h-[90vh]  justify-center items-center flex ">
       {toast && <Toast toast={toast} text={"you are login"} />}
