@@ -1,13 +1,7 @@
-import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
-import { logoutUser, profileUser } from "../../api/users";
+import { logoutUser } from "../../api/users";
 import { useGlobalContext } from "../../context/context";
 
-interface userinfo {
-  id: string;
-  username: string;
-  iat: number;
-}
 const Header = () => {
   let { userInfoOnline } = useGlobalContext();
 
@@ -34,6 +28,12 @@ const Header = () => {
       <nav>
         {userInfoOnline?.username ? (
           <ul className="flex justify-end">
+            <li>
+              <img
+                src={userInfoOnline?.pic}
+                alt={`profile image ${userInfoOnline?.username}`}
+              />
+            </li>
             <li className="mr-4">{userInfoOnline?.username}</li>
 
             <li className="mr-4" onClick={logOut}>

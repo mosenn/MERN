@@ -24,7 +24,7 @@ const Register = () => {
     pic: "",
   });
 
-  const handleOnchnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnchnage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "pic") {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -36,6 +36,8 @@ const Register = () => {
           });
         };
         reader.readAsDataURL(file);
+        const imageLink = await uploadRegisterImage(register.pic);
+        console.log("User ProFile Image Link", imageLink);
       }
     }
     setRegister({ ...register, [e.target.name]: e.target.value });
@@ -43,8 +45,6 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //*todo uploadRegisterImage most be move to other function click or onchage
-    // await uploadRegisterImage(register.pic);
     const user = await registerUser(register, setErrorRegister);
     console.log(user, "user");
     if (user?.status === 201) {

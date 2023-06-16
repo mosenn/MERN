@@ -38,6 +38,7 @@ const loginUser = async (req, res) => {
         {
           id: user._id,
           username: user.username,
+          pic: user.pic,
         },
         process.env.JWT_SECRET,
         {}
@@ -52,6 +53,7 @@ const loginUser = async (req, res) => {
         .json({
           id: user._id,
           username,
+          pic: user.pic,
         });
     } else {
       throw "err";

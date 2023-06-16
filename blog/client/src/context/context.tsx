@@ -10,6 +10,7 @@ interface AppProviderProps {
   children: React.ReactNode;
 }
 
+//* create context
 const AppContext = createContext<MyContextValue>({
   name: "",
   setUserInforOnline: () => {},
