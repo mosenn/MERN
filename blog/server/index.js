@@ -3,7 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const connectToDb = require("./connection/db");
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config({ path: "./config.env" });
 const app = express();
 //*parser
 app.use(bodyParser.json({ limit: "50mb" }));
