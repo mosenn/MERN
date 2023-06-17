@@ -135,7 +135,7 @@ export default App;
  در `login`  لاگین شدن رو داریم و بعد از لاگین  به صحفه `home` ریداریکت میشه 
  
  
- # Api 
+ # Api Folder
 
 
 
@@ -341,8 +341,8 @@ export const registerUser = async (
 
 چون به ادرس api خودمون rigster/ میایم اطلاعات کاربر رو ارسال می کنیم . 
 
-قبلا هم که `baseUrl` بالا تر توضیح دادیم 
-[package.json](#packagejson)
+قبلا هم که [baseUrl](#base-url-axios-option) بالا تر توضیح دادیم 
+
 
 ```javascript
 export const registerUser = async (
@@ -368,3 +368,216 @@ export const registerUser = async (
   }
 };
 ```
+در ادامه data رو می فرستیم که اطلاعات کاربر هستش 
+
+```javascript
+       const register = await axios.post(
+      `${baseUrl}/register`,
+      {
+        username,
+        password,
+        confirmPassword,
+        pic,
+      },  
+```
+
+در ادامه `headers` ست شده . 
+
+
+```javascript
+   const register = await axios.post(
+      `${baseUrl}/register`,
+      {
+        username,
+        password,
+        confirmPassword,
+        pic,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+```
+در نهایت متغیری که برای ارسال اطلاعات به اسم `register` تعریف شده . 
+
+درون بلاک try میایم return می کنیم . 
+
+به این دلیل که می خوایم اطلاعاتی که api به ما response میده رو درون کامپونت [Register.tsx](#base-url-axios-option)
+
+دسترسی داشته باشیم . response که api /register به ما میده در واقع اطلاعات کاربری هست که ثبت نام کرده . 
+
+در نهایت درون بلاک try کد زیر رو خواهیم داشت : 
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+  const { username, password, confirmPassword, pic } = UserRegisterData;
+  console.log(UserRegisterData);
+  try {
+    const register = await axios.post(
+      `${baseUrl}/register`,
+      {
+        username,
+        password,
+        confirmPassword,
+        pic,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    // console.log(register, "response user is register");
+    return register;
+```
+**نکته**: می تونیم برای اطمینان بیشتر که `data` رو داریم یا خیر یک `console.log` داشته باشیم
+
+قبل از `return` 
+
+```javascript
+ console.log(register, "response user is register");
+```
+
+### catch block 
+
+درون بلاک `catch` میایم ارور های مربوط به register error کنترل می کنیم . 
+
+اگر یادتون باشه یک [setErrorRegister](#base-url-axios-option) به عنوان parameter داشتیم . 
+
+که وظیفه این set state در واقع ذخیره کردن ارور های مربوط به ثبت نام کاربر هست  . 
+
+در نتیجه این ارور هارو درون یک state به اسم errorRegister خواهیم داشت . 
+
+که این state در کامپونت Register.tsx ایجاد شده . 
+
+از اونجای که ارور های ما از سمت سرور به صورت ابجکت ارسال میشه . 
+
+در نتیجه state errorRegister به صورت ابجکت است . 
+
+بلاک catch : 
+
+```javascript
+catch (err: any & { response?: unknown }) {
+    console.log(err);
+    const errors = err?.response?.data;
+    setErrorRegister(errors);
+  }
+```
+
+نوع تایپ err رو روی any گذاشتیم و نوع response رو گفتیم اگر `undefinde` نبود بیاد `unknown` باشه
+
+به این دلیل که نمی تونیم تشخیص بدیم که نوع تایپ err دقیقا چی می تونه باشه . 
+
+خب در نهایت کد کامل register function به صورت زیر هست : 
+
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+  const { username, password, confirmPassword, pic } = UserRegisterData;
+  console.log(UserRegisterData);
+  try {
+    const register = await axios.post(
+      `${baseUrl}/register`,
+
+      {
+        username,
+        password,
+        confirmPassword,
+        pic,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    // console.log(register, "response user is register");
+    return register;
+  } catch (err: any & { response?: unknown }) {
+    console.log(err);
+    const errors = err?.response?.data;
+    setErrorRegister(errors);
+  }
+};
+```
+که اطلاعات کاربر رو میگیره و به سمت `server` ارسال می کنه . 
+
+در نهایت `server` اطلاعات کاربر رو در دیتا بیس ذخیره می کنه . 
+
+# Function LoginUser 
+
+درون فولدر [api](#base-url-axios-option) در فایل user.tsx یک فانکشن برای login شدن کاربران داریم . 
+
+کار این فانکشن ارسال اطلاعات کاربرانی که قصد لاگین کردن رو دارند به سمت `server` . 
+
+برای این مورد server یک api در نظر داره . 
+
+متد api از نوع `post`  . 
+
+ادرس api مد نظر ما برای لاگین login/ . 
+
+**نکته** : قبل تر اشاره کرده بودیم که تمامی فانکشن ها از نوع `async` هستند و همینطور `export` شدند .
+
+```javascript
+export const loginUser = async (userLoginData: loginValue) => {
+
+};
+```
+### loginUser parameter 
+
+فانکشن loginUser یک parameter داره به اسم userLoginData که در واقع یک state .
+
+درون این state یک ابجکت قرار گرفته به صورت default . 
+
+این state درو کاممپونت Login.tsx تعریف شده و همونجا هم به فانکشن loginUser پاس داده شده . 
+
+### loginUser parameter type 
+
+تایپ این پارامتر که گفتیم یک ابجکته و حاوی دو تا key به اسم `username` و `password` . 
+
+این دوتا درواقع value اینپوت هست که کاربر برای login شدن وارد می کنه . 
+
+هر دو `string` هستند   , `interface` پارامتر  : 
+
+```typescript
+interface loginValue {
+  username: string;
+  password: string;
+}
+```
+
+**نکته** : هر فانکشن مربوط به کار با api یک بلاک try / catch داره . 
+
+که درون بلاک try سعی بر گرفتن response میشه . 
+
+و در صورت هر گونه error بلاک catch اجرا میشه . 
+
+درون بلاک catch می تونیم ارور هامون رو کنترل کنیم . 
+
+
+کد فانکشن loginUser : 
+```javascript
+export const loginUser = async (userLoginData: loginValue) => {
+  try {
+    const user = await axios.post(`${baseUrl}/login`, userLoginData);
+    console.log("User Data in api LoginUser Function" , user );
+    localStorage.setItem("userInfoData", JSON.stringify(user.data));
+    return user;
+  } catch (err) {
+    console.log(" login api err ", err);
+  }
+};
+```
+در بلاک try به وسیله axios دیتا مد نظرمون که همون اطلاعات کاربر که قصد لاگین هست رو فرستادیم . 
+
+در ادامه `response` که برگشت میده , درون `localstorge` ذخیره کردیم . 
+
+```javascript
+  localStorage.setItem("userInfoData", JSON.stringify(user.data));
+```
+
+به این دلیل که می خوایم بعدا در جای دیگه از این data که داریم ذخیره می کنیم استفاده کنیم . 
+
+-البته به این صورت فانکشن از pure function خارج میشه . 
