@@ -342,7 +342,7 @@ export const registerUser = async (
 چون به ادرس api خودمون rigster/ میایم اطلاعات کاربر رو ارسال می کنیم . 
 
 قبلا هم که `baseUrl` بالا تر توضیح دادیم 
-[Contribution guidelines for this project](blog/README.md#packagejson)
+[package.json](#packagejson)
 
 ```javascript
 export const registerUser = async (
