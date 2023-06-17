@@ -1,25 +1,20 @@
 
-
-
 # Blog Project 
-
-
-
-
 ## Technologies
 
 Reactjs ,  Typescript , Tailwindcss  , expressjs , mongodb ,
+
 <p align="left"> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a> <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/> </a> </p>
 
 
 
-یک پروژه بلاگ که کاربر قابلیت لاگین کردن - ایجاد پست رو داره هر پست با اسم نویسنده اون پست نمایش داده میشه . 
+یک پروژه بلاگ که کاربران قابلیت لاگین کردن - ایجاد پست و کامنت گذاری و هر قابلیت که یک بلاگ داره. 
 
 همچنین هر نویسنده پست می تونه پست خودش رو ویرایش کنه اما اجازه ویرایش پست دیگران رو نداره . 
 
 قابلیت کامنت گذاشتن و لایکن کردن همچنین share کردن هر پست به وسیله کاربران . 
 
-قابلیت follow کردن و ارسال notifaction بار اعلام اینکه کاربری شما را فالو کرده .
+قابلیت follow کردن و ارسال notifaction بار اعلام فالو شدن .
 
 
 # directory : 
@@ -135,12 +130,12 @@ export default App;
 
 درون `home` پست ها رو نشون میدیم 
 
- در `register` کاربر می تونه اکانت خودش رو بسازه 
+ در `register` ساخت اکانت رو داریم 
  
- در `login` کاربر می تونه با اکانتی که ساخته لاگین کنه در نهایت به صحفه `home` ریداریکت میشه 
+ در `login`  لاگین شدن رو داریم و بعد از لاگین  به صحفه `home` ریداریکت میشه 
  
  
- # api 
+ # Api 
 
 
 
@@ -150,7 +145,226 @@ export default App;
 
 
 
+### users.tsx 
 درون فولدر `api` کار های مروبط به api رو انجام میدیم  . 
 
-مثل ارسال کاربر ثبت نام شده به server یا گرفتن مشخصات کاربری که لاگین شده همینطور اپلود عکس پرفایل 
+در فایل users.tsx به وسیله axios مراحل ثبت نام کاربر و لاگین شدن کاربر انجام میشه . 
 
+در مرحله اول axios ایمپورت میشه . 
+
+```javascript 
+import axios from "axios";
+
+```
+
+### Credentials in client with axios
+به دلیل اینکه در سمت سرور coockie رو ست میشه و ارسال میشه به وسیله یک api که نوشته شده . 
+
+در سمت client نیاز هست از `Credentials` استفاده کنیم . 
+
+نحوه سست کردن `Credentials` : 
+```javascript
+axios.defaults.withCredentials = true;
+```
+
+در axios اپشن credentials به صورت پیش فرض false هست بنابراین نیاز داریم که به true تغییرش بدیم .
+
+### Base url axios option
+
+می تونیم از اپشن baseUrl axios استفاده کنیم برای ست کردن ادرس api مد نظرمون . 
+
+```javascript
+const baseUrl = axios.defaults.baseURL = "http://localhost:2023"
+```
+در واقع کد بالا شبیه کد پایین هست : 
+
+```javascript
+const url = "http://localhost:2023"
+```
+
+### Function register user 
+فانشن `registerUser` کار ثبت نام کاربر رو انجام میده . 
+
+در واقع اطلاعات کاربر رو میگیره و به سمت server ارسال می کنه . 
+
+```javascript
+export const registerUser = async (
+
+};
+```
+**نکته** : تمامی فانکشن های مربوط به api از نوع async هستند و همینطور export شدن 
+
+
+
+### register user function parameters
+
+- UserRegisterData
+- setErrorRegister
+
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+};
+``` 
+#### Parameter UserRegisterData
+
+خب parameter userRegisterData در واقع یک state هست . 
+
+که این state تمامی value های مربوط به input های ثبت نام رو دورن خودش ذخیره کرده . 
+
+به طور خلاصه اطلاعات کاربری که ثبت نام کرده رو درون خودش داره . 
+
+
+#### Type UserRegisterData
+
+از اونجای که از تایپ اسکریپت استفاده می کنیم . 
+
+نوع تایپ parameter مشخص شده . 
+
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+};
+```
+
+نوع تایپ parameter UserRegisterData برابر شده با registeruserType . 
+
+```typescript
+interface registeruserType {
+  username: string;
+  password: string;
+  confirmPassword: string;
+  pic: string;
+}
+```
+
+که در واقع یک `interface` تعریف شده هست . 
+
+
+**نکته**: برای تعریف کردن نوع تایپ ها از قابلیت interface تایپ اسکریپت استفاده شده .   
+
+که همونطور که مشاهده میشه اطلاعات مربوط به کاربر هست که برار با `string` . 
+
+### Parameter setErrorRegister
+
+خب بریم سراغ parameter setErrorRegister . 
+
+در واقع یک state هست . 
+
+که کار ذخیره سازی ارور های مربط به ثبت نام کاربر رو درون خودش ذخیره می کنه . 
+
+کار این setErrorRegister در واقع اگر موقع ارسال اطلاعات کاربر 
+
+اروی داشتیم ارور ها درون state setErrorRegister ذخیره میشن . 
+#### Type setErrorRegister 
+
+از اون جا که setErrorRegister کار set شدن state errorRegister رو انجام میده 
+
+نوع تایپ که در react برای setState تعریف میشه `<SetStateAction>` هست . 
+
+اما از اونجا که ارور های ما به صورت یک ابجکت هست . 
+
+و state errorRegister هم یک ابجکت هست . 
+
+نیازه که تایپ default خوده state رو هم براش تعریف کنیم . 
+
+در نتیجه یک interface برای اینکار تعریف کردیم 
+```typescript
+interface ErrorRegister {
+  username?: string;
+  password?: string;
+  email?: string;
+}
+```
+
+تایپ نهایی state setErrorRegister میشه کد زیر : 
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+};
+```
+
+**نکته**: علامت ؟ در کد interface بالا به این معنی optional بودن هست . 
+
+
+در واقع ؟ چک می کنه اگر مقادیر ما وجود داشتند  `undefinde` نبودند .
+
+نوع تایپ شون `string` هست . 
+
+دقیقا همون کار که در javascript انجام میدیم . 
+
+مثلا : 
+```javascript
+data?.users.map((user)=> return <p>{user}</p>)
+```
+در کد بالا از ؟ استفاده کردیم و گفتیم اگر که data وجود داشت . 
+
+بیاد users ها رو map کنه . 
+
+# countinue register user function
+
+خب پارامتر های فانکشن registerUser رو توضیح داده شد . 
+
+درون فانکشن به value input ها دسترسی میگیریم . 
+
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+  const { username, password, confirmPassword, pic } = UserRegisterData;
+};
+```
+بعد از دسترسی گرفتن نوبت به ارسال اطلاعات گرفته شده به سمت سرور هست . 
+
+برای اینکه بتونیم error هارو هم داشته باشیم . 
+
+در کل error هارو handle کنیم از block try / catch استفاده می کنیم . 
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+  const { username, password, confirmPassword, pic } = UserRegisterData;
+  try {
+  } catch (err: any & { response?: unknown }) {
+  }
+};
+```
+درون بلاک try میایم اطلاعات خودمون رو به وسیله axios می فرستیم .
+
+چون به ادرس api خودمون rigster/ میایم اطلاعات کاربر رو ارسال می کنیم . 
+
+قبلا هم که `baseUrl` بالا تر توضیح دادیم 
+[Contribution guidelines for this project](blog/README.md#packagejson)
+
+```javascript
+export const registerUser = async (
+  UserRegisterData: registeruserType,
+  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+) => {
+  const { username, password, confirmPassword, pic } = UserRegisterData;
+  try {
+    const register = await axios.post(
+      `${baseUrl}/register`,
+      {
+        username,
+        password,
+        confirmPassword,
+        pic,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    return register;
+  } catch (err: any & { response?: unknown }) {
+  }
+};
+```
