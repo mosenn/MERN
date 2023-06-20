@@ -758,3 +758,99 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 
 در نهایت هنگام submit شدن form به کاربری که قصد register داره نمایش میدیم . 
 
+
+صحفات رو درون `pages` قرار دادیم  . 
+
+کامپونت Register.tsx درون pages هست . 
+
+
+![image](https://github.com/mosenn/MERN/assets/91747908/a4d89f51-b53f-4612-8e73-2bae7c410898)
+
+
+درون کامپونت Register.tsx  یک فروم return میشه به همراه input ها و یک toast .
+
+```javascript
+  return (
+    <div className="h-[90vh]  justify-center items-center flex">
+      <img
+        src="https://www.file.io/mF2X/download/PYCrjx1HYrkG.men-1.jpg"
+        alt="test"
+      />
+      {toast && (
+        <Toast text={"register is success redirect to login"} toast={toast} />
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        action=""
+        className=" bg-gray-300 rounded-lg grid p-3 m-2 md:w-[60%]"
+      >
+        <label className="ml-2 font-semibold text-gray-900" htmlFor="username">
+          username
+        </label>
+
+        {errorRegister?.username}
+        <input
+          onChange={handleOnchnage}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="username"
+          name="username"
+        />
+
+        <label className="ml-2 font-semibold text-gray-900" htmlFor="password">
+          password
+        </label>
+        {errorRegister?.password}
+
+        <input
+          onChange={handleOnchnage}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="password"
+          name="password"
+        />
+        <label
+          className="ml-2 font-semibold text-gray-900"
+          htmlFor="confirmPassword"
+        >
+          confirm password
+        </label>
+        {errorRegister?.confirmPassword}
+        <input
+          onChange={handleOnchnage}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="confirmPassword"
+          name="confirmPassword"
+        />
+        <label className="ml-2 font-semibold text-gray-900" htmlFor="password">
+          upload profile picture
+        </label>
+        <input
+          onChange={handleOnchnage}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="file"
+          id="pic"
+          name="pic"
+          accept=".png, .jpg, .jpeg .webp"
+        />
+        <div className=" m-1 p-1 w-full flex justify-start md:justify-center items-start">
+          <Button
+            className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            text="Register"
+            type="submit"
+          />
+
+          <button
+            className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            type="button"
+            onClick={Uploadimage}
+          >
+            upload image
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+```
