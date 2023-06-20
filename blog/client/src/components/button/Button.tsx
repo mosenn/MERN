@@ -1,5 +1,3 @@
-import React from "react";
-
 interface buttonProps {
   text: string;
   type: "button" | "submit" | "reset";

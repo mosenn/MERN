@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
       confirmPassword,
       pic,
     });
-    // console.log(users);
+    console.log("Register User : ", users);
     return res.status(201).json(users);
   } catch (err) {
     err?.inner?.forEach((e) => {
@@ -67,11 +67,13 @@ const loginUser = async (req, res) => {
 const profileUser = async (req, res) => {
   try {
     const { userToken } = req.cookies;
-
-    const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
-    return res.status(200).json(user);
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      return res.status(200).json(user);
+    }
   } catch (err) {
-    console.log("profile user err", err);
+    console.log("profile user err", err.message);
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
 

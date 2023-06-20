@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../components/button/Button";
-import { loginUser } from "../../api/users";
+import { loginUser, profileUser } from "../../api/users";
 import Toast from "../../components/toast/Toast";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/context";
@@ -25,17 +25,17 @@ const Login = () => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await loginUser(loginValue);
-    console.log("login form is submit");
-    console.log(loginValue, "loginValue");
+    // await loginUser(loginValue);
+    // console.log("login form is submit");
+    // console.log(loginValue, "loginValue");
     //* call api function for login
     const user = await loginUser(loginValue);
 
     if (user?.status === 200) {
       console.log("User Info In If Login.tsx componet", user);
-      setUserInforOnline(user.data);
       setToast(true);
       console.log(user, "user is login.jsx");
+      setUserInforOnline(user.data);
       setTimeout(() => {
         navigate("/");
       }, 3000);
