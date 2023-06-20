@@ -738,7 +738,7 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 به عنوان عکس پرفایل استفاده می کنیم . 
 
 
-تا به اینجا در مورد فولدر [api](api-folder#) درون clinet صحبت کردیم . 
+تا به اینجا در مورد فولدر [api](#api-folder) درون clinet صحبت کردیم . 
 
 می خوایم بریم سراغ کامپونت ها . 
 
