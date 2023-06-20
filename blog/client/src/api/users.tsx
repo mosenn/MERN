@@ -56,7 +56,7 @@ export const loginUser = async (userLoginData: loginValue) => {
   }
 };
 
-//* for profile user check user online api clinet
+//* For profile user check user online api clinet
 export const profileUser = async () => {
   try {
     const user = await axios.get(`${baseUrl}/profile`);

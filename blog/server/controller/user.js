@@ -1,7 +1,7 @@
 const { compare } = require("../middleware/bcrypt");
 const userModel = require("../model/user");
 const jwt = require("jsonwebtoken");
-//* user register
+//*Register user 
 const registerUser = async (req, res) => {
   const errors = {};
   const { username, confirmPassword, password, pic } = req.body;
@@ -26,7 +26,7 @@ const registerUser = async (req, res) => {
     return res.status(400).json(errors);
   }
 };
-//* user login
+//* login  User
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
   try {
