@@ -63,7 +63,7 @@ const loginUser = async (req, res) => {
     return res.status(400).json("user or password is worng");
   }
 };
-//* for set profile user (Online user)
+//* For set profile user (Online user)
 const profileUser = async (req, res) => {
   try {
     const { userToken } = req.cookies;

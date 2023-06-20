@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { logoutUser, profileUser } from "../../api/users";
 import { useGlobalContext } from "../../context/context";
 import { useEffect } from "react";
-import Button from "../button/Button";
+
 
 const Header = () => {
   let { userInfoOnline, setUserInforOnline } = useGlobalContext();
