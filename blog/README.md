@@ -854,3 +854,41 @@ export const uploadRegisterImage = async (pic: {} | any) => {
     </div>
   );
 ```
+
+درون `form` یک فانکشن داریم برای `submit` شدن فرم . 
+
+به اسم handleSubmit . 
+
+```javascript
+      <form
+        onSubmit={handleSubmit}
+        action=""
+        className=" bg-gray-300 rounded-lg grid p-3 m-2 md:w-[60%]"
+      >
+```
+
+در input ها فانکشن `onChangehandle` رو داریم . 
+
+دقت کنید که name هر input منحصر به فرد خودش هست . 
+
+و نیاز هست با state که value های اینپوت رو ذخیره می کنه یکی باشه . 
+
+```javascript
+    <label className="ml-2 font-semibold text-gray-900" htmlFor="username">
+          username
+        </label>
+
+        {errorRegister?.username}
+        <input
+          onChange={handleOnChange}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="username"
+          name="username"
+        /> 
+```
+هر input درونش یک فانشکن به اسم `handleOnChange` اتفاق می افته . 
+
+که این فانکشن وظیفه گرفتن value اینپوت ها رو داره . 
+
+و value اینپوت ها رو ذخیره می کنه درون یک state . 
