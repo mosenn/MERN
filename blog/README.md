@@ -562,22 +562,199 @@ interface loginValue {
 export const loginUser = async (userLoginData: loginValue) => {
   try {
     const user = await axios.post(`${baseUrl}/login`, userLoginData);
-    console.log("User Data in api LoginUser Function" , user );
-    localStorage.setItem("userInfoData", JSON.stringify(user.data));
+    console.log("User Data in api LoginUser Function", user);
     return user;
   } catch (err) {
     console.log(" login api err ", err);
   }
 };
 ```
-در بلاک try به وسیله axios دیتا مد نظرمون که همون اطلاعات کاربر که قصد لاگین هست رو فرستادیم . 
+در بلاک try به وسیله axios دیتا مد نظرمون 
 
-در ادامه `response` که برگشت میده , درون `localstorge` ذخیره کردیم . 
+که  اطلاعات کاربر که قصد لاگین هست رو فرستادیم . 
 
+در ادامه `user` که لاگین شده رو return شده .
 ```javascript
-  localStorage.setItem("userInfoData", JSON.stringify(user.data));
+return user;
 ```
 
-به این دلیل که می خوایم بعدا در جای دیگه از این data که داریم ذخیره می کنیم استفاده کنیم . 
+به این دلیل که می خوایم بعدا در جای دیگه از این data که داریم استفاده کنیم . 
 
--البته به این صورت فانکشن از pure function خارج میشه . 
+
+# Function profileUser 
+
+فانکشن profileUser در واقع برای نشون دادن اطلاعات کاربر استفاده میشه . 
+
+کاربری که لاگین کرده اطلاعات کاربر لاگین شده در فانکشن profileUser برگشت داده میشه . 
+
+اطلاعات کاربر رو میگیریم و ذخیره می کنیم که جلو تر بررسی می کنیم . 
+
+در نهایت هر جا خواستیم نشون میدیم . 
+
+```javascript
+export const profileUser = async () => {
+  try {
+    const user = await axios.get(`${baseUrl}/profile`);
+    return user.data;
+  } catch (err) {
+    console.log(" profile api err", err);
+  }
+};
+```
+
+# Function logoutUser 
+
+این فانکشن در فرانت اند در فولدر api کار logout شدن کاربر انجام میده . 
+
+یک api برای اینکار نوشته شده که به محض ران شدن این فانکشن کاربر مد نظر logout میشه . 
+
+```javascript 
+export const logoutUser = async () => {
+  try {
+    const user = axios.post(`${baseUrl}/logout`);
+    return user;
+  } catch (err) {
+    console.log(" logoutUser api err", err);
+    return err;
+  }
+};
+```
+# Function uploadRegisterImage 
+
+اخرین فانکشنی که در بخش api داریم مربوط به اپلود شدن عکس پرفایل کاربر هست . 
+
+کاربر در زمان ثبت نام می تونه یک عکس رو به عنوان پرفایل خودش انتخاب کنه . 
+
+ایتجا از یک سایت خارجی که فضای ابری در اختیار ما قرار میده استفاده کردیم . 
+
+اسم سایت `coludinary` هست که می تونیم فایل درونش اپلود کنیم . 
+
+در نهایت به عنوان ریسپانس یک لینک انلاین برای دانلود فایل مد نظر مون میده . 
+
+``` javascript
+const cloudinaryApi = `https://api.cloudinary.com/v1_1/cloud_name/image/upload`;
+export const uploadRegisterImage = async (pic: {} | any) => {
+  const data = new FormData();
+  data.append("file", pic);
+  data.append("upload_preset", "*****");
+  data.append("cloud_name", "*****");
+  const res = await axios.post(cloudinaryApi, data, {
+    withCredentials: false,
+  });
+  return res;
+};
+```
+
+### Paremeter uploadRegisterImage
+
+یک parameter به اسم pic هست .
+
+ عکسی هست که کاربر به عنوان عکس پرفایل انتخاب می کنه . 
+
+ این عکس از روی سیستم کاربر گرفته میشه . 
+
+ برای اینکه بتونیم این عکس ارسال کنیم به api سایت `cloudinary`  . 
+
+ نیاز هست که از `FormData` درون `javascript` استفاده کنیم . 
+
+ 3 مورد رو append می کنیم درون FormData که مورد اول file هست . 
+
+ مقدار file رو برابر با pic قرار میدیم عکسی که کاربر گذاشته . 
+
+ 2 مقدار بعد مربوط به api سایت `cloudinary` هست . 
+
+این 2 مقدار نیاز هست که ست شن یکی `upload_preset` هست که از خوده سایت باید بگیریم 
+
+یکی `cloud_name` هست که اینو هم از داخل dashboard سایت `cloudinary` بر میداریم . 
+
+**نکته** : cloud_name هم نیازه که append شه هم اینکه در ادرس api استفاده شه 
+
+```javascript 
+const cloudinaryApi = `https://api.cloudinary.com/v1_1/cloud_name/image/upload`;
+```
+```javascript 
+  data.append("cloud_name", "*****");
+  ```
+
+از موارد cloud_name و upload_preset نیاز هست که به صورت secret باشند .
+
+از دسترس دیگران خارج باشن تا شخصی از این دو مورد و اکانت شما نتونه استفاده کنه .
+
+در ادامه فانکشن داریم دیتای خودمون رو که در واقع عکس کاربر هست رو پست می کنیم . 
+
+به سایت `cloudinary` که یک api در اختیار ما قرار داده برای اپلود فایل . 
+
+اینجا عکس که درون فرم دیتا قرار دادیم و موارد مربوط به api رو ست کردیم 
+
+ارسال می کنیم به api cloudinary 
+
+```javascript
+  const res = await axios.post(cloudinaryApi, data, {
+    withCredentials: false,
+  });
+```
+**نکته** :
+در اینجا options [withCredentials](#credentials-in-client-with-axios) روی false گذاشتیم . 
+
+از لینک بالا می تونید section مربوط به withCredentials رو بخونید . 
+
+به این دلیل که قبلا برای تمامی api ها گفتیم withCrednetials":true باشه . 
+
+اما وقتی که می خوایم با یک api دیگه کار کنیم ممکنه به ما ارور `cors policy` بده . 
+
+و api ما به درستی کار نکنه . 
+
+به همین دلیل برای کار با api cloudnariy نیاز داریم
+
+که `withCredentials` رو روی false بزاریم 
+
+تا با ارور cors policy مواجه نشیم . 
+
+در ادامه `response` که در یافت می کنیم return شده . 
+
+یک بار دیگه به کل فانکشن نگاه کنیم : 
+
+```javascript 
+ const cloudinaryApi = `https://api.cloudinary.com/v1_1/cloud_name/image/upload`;
+export const uploadRegisterImage = async (pic: {} | any) => {
+  const data = new FormData();
+  data.append("file", pic);
+  data.append("upload_preset", "*****");
+  data.append("cloud_name", "*****");
+  const res = await axios.post(cloudinaryApi, data, {
+    withCredentials: false,
+  });
+  return res;
+};
+  ```
+ریسپانسی که api سایت `cloudinary` به ما برگشت میده . 
+
+لینک انلاین عکس اپلود شده هست . 
+
+در نهایت لینک انلاین عکس رو به سمت `server` درون کامپونت Register.tsx پاس میدیم . 
+
+و از عکسی که کاربر اپلود کرده و ما به لینک اش دسترسی داریم . 
+
+به عنوان عکس پرفایل استفاده می کنیم . 
+
+
+تا به اینجا در مورد فولدر [api](api-folder#) درون clinet صحبت کردیم . 
+
+می خوایم بریم سراغ کامپونت ها . 
+
+# Components 
+
+### Register.tsx component
+
+درون این کامپونت مراحل ثبت نام کاربر انجام میشه . 
+
+یک فرم داریم که درونش input های مربوط به ثبت نام کاربر هست . 
+
+که value های اینپوت هارو ذخیره می کنیم و به سمت سرور ارسال می کنیم . 
+
+و البته `validation` سمت server انجام شده  . 
+
+اگر error مربوط به register باشه به عنوان response می گیریم . 
+
+در نهایت هنگام submit شدن form به کاربری که قصد register داره نمایش میدیم . 
+
