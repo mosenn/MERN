@@ -892,3 +892,227 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 که این فانکشن وظیفه گرفتن value اینپوت ها رو داره . 
 
 و value اینپوت ها رو ذخیره می کنه درون یک state . 
+
+در ادامه ارور های مربوط به هر input رو در پایین label تعریف شده . 
+
+```javascript
+  {errorRegister?.username}
+```
+
+خب نوبت به گرفتن تمامی value های input ها میشه برای اینکار نیاز به یک state داریم . 
+
+```javascript
+  const [register, setRegister] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    pic: {},
+    //* default image set
+    // pic: "https://i.postimg.cc/PfvxsgPB/woman-2.png",
+  });
+```
+
+همونطور که در کد بالا مشاهده میشه state تعریف شده یک object هست . 
+
+مقادیری که می خوایم ذخیره کنیم `key` ها رو درون object تعریف می کنیم . 
+
+فقط یک مورد از این key ها متفاوت هست که `pic` هست . 
+
+نوع `pic` یک ابجکت گذاشتیم جلو تر دلیل اینکار مشخص میشه . 
+
+اگر خواستیم به صورت default عکس کاربر رو ست کنیم می تونیم یک عکس upload کنیم و ادرس شو درون pic قرار بدیم . 
+
+البته این موضوع رو در سمت `server` هم می تونیم هندل کنیم . بازم جلو تر بررسی می کنیم . 
+
+خب حالا نوبت به تعریف فانکشن `handleOnChange` می رسه که این فانکشن رو برای تمامی اینپوت ها تعریف می کنیم . 
+
+```javascript
+ const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "pic") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setRegister({ ...register, pic: file });
+      }
+    } else {
+      setRegister({ ...register, [e.target.name]: e.target.value });
+    }
+    console.log("Regiser State in onChange func", register);
+  };
+```
+پارامتر `e` در واقع event هست که به input ها اشاره داره . 
+
+به دلیل اینکه از `type script` استفاده می کنیم . 
+
+نوع type هر event و هر parameter رو مشخص می کنیم . 
+
+در اینجا نوع این event در واقع `<React.ChangeEvent<HTMLInputElement` هست . 
+
+نوع هر event نسبت به کاری که انجام میدن نوع type شون متفاوت هست . 
+
+در قدم اول  یک `if` داریم برای چک کردن `name` که اگر pic بود . 
+
+بیاد مقدار `[0].?files` رو بگیره و درون state که register که تعریف کردیم ذخیره کنه . 
+
+اینکار به این دلیل هست که value pic با بقیه input ها متفاوت هست . 
+
+و `[0].?files` به اولین عکسی که انتخاب شده توسط کاربر اشاره داره . 
+
+```javascript 
+    if (e.target.name === "pic") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setRegister({ ...register, pic: file });
+      }
+```
+
+یک if درونش گفتم اگر name === pic بود  . 
+
+یک متفییر به اسم file ایجاد شه `[0].?files` رو درونش خودش نگه داره . 
+
+همچنین باز نیاز هست که نوع typesh مشخص شه که اینجا یک `as HTMLInputElement` تعریف شده برای type
+
+در نهایت باز یک if گفتیم اگر که file بود . 
+
+و state تعریف شده register بیاد set شه تمامی مقادیر قبلی خودش رو حفظ کنه . 
+
+اما مقدار `pic` که ابجکت بوده برابر شه با مقدار file . 
+
+که قبل تر درون یک متغییر ذخیره کردیم . 
+
+یک بار دیگه به کد نگاه کنیم : 
+
+
+```javascript 
+    if (e.target.name === "pic") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setRegister({ ...register, pic: file });
+      }
+```
+
+در ادامه یک else داریم که میایم مقادیر دیگه رو هم که `string` هستند ذخیره می کنیم . 
+
+```javascript
+ else {
+      setRegister({ ...register, [e.target.name]: e.target.value });
+    }
+```
+تمامی مقادیر قبلی state register رو ذخیره کردیم به وسیله `spread operator`  . 
+
+**نکته** : کل state که تعریف کرده بودیم یک ابجکت هست . در نتیجه زمان set شدن . 
+
+کل شو درون یک ابجکت  {}  قرار میدیم . 
+
+و درون یک ارایه `key` رو می زاریم name که برای input ها تعریف کردیم . 
+
+در نهایت value هر input رو ذخیره می کنیم . 
+
+**نکته** : نیازه هست name که برای input ها تعریف می کنیم با key که برای state ابجکت تعریف کردیم در ابتدا 
+
+یکی باشند . 
+```javascript
+        <input
+          onChange={handleOnChange}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="username"
+          name="username"
+      /> 
+```
+```javascript
+  const [register, setRegister] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+    pic: {},
+  });
+```
+
+مقدار name که برای input تعریف کردیم `username` هست . 
+
+مقدار key ابتدایی برای `state` هم username هست . 
+
+فانکشن `handleOnchange` رو نوشتیم و تموم شد . 
+
+کل کاری که انجام میده گرفتن مقدار value اینپوت ها و ذخیره اونها درون state هست . 
+
+زمانی که , فانکشن `handleOnchange` رو زمانی که برای input ها event Onchange اتفاق می افته اعمال میشه .
+
+
+```javascript
+        <input
+          onChange={handleOnChange}
+          type="text"
+          id="username"
+          name="username"
+      /> 
+```
+
+# Submit Function Register.tsx 
+
+یک فانکشن به اسم `handleSubmit` داریم در کامپونت `Register.tsx` . 
+
+این فانکشن زمانی که from ثبت نام ما submit میشه اتفاق می افته . 
+
+```javascript
+     <form
+        onSubmit={handleSubmit}
+        action=""
+      >
+```
+
+درون این فانکشن اول نوع type ایونتی که داره رخ میده رو مشخص می کنیم . 
+
+درون فانکشن e.preventDefault رو داریم . 
+
+```javascript
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+```
+
+در ادامه می تونیم یک لاگ بگیریم از state که وظیفه ذخیره کردن value های input رو داشت . 
+
+که ببینم به درستی اینکار انجام میشه یا نه . 
+
+```javascript
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("register state in submit form", register);
+  };
+```
+بعد از اینکه input ها رو درون صحفه پر کردیم و فروم خودمون رو submit کردیم . 
+
+**نکته** : نیاز هست یک button درون فروم داشته باشیم که نوع type button ما از نوع submit باشه . 
+که button تعریف شده می تونه یک کامپونت باشه . 
+
+```javascript
+   <Button
+            text="Register"
+            type="submit"
+          />
+```
+
+بعد از لاگ گرفتن و مظمئن شدن از value های input های خودمون نوبت به ارسال اونها به سمت سرور میشه . 
+
+یاد اوری : یک فولدر api داشتیم که تمامی کار با [api](#api-folder) رو درونش قرار دادیم . 
+```javascript
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("register state in submit form", register);
+    const user = await registerUser(register);
+    console.log(user, "user");
+  };
+  ```
+
+فانکشن registerUser رو از api فولدر و فایل user.tsx امدیم import کردیم 
+
+و درون فانکشن handleSubmit داریم صداش می زنیم . 
+
+مقدار های input ها رو که درون state register ذخیره کرده بودیم رو داریم بهش پاس میدیم 
+
+فانکشن `registerUser` رو در این [بخش](#function-register-user) بررسی کردیم 
+
+درون api فولدر یک فایل به اسم [user.tsx](#userstsx) داریم که api ها مربوط به user رو انجام میده . 
+
+مثل register / login و ... 
