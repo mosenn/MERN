@@ -402,7 +402,7 @@ export const registerUser = async (
 
 درون بلاک try میایم return می کنیم . 
 
-به این دلیل که می خوایم اطلاعاتی که api به ما response میده رو درون کامپونت [Register.tsx](#base-url-axios-option)
+به این دلیل که می خوایم اطلاعاتی که api به ما response میده رو درون کامپونت [Register.tsx](#function-register-user)
 
 دسترسی داشته باشیم . response که api /register به ما میده در واقع اطلاعات کاربری هست که ثبت نام کرده . 
 
@@ -443,7 +443,7 @@ export const registerUser = async (
 
 درون بلاک `catch` میایم ارور های مربوط به register error کنترل می کنیم . 
 
-اگر یادتون باشه یک [setErrorRegister](#base-url-axios-option) به عنوان parameter داشتیم . 
+اگر یادتون باشه یک [setErrorRegister](#parameter-seterrorregister) به عنوان parameter داشتیم . 
 
 که وظیفه این set state در واقع ذخیره کردن ارور های مربوط به ثبت نام کاربر هست  . 
 
