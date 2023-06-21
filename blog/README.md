@@ -1221,4 +1221,160 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 
 در مدت زمان 3000 که میشه 3 ثانیه . 
 
+در اینجا navigate در واقع hook درونی react-router-dom هست . 
+
+```javascript
+import { useNavigate } from "react-router-dom";
+const Register = () => { 
+  const navigate = useNavigate();
+} 
+  ```
+
+
+برای ست کردن `toast` می تونیم به صورت دستی با animation css یک باکس طراحی شه . 
+
+و بعد از true شدن یک state نمایش داده شه .
+
+```javascript
+const Register = () => { 
+  const [toast, setToast] = useState<Boolean>(false);
+       {toast && (
+        <Toast text={"register is success redirect to login"} toast={toast} />
+      )}
+} 
+```
+
+# Toast componet
+که toast درواقع یک کامپونت مجزا هست . از این کامپونت برای login هم استفاده می کنیم . 
+
+در واقع نمایش داده شه یا نه به وسیله یک state boolean تعریف شده . 
+
+که به وسیله `props` مشخص شده . 
+
+همینطور `text` که نمایش میده هم به وسیله props مشخص میشه . 
+
+که type props های پاس داده شده درون یک interface مشخص شده . 
+```javascript
+interface propsToast {
+  text: string;
+  toast: Boolean;
+}
+const Toast = ({ text, toast }: propsToast) => {
+  return (
+    <div
+      className={` bg-green-300 w-[250px] fixed text-center  p-[10px] rounded font-semibold text-[#6f6f6f]  ${
+        toast && "showToast"
+      } `}
+    >
+      <p>
+        <span>🎉</span> {text}
+      </p>
+      <div
+        className={`absolute bg-blue-300 w- h-[3px] bottom-[-3px] left-0 rounded-sm ${
+          toast && "loadingRedirect"
+        }`}
+      ></div>
+    </div>
+  );
+};
+export default Toast;
+```
+
+# Login.tsx component . 
+
+بعد از ثبت نام کردن کاربر لاگین شدن کاربر رو داریم . 
+
+که بتونه با اکانتی که ساخته لاگین کنه . 
+
+برای اینکار مثل Register.tsx یک فروم داریم که حاوی 2 input هست . 
+
+که مشخصات کاربری که قصد لاگین رو داره میگیره و به سمت `server` ارسال می کنه . 
+
+
+
+```javascript
+  return (
+    <div className="h-[90vh]  justify-center items-center flex ">
+      {toast && <Toast toast={toast} text={"you are login"} />}
+      <form
+        onSubmit={handleSubmit}
+        action=""
+        className=" w-[90%] bg-gray-300 rounded-lg grid p-3 m-2 md:w-[60%]"
+      >
+        <label className="ml-2 font-semibold text-gray-900" htmlFor="username">
+          username
+        </label>
+        <input
+          onChange={onchangeHandle}
+          value={loginValue.username}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="username"
+          name="username"
+        />
+
+        <label className="ml-2 font-semibold text-gray-900" htmlFor="password">
+          password
+        </label>
+        <input
+          onChange={onchangeHandle}
+          value={loginValue.password}
+          className="p-1 m-2 border border-solid border-gray-300 rounded-sm"
+          type="text"
+          id="password"
+          name="password"
+        />
+        <div className=" m-1 p-1 w-full flex justify-start md:justify-center items-start">
+          <Button
+            className="bg-blue-500 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            text="Login"
+            type="submit"
+          />
+        </div>
+      </form>
+    </div>
+  ); 
+```
+
+درون فرم  login.tsx فانکشن handleSubmit  رو داریم . 
+```javascript
+      <form
+        onSubmit={handleSubmit}
+        action=""
+        className=" w-[90%] bg-gray-300 rounded-lg grid p-3 m-2 md:w-[60%]"
+      >
+```
+
+درون هر دو input فانکشن handleOnchange رو داریم . 
+```javascript
+     <input
+          onChange={onChangeHandle}
+          value={loginValue.password}
+          type="text"
+          id="password"
+          name="password"
+        />
+```
+
+که فانکشن onChangeHandle کار ذخیره کردن value های input هارو درون یک state انجام میده . 
+
+```javascript 
+ const onChangeHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginValue({ ...loginValue, [e.target.name]: e.target.value });
+  };
+```
+
+فانکش handleSubmit کار ارسال value های گرفته شده input هارو به سمت سرور انجام میده . 
+
+```javascript 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = await loginUser(loginValue);
+  }
+```
+فانکشن [loignUser](#function-loginuser) درون فولدر api در فایل user.tsx تعریف شده . 
+
+که اینجا state مربوط که وظیفه ذخیره سازی value input ها فرم لاگین رو داره به loginUser پاس داده شده . 
+
+در نهایت response که میده مشخصات کاربر هست که لاگین شده . 
 
