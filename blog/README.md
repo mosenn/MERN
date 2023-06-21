@@ -1101,7 +1101,7 @@ export const uploadRegisterImage = async (pic: {} | any) => {
     e.preventDefault();
     console.log("register state in submit form", register);
     const user = await registerUser(register);
-    console.log(user, "user");
+
   };
   ```
 
@@ -1116,3 +1116,109 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 درون api فولدر یک فایل به اسم [user.tsx](#userstsx) داریم که api ها مربوط به user رو انجام میده . 
 
 مثل register / login و ... 
+
+
+در ادامه reponse که فانکشن `registerUser` به ما میده اطلاعات کاربری هست که ثبت نام کرده . 
+
+می تونیم یک لاگ داشته باشیم . 
+
+```javascript
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("register state in submit form", register);
+    const user = await registerUser(register);
+ console.log(user, "user");
+  };
+  ```
+
+بعد از اینکه دیتا ها رو داشتیم یک فانکشن به اسم handleError داریم . 
+
+که وظیفه اش هندل کردن ارور های مربوط به ثبت نام کاربر هست 
+
+
+```javascript 
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("register state in submit form", register);
+    const user = await registerUser(register);
+    console.log(user, "user");
+    handleError(user);
+  };
+```
+
+در واقع اگر موقع ثبت نام error داشته باشیم باز به عنوان دیتا خواهیم داشت . 
+
+به این دلیل که ارور ها از سمت سرور دارند میان . 
+
+پس کار فانکشن handleError کنترل کردن ارور های ثبت نام هست . 
+
+```javascript
+  const handleError = (err: {}) => {
+    setErrorRegister(err);
+  };
+```
+مقدار err که به عنوان parameter گرفته فانکشن handleError در واقع ارور های ثبت نام کاربر هستند . 
+
+که از بلاک catch فانکشن `registerUser` داره گرفته میشه که این فانکشن  در فولدر api در فایل user.tsx قرار داره . 
+
+که درون فانکشن یک state برای error ها set میشه که این state هم یک ابجکت هست 
+
+به این دلیل ارور های که از سمت سرور میاد به صورت ابجکت هستند . 
+
+```javascript 
+  const [errorRegister, setErrorRegister] = useState<ErrorRegister>({});
+```
+
+در نهایت اگر ارور داشته باشیم درون این state ذخیره میشه و می تونیم نشون بدیم درون صحفه 
+
+گفتیم که در زیر هر label مربطو به هر input ارور های مربوط به همون input رو نمایش میدیم . 
+
+
+```javascript 
+ <label  htmlFor="username">
+          username
+        </label>
+        {errorRegister?.username}
+        <input
+          onChange={handleOnChange}
+          type="text"
+          id="username"
+          name="username"
+        />
+```
+
+حالا می خوایم بعد از داشتن اطلاعات اگر که بود یک `toast` نمایش بدیم . 
+
+که به کاربر بگیم ثبت نام که انجام داده موفقیت امیز بوده . 
+
+و بعد از چند ثانیه کاربر رو به صحفه login ریداریکت کنیم . 
+
+نیاز به یک if داریم که چک کنه ببینیم ایا دیتا و user هست . 
+
+که اینکارو با status انجام شده . 
+
+```javascript 
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("register state in submit form", register);
+    const user = await registerUser(register);
+    console.log(user, "user");
+    handleError(user);
+    if (user?.status === 201) {
+      setToast(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    }
+  };
+```
+
+چک کردیم اگر status ما برابر با `201` بود بیاد یک state رو true کنه که این state وظیفه نشون دادن toast رو بر عهده داره . 
+
+در صورت اینکه state toast true باشه یک پیام نمایش داده میشه درون صحفه . 
+
+و بعد از اون یک `setTimeout` اتفاق بیوفته که درونش `navigate` کنه به login/ که در واقع ادرس صحفه login هست . 
+
+در مدت زمان 3000 که میشه 3 ثانیه . 
+
+
