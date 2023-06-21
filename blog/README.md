@@ -1356,6 +1356,25 @@ export default Toast;
         />
 ```
 
+
+
+که برای state مد نظر یک interface type script تعریف شده 
+
+
+```typescript
+interface loginValue {
+  username: string;
+  password: string;
+}
+```
+
+این state وظیفه ذخیره سازی value دو input فرم login رو بر عهده داره . 
+```javascript
+  const [loginValue, setLoginValue] = useState<loginValue>({
+    username: "",
+    password: "",
+  });
+```
 که فانکشن onChangeHandle کار ذخیره کردن value های input هارو درون یک state انجام میده . 
 
 ```javascript 
@@ -1363,6 +1382,7 @@ export default Toast;
     setLoginValue({ ...loginValue, [e.target.name]: e.target.value });
   };
 ```
+
 
 فانکش handleSubmit کار ارسال value های گرفته شده input هارو به سمت سرور انجام میده . 
 
@@ -1377,4 +1397,55 @@ export default Toast;
 که اینجا state مربوط که وظیفه ذخیره سازی value input ها فرم لاگین رو داره به loginUser پاس داده شده . 
 
 در نهایت response که میده مشخصات کاربر هست که لاگین شده . 
+
+یک if داریم درون فانکشن که status کد رو چک می کنه . 
+
+گفته شده اگر `user.status === 200`  بیاد state مربوط به toast رو true کنه . 
+
+یک state گلوبال به اسم `setUserInforOnline(user.data)`
+
+وسیله `context` تعریف کردیم که مشخصات کاربری که لاگین کرده رو ذخیره می کنه . 
+
+همینطور `navigate` کنه به صحفه home/ . درون یک `()setTimeout`
+
+```javascript 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = await loginUser(loginValue);
+        if (user?.status === 200) {
+      console.log("User Info In If Login.tsx componet", user);
+      setToast(true);
+      console.log(user, "user is login.jsx");
+      setUserInforOnline(user.data);
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }
+```
+
+**یاد اوری**:  route بندی ها درون App.tsx به وسیله react-router-dom انجام شده . 
+
+```javascript 
+function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+
+# Header.tsx Componet 
+
+یک کامپونت داریم به اسم `Header.tsx` که این کامپونت header وب سایت ما هست و قرار در تمامی صحفات نمایش داده شه . 
+
+و مشخصات کاربری که لاگین کرده رو نشون بده مثل عکس پرفایل و همینطور `username` . 
+
 
