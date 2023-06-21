@@ -525,6 +525,19 @@ export const loginUser = async (userLoginData: loginValue) => {
 
 };
 ```
+یه نگاهی به import های درون login.tsx بندازیم . 
+
+
+```javascript
+   const { setUserInforOnline, userInfoOnline } = useGlobalContext();
+  const navigate = useNavigate();
+  const [toast, setToast] = useState<Boolean>(false);
+```
+
+یک state داریم که از useGlobalContext داره گرفته میشه . 
+
+که در بخش [Header.tsx](#header.tsx-componet) ساخت  [context](#create-context) گفته شده . 
+
 ### loginUser parameter 
 
 فانکشن loginUser یک parameter داره به اسم userLoginData که در واقع یک state .
@@ -1448,4 +1461,297 @@ function App() {
 
 و مشخصات کاربری که لاگین کرده رو نشون بده مثل عکس پرفایل و همینطور `username` . 
 
+درون `Header.tsx` ایمپورت های زیر رو داریم . 
 
+```javascript 
+import { Link } from "react-router-dom";
+import { logoutUser, profileUser } from "../../api/users";
+import { useGlobalContext } from "../../context/context";
+import { useEffect } from "react";
+```
+
+دو تا فانکشن مربوط به api به اسم profileUser و همینطور logoutUser داریم . 
+
+زمانی که کاربر لاگین می کنه سمت `server` یک token درون cookie ذخیره میشه . 
+
+مشخصات درون این token وریفای شده و درون api مربوط به profileUser ارسال میشه . 
+
+که در بخش سرور بیشتر بهش می پردازیم . 
+
+در حال حاضر فانکشن profileUser حاوی اطلاعات کاربری هست که لاگین شده توسط token . 
+
+
+**نکته** : این توکن سمت server ذخیره میشه 
+
+### create context
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/a0f88736-0fdc-4834-a2eb-1cff7f5ccc99' alt='context in react'/>
+
+یک فولدر به اسم context داریم و یک فایل به اسم context.tsx داریم . 
+
+که میایم درونش context رو ایجاد می کنیم . 
+
+به createContext , useContext , نیاز داریم از درون `react` میایم import رو انجام میدیم . 
+
+```javascript
+import { createContext, useContext, useState } from "react";
+```
+
+یک متغییر ایجاد می کنیم . 
+
+به دلیل اینکه از type script داریم استفاده می کنیم .
+
+نیاز هست  `default value`  مربوط به `createContext` رو تعریف کنیم . 
+
+```javascript
+const AppContext = createContext<MyContextValue>({
+  name: "",
+  setUserInforOnline: () => {},
+  userInfoOnline: {},
+});
+```
+
+
+یک interface به اسم `MyContextValue` داریم . 
+
+که در وافع نوع تایپ های `default value` رو مشخص می کنه . 
+
+```typescript 
+interface MyContextValue {
+  name: string;
+  setUserInforOnline: React.Dispatch<React.SetStateAction<{}>>;
+  userInfoOnline: {} | any;
+}
+```
+
+در ادامه `appProvider` رو داریم که در واقع یک فانکشن هست . 
+
+یک parameter به اسم `children` می گیره . 
+
+**نکته** : این  children حتما باید به همین اسم باشه . با همین حروف کوچیک در غیر اینصورت context به مشکل می خوره . 
+
+```javascript 
+const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  let [userInfoOnline, setUserInforOnline] = useState<{}>({});
+  return (
+    <AppContext.Provider
+    >
+    </AppContext.Provider>
+  );
+};
+```
+
+درونش یک state تعریف کردیم از این state برای ذخیره سازی دیتای مربوط به کاربر لاگین شده استفاده می کنیم . 
+
+خب از `AppContext` که در واقع createContext رو درون خودش داره استفاده می کنیم . 
+
+یدونه `Provider` بهش اضافه می کنیم . 
+
+میام children  رو قرار میدیم بین 2 provider که تعریف کردیم  . 
+
+
+
+```javascript 
+const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  let [userInfoOnline, setUserInforOnline] = useState<{}>({});
+  return (
+    <AppContext.Provider
+    >
+    {children}
+    </AppContext.Provider>
+  );
+};
+```
+
+در ادامه یک value تعریف می کنیم .
+
+مقادیری که نیاز داریم که به صورت گلوبال در کامپونت های دیگه دسترسی داشته باشیم . 
+
+تعریف می کنیم 
+```javascript 
+const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+  let [userInfoOnline, setUserInforOnline] = useState<{}>({});
+  return (
+    <AppContext.Provider
+      value={{
+        name: "mohsen",
+        setUserInforOnline,
+        userInfoOnline,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+```
+
+حالا appProvider که ایجاد کردیم رو export می کنیم . 
+
+```javascript 
+export { AppProvider }; 
+```
+
+این appPorvider رو درون main.tsx میایم import می کنیم و کل کامپونت <App> رو درونش قرار میدیم . 
+
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/ee7abd4d-1fb3-4b22-80e3-6678b147c2f3' alt='context in react'>
+
+
+```javascript
+import { AppProvider } from "./context/context.tsx";
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <AppProvider>
+    <App />
+  </AppProvider>
+);
+```
+
+بر می گردیم دورن فایل context 
+
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/a0f88736-0fdc-4834-a2eb-1cff7f5ccc99' alt='context in react'/>
+
+
+یک arrow function ایجاد می کنیم و از `useContext` استفاده می کنیم . 
+
+
+```javascript
+export const useGlobalContext = () => {
+  return useContext(AppContext);
+};
+```
+
+حالا می تونیم از useGlobalContext هر جا که خواستیم استفاده کنیم . 
+
+و مقادیر که به عنوان value به `AppContext.Provider` پاس دادیم . 
+
+در هر کامپونتی که نیاز داشتیم به مقادیری که set کردیم استفاده می کنیم . 
+
+# back to Header.tsx 
+
+بعد از اینکه context خودمون رو تعریف کردیم . 
+
+بر می گردیم به کامپونت Header.tsx . 
+
+یک بار دیگه  import های این کامپونت رو ببینیم .
+```javascript
+
+import { Link } from "react-router-dom";
+import { logoutUser, profileUser } from "../../api/users";
+import { useGlobalContext } from "../../context/context";
+import { useEffect } from "react";
+```
+
+خب useGlobalContext رو داریم می بینیم از درون context . 
+
+میایم state که تعریف کردیم   رو از درون useGlobalContext می گیریم . 
+
+```javascript
+const Header = () => {
+  let { userInfoOnline, setUserInforOnline } = useGlobalContext();
+  }
+```
+
+**یاداوری** : از این state userInfoOnline درون کامپونت[Login.tsx](#function-loginuser) هم استفاده کردیم . 
+
+### logout function 
+
+فانکشن `logout` رو داریم .
+
+که کاربر می تونه logout کنه در صورت لاگین بودن . 
+
+این فانکشن در اصل یک api رو کال می کنه سمت `server` . 
+
+که این api در واقع همون توکنی که برای لاگین شدن کاربر ست میشه . 
+
+از cookie درون server پاک می کنه در نهایت کاربر logout میشه . 
+
+یک window.reload برای رفرش شدن صحفه استفاده شده . 
+
+که میشه یک لودینگ یا یک پیام به کاربر برای logout شدن نمایش داد . 
+
+```javascript
+  const logOut = async () => {
+    await logoutUser();
+    //* can set loading for logout take effect
+    window.location.reload();
+  };
+```
+
+فانکشن بعدی `takeUser` هست که در واقع اطلاعات کاربری که لاگین می کنه رو درون state گلوبال خودمون ذخیره می کنیم . 
+
+```javascript
+  const takeUser = async () => {
+    const user = await profileUser();
+    setUserInforOnline(user);
+  };
+```
+
+**نکته** : اگر که براتون سواله که چرا در هر دو کامپونت هم Header.tsx و هم Login.tsx 
+
+امدیم از state گلوبال استفاده کردیم و دیتای مربوط به user رو درون state userInforOnline ذخیره کردیم ! 
+
+به این دلیل هست که برای اینکه صحفه رو نخوایم رفرش کنیم تا دیتای مربوط به کاربر رو به ما نشون بده . 
+
+امدیم به اینصورت کار کردیم . که کاربر به محض اینکه لاگین کرد اطلاعاتش درون hedaer نمایش داده شه . 
+
+اگر یکی از setState های مربوط به userInforOnline رو برداریم . 
+
+به محض اینکه کاربر لاگین شه اطلاعات نمایش داده نمیشه و نیاز به رفرش به صورت دستی هست تا اطلاعات نمایش داده شه . 
+
+
+در نهایت بعد از تعریف فانکشن `takeUser` درون ()useEffect میایم این فانکشن رو ران می کنیم . 
+
+اینکار باعث میشه با هر بار ران شدن کامپونت Header.tsx اطلاعات کاربر از state گلوبال خونده میشه و نمایش داده میشه .
+
+```javascript 
+  useEffect(() => {
+    takeUser();
+  }, []);
+```
+
+کامپونت Header.tsx میاد اطلاعات کاربر رو نمایش میده اگر که لاگین باشه . 
+
+در غیر اینضورت یک ul دیگه رو نمایش میده که link های مربوط به login شدن و ثبت نام درونش قرار دارند . 
+
+و اگر کاربر لاگین بود اسم کاربر و عکس پرفایل رو در header نمایش میده به همراه یک button که مسئول logout شدن کاربر هست . 
+
+در واقع button فانکشن [logout](#logout) رو اجرا می کنه . 
+
+در نهایت کامپونت Header.tsx میاد jsx زیر رو return می کنه : 
+
+
+```javascript 
+  return (
+    <header className="bg-zinc-200 flex justify-between p-4 text-lg font-bold">
+      <div className="flex items-center justify-center">logo</div>
+      <nav>
+        {userInfoOnline?.username ? (
+          <ul className="flex items-center justify-end">
+            <li className="mr-4">
+              <img
+                className="rounded-full w-[50px] h-[50px] border-2 border-blue-950"
+                src={userInfoOnline.pic}
+                alt={`profile image ${userInfoOnline?.username}`}
+              />
+            </li>
+            <li className="mr-4">{userInfoOnline?.username}</li>
+
+            <li className="mr-4">
+              <button onClick={logOut}>logout</button>
+            </li>
+          </ul>
+        ) : (
+          <ul className="flex justify-end items-center">
+            <li className="mr-4">
+              <Link to="/login">login</Link>
+            </li>
+            <li className="mr-4">
+              <Link to="/register">register</Link>
+            </li>
+          </ul>
+        )}
+      </nav>
+    </header>
+  );
+```
