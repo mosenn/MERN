@@ -536,7 +536,7 @@ export const loginUser = async (userLoginData: loginValue) => {
 
 یک state داریم که از useGlobalContext داره گرفته میشه . 
 
-که در بخش [Header.tsx](#header.tsx-componet) ساخت  [context](#create-context) گفته شده . 
+که در بخش [Header.tsx](#headertsx-componet) ساخت  [context](#create-context) گفته شده . 
 
 ### loginUser parameter 
 
