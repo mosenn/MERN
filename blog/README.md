@@ -1716,7 +1716,7 @@ const Header = () => {
 
 و اگر کاربر لاگین بود اسم کاربر و عکس پرفایل رو در header نمایش میده به همراه یک button که مسئول logout شدن کاربر هست . 
 
-در واقع button فانکشن [logout](#logout) رو اجرا می کنه . 
+در واقع button فانکشن [logout](#logout-function) رو اجرا می کنه . 
 
 در نهایت کامپونت Header.tsx میاد jsx زیر رو return می کنه : 
 
