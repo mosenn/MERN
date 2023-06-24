@@ -1,7 +1,7 @@
 import axios from "axios";
 
 interface registeruserType {
-  username: string;
+  username?: string;
   password: string;
   confirmPassword: string;
   pic: {};
@@ -28,13 +28,15 @@ export const registerUser = async (UserRegisterData: registeruserType) => {
 };
 
 //* Upload pic For Profile Image
-const cloudinaryApi = `https://api.cloudinary.com/v1_1/duhpa0txz/image/upload`;
+const CLOUDNAME = import.meta.env.VITE_CLOUDINARAY_CLOUDNAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARAY_UPLOAD_PRESET;
+const cloudinaryApi = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`;
 export const uploadRegisterImage = async (pic: {} | any) => {
   try {
     const data = new FormData();
     data.append("file", pic);
-    data.append("upload_preset", "mqcdxsrq");
-    data.append("cloud_name", "duhpa0txz");
+    data.append("upload_preset", UPLOAD_PRESET);
+    data.append("cloud_name", CLOUDNAME);
     const res = await axios.post(cloudinaryApi, data, {
       withCredentials: false,
     });
