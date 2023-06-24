@@ -685,9 +685,9 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 
 می خوایم بریم سراغ کامپونت ها . 
 
-# Components 
+# Components & pages
 
-### Register.tsx component
+### Register.tsx page
 
 درون این کامپونت مراحل ثبت نام کاربر انجام میشه . 
 
@@ -1027,7 +1027,8 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 بعد از اینکه input ها رو درون صحفه پر کردیم و فروم خودمون رو submit کردیم . 
 
 **نکته** : نیاز هست یک button درون فروم داشته باشیم که نوع type button ما از نوع submit باشه . 
-که button تعریف شده می تونه یک کامپونت باشه . 
+
+که button تعریف شده یک `component` هست . 
 
 ```javascript
    <Button
@@ -1036,9 +1037,72 @@ export const uploadRegisterImage = async (pic: {} | any) => {
           />
 ```
 
+### Button Component 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/001b61a0-c9a8-4fad-ab80-70163e092092)
+
+یک کامپونت `Button` داریم که هر جا نیاز شد از button استفاده کنیم می تونیم از این کامپونت استفاده کنیم . 
+
+یک سری props که نیاز هست برای button پاس دادیم به کامپونت `Button` : 
+
+```javascript
+export default function Button({
+  text,
+  type,
+  className,
+  disabled,
+  onClick,
+}: buttonProps) {
+```
+نوع type props مربوط به کامپونت `Button` رو مشخص می کنیم  : 
+
+
+```javascript
+interface buttonProps {
+  text?: string | any;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => Promise<void>;
+}
+```
+
+در نهایت کامپونت ما یک button میاد return می کنه و از این button هر جا که خواستیم استفاده می کنیم . 
+
+و props های مورد نیازش رو بهش پاس میدیم . 
+
+
+```javascript
+
+export default function Button({
+  text,
+  type,
+  className,
+  disabled,
+  onClick,
+}: buttonProps) {
+  return (
+    <button
+      disabled={disabled}
+      type={type}
+      className={className}
+      onClick={onClick}
+    >
+      <span className="p-2"> {text}</span>
+    </button>
+  );
+}
+```
+هر جا که خواستیم می تونید صدا بزنیم `Componen Button` رو و ازش استفاده کنیم .
+
+و حتی function های متفاوتی بهش پاس بدیم . 
+
+### continue Register.tsx page
+
 بعد از لاگ گرفتن و مظمئن شدن از value های input های خودمون نوبت به ارسال اونها به سمت سرور میشه . 
 
 یاد اوری : یک فولدر api داشتیم که تمامی کار با [api](#api-folder) رو درونش قرار دادیم . 
+
 ```javascript
  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1187,7 +1251,7 @@ const Register = () => {
 } 
 ```
 
-# Toast componet
+# Toast Componet
 که toast درواقع یک کامپونت مجزا هست . از این کامپونت برای login هم استفاده می کنیم . 
 
 در واقع نمایش داده شه یا نه به وسیله یک state boolean تعریف شده . 
@@ -1223,7 +1287,7 @@ const Toast = ({ text, toast }: propsToast) => {
 export default Toast;
 ```
 
-# Login.tsx component . 
+# Login.tsx Page . 
 
 بعد از ثبت نام کردن کاربر لاگین شدن کاربر رو داریم . 
 
@@ -1685,3 +1749,229 @@ const Header = () => {
     </header>
   );
 ```
+
+
+# Server 
+
+همونطور که اشاره شد پروژه `blog` یک پروژه فول استک هست . 
+
+بک اند پروژه با nodejs + expressjs و mongodb زده شده . 
+
+برای اینکه بتونیم پروژه رو کامل داشته باشیم نیاز هست که فایل سرور هم در کنار فایل client داشته باشیم . 
+
+و هر دو رو ران کنیم  . 
+
+
+# Run Clinet & Server 
+
+برای client از دستور : 
+
+```bash
+npm i 
+npm run dev
+```
+
+برای server از دستور : 
+
+```bash
+npm i 
+nodemon 
+```
+
+or 
+
+```bash
+node index.js
+```
+
+پکیج `nodemon` به ما کمک می کنه سرور رو به صورت `live` ران داشته باشیم . 
+
+در واقع مثل `live server` سمت `client` می مونه . 
+
+که حتما نیاز هست nodejs روی سیستم نصب و ورژن 16 به بالا باشه . 
+
+برای دوسنتن ورژن nodejs کافیه `command prompet` رو باز کنید . 
+
+دستور : 
+
+```bash
+node -v 
+```
+
+رو وارد کنید اگر nodejs نصب باشه ورژن nodejs رو نمایش میده . 
+
+بریم سراغ ساخت سرور : 
+
+بعد از زدن دستوارت اوله npm i . 
+
+
+و ساخت package.json : 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4645db0b-8c5b-493b-ad3b-f72bee1a6078)
+
+
+اطلاعات درون package.json که درون dependencies پکیج های که برای server استفاده شده می بینیم . 
+```json
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.3",
+    "yup": "^1.2.0"
+  }
+}
+```
+
+
+یک فایل به اسم index.js ایجاد می کنیم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/1ca859d0-8c6c-4c54-8bb4-8af3414a1fb8)
+
+که در واقع فایل اصلی `server` حساب  میشه . 
+
+و تمامی module های دیگه درون index.js در نهایت import میشه . 
+
+چون در کل یک فایل سمت server ما run میشه و اونم index.js هست . 
+
+
+# Packages : 
+
+### cors 
+
+پکیج `cors`  در واقع cors policy رو کنترل می کنه که چه ادرسی می تونه به سرور دسترسی داشته باشه . 
+
+همینطور یک سری option داره که می تونیم set کنیم . که جلو تر با `credentials` اشنا میشیم . 
+
+### bcryptjs
+
+برای رمز گذاری استفاده میشه . 
+
+برای مثال از `bcryptjs`  برای رمزگذاری روی پسورد کاربر ازش استفاده شده . 
+
+
+### body-parser 
+
+کمک می کنه که به اطلاعات درون `body` به وسیله `req` دسترسی داشته باشیم . 
+
+برای  `HTTP REQUSET` متد های  `post , put , patch` کمک می کنه که به `req` دسترسی داشته باشیم . 
+
+
+### cookie-parser 
+
+برای set کردن `cookie` استفاده میشه در واقع می تونیم cookie سمت سرور set کنیم و بخونیم . 
+
+در واقع یک `middelware` هست `cookie-parser` کمک می کنه `cookie` سمت `server` خونده شه . 
+
+و اگر نیاز بود به سمت `client` ارسال شه به صورت یک `object`
+### dotenv
+
+برای set کردن فایل env ازش استفاده می کنیم . 
+
+### expressjs 
+
+پکیج `expressjs` در واقع یک `framework` هست که کار رو برای کد نویسی `server` فراهم می کنه . 
+
+### jsonwebtoken 
+
+پکیج `jsonwebtoken` برای ساخت `token` ازش استفاده میشه . 
+
+که `token` ساخته شده می تونه حاوی یک سری اطلاعات باشه . 
+
+برای `Authentication` و `Authorization` ازش استفاده میشه .
+
+
+### mongoose 
+
+
+پکیج `mongoose` به ما کمک می کنه تا بهتر بتونیم با `mongodb` ارتباط بگیریم و ازش استفاده کنیم .
+
+
+### yup 
+
+پکیج `yup`  برای اعتبار سنجی سمت `server` می تونیم ازش استفاده کنیم . 
+
+برای `validation` کردن اطلاعاتی که قرار هست ارسال شه سمت `data base` . 
+
+
+بعد از اینکه پکیج های مورد نیاز رو نصب شد . 
+
+اگر که پروژه رو `clone` کنید با دستور `npm i` می تونید تمامی پکیج ها رو نصب کنید . 
+
+نوبت به ساخت و ایجاد `server` می رسه . 
+
+# Create Server
+
+
+درون فایل `index.js` اول میایم پکیج های موزد نیاز رو `require`  می کنیم . 
+
+**نکته** : در این پروژه از `commonjs` استفاد هشده به جای `es6` 
+
+
+```javascript
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const connectToDb = require("./connection/db");
+require("dotenv").config({ path: "./config.env" });
+```
+
+بعضی از پکیج ها رو می بنید که require شده درون فایل index.js . 
+
+پکیج های که نیستند در module دیگه ای ازشون استفاده شده . 
+
+
+**نکته** : هر فایل js در واقع یک module هست . 
+
+یک متفیر `connectToDb` داریم که در واقع کار متصل شدن به پایگاه داده رو برای ما انجام میده . 
+```javascript
+const connectToDb = require("./connection/db");
+```
+
+که در اینده توضیح داده میشه نحوه اتصال به `data base`
+
+در این پروژه از `mongodb atlas` استفاده شده . 
+
+که `mongodb atlas` در واقع یک `data base` انلاین `mongodb` هستش . 
+
+و بدون نصب `mongodb` روی سیستم می تونیم از `mongodb atlas` استفاده کنیم . 
+
+ که البته نیاز داریم که حتما درونش یک اکانت ایجاد کنیم و مراحل ساخت `data base` رو انجام بدیم . 
+
+
+مورد بعدی که کمی با بقیه متفاوت هست `dotEnv` هست . 
+
+```javascript
+require("dotenv").config({ path: "./config.env" });
+```
+
+که این `dotenv` برای خوندن فایل `env`   استفاده میشه   
+
+نیاز به تعریف کردن متغییر نداره به `path` میایم ادرس فایل env خودمون رو وارد می کنیم . 
+
+که در اینجا اسم فایل ما `config.env` هست و درون `path` به این شکل تعریف شده `{ path: "./config.env" }` به ابجکت بودنش دقت کنید .
+
+
+### Define app
+
+بعد از import ها که تموم شد . میایم به وسیله `expressjs` یک app تعریف می کنیم . 
+
+
+```javascript 
+const app = express();
+```
+
