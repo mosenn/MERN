@@ -199,12 +199,11 @@ export const registerUser = async (
 ### register user function parameters
 
 - UserRegisterData
-- setErrorRegister
+
 
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
 ) => {
 };
 ``` 
@@ -226,7 +225,7 @@ export const registerUser = async (
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+
 ) => {
 };
 ```
@@ -235,11 +234,12 @@ export const registerUser = async (
 
 ```typescript
 interface registeruserType {
-  username: string;
+  username?: string;
   password: string;
   confirmPassword: string;
-  pic: string;
+  pic: {};
 }
+
 ```
 
 که در واقع یک `interface` تعریف شده هست . 
@@ -249,43 +249,14 @@ interface registeruserType {
 
 که همونطور که مشاهده میشه اطلاعات مربوط به کاربر هست که برار با `string` . 
 
-### Parameter setErrorRegister
 
-خب بریم سراغ parameter setErrorRegister . 
 
-در واقع یک state هست . 
 
-که کار ذخیره سازی ارور های مربط به ثبت نام کاربر رو درون خودش ذخیره می کنه . 
-
-کار این setErrorRegister در واقع اگر موقع ارسال اطلاعات کاربر 
-
-اروی داشتیم ارور ها درون state setErrorRegister ذخیره میشن . 
-#### Type setErrorRegister 
-
-از اون جا که setErrorRegister کار set شدن state errorRegister رو انجام میده 
-
-نوع تایپ که در react برای setState تعریف میشه `<SetStateAction>` هست . 
-
-اما از اونجا که ارور های ما به صورت یک ابجکت هست . 
-
-و state errorRegister هم یک ابجکت هست . 
-
-نیازه که تایپ default خوده state رو هم براش تعریف کنیم . 
-
-در نتیجه یک interface برای اینکار تعریف کردیم 
-```typescript
-interface ErrorRegister {
-  username?: string;
-  password?: string;
-  email?: string;
-}
-```
-
-تایپ نهایی state setErrorRegister میشه کد زیر : 
+فانکشن  registerUser میشه کد زیر : 
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+  
 ) => {
 };
 ```
@@ -311,27 +282,26 @@ data?.users.map((user)=> return <p>{user}</p>)
 
 خب پارامتر های فانکشن registerUser رو توضیح داده شد . 
 
-درون فانکشن به value input ها دسترسی میگیریم . 
+درون فانکشن به value input ها دسترسی داریم  . 
 
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
 ) => {
-  const { username, password, confirmPassword, pic } = UserRegisterData;
+try {}
+  catch(err) {}
 };
 ```
-بعد از دسترسی گرفتن نوبت به ارسال اطلاعات گرفته شده به سمت سرور هست . 
 
-برای اینکه بتونیم error هارو هم داشته باشیم . 
+برای اینکه بتونیم error هارو هم داشته باشیم بلاک catch رو تعریف کردیم . 
 
 در کل error هارو handle کنیم از block try / catch استفاده می کنیم . 
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+
 ) => {
-  const { username, password, confirmPassword, pic } = UserRegisterData;
+
   try {
   } catch (err: any & { response?: unknown }) {
   }
@@ -347,56 +317,34 @@ export const registerUser = async (
 ```javascript
 export const registerUser = async (
   UserRegisterData: registeruserType,
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
+
 ) => {
-  const { username, password, confirmPassword, pic } = UserRegisterData;
+
   try {
-    const register = await axios.post(
-      `${baseUrl}/register`,
-      {
-        username,
-        password,
-        confirmPassword,
-        pic,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+    const register = await axios.post(`${baseUrl}/register`, UserRegisterData, {
+
+    });
     );
-    return register;
+
   } catch (err: any & { response?: unknown }) {
   }
 };
 ```
-در ادامه data رو می فرستیم که اطلاعات کاربر هستش 
+در واقع userRegisterData اطلاعات کاربری هست که ثیت نام کرده رو می فرستیم . 
 
-```javascript
-       const register = await axios.post(
-      `${baseUrl}/register`,
-      {
-        username,
-        password,
-        confirmPassword,
-        pic,
-      },  
-```
+که  userRegisterData یک state هست درون کامپونت Register.tsx که اطلاعات input هارو ذخیره می کنه .
+
+ 
+
+
 
 در ادامه `headers` ست شده . 
 
 
 ```javascript
-   const register = await axios.post(
-      `${baseUrl}/register`,
-      {
-        username,
-        password,
-        confirmPassword,
-        pic,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const register = await axios.post(`${baseUrl}/register`, UserRegisterData, {
+      headers: { "Content-Type": "application/json" },
+    });
 ```
 در نهایت متغیری که برای ارسال اطلاعات به اسم `register` تعریف شده . 
 
@@ -408,28 +356,18 @@ export const registerUser = async (
 
 در نهایت درون بلاک try کد زیر رو خواهیم داشت : 
 ```javascript
-export const registerUser = async (
-  UserRegisterData: registeruserType,
-
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
-) => {
-  const { username, password, confirmPassword, pic } = UserRegisterData;
-  console.log(UserRegisterData);
+export const registerUser = async (UserRegisterData: registeruserType) => {
+  // console.log(UserRegisterData);
   try {
-    const register = await axios.post(
-      `${baseUrl}/register`,
-      {
-        username,
-        password,
-        confirmPassword,
-        pic,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const register = await axios.post(`${baseUrl}/register`, UserRegisterData, {
+      headers: { "Content-Type": "application/json" },
+    });
     // console.log(register, "response user is register");
     return register;
+  } catch (err: any & { response?: unknown }) {
+
+  }
+};
 ```
 **نکته**: می تونیم برای اطمینان بیشتر که `data` رو داریم یا خیر یک `console.log` داشته باشیم
 
@@ -459,9 +397,8 @@ export const registerUser = async (
 
 ```javascript
 catch (err: any & { response?: unknown }) {
-    console.log(err);
     const errors = err?.response?.data;
-    setErrorRegister(errors);
+    return errors;
   }
 ```
 
@@ -472,33 +409,17 @@ catch (err: any & { response?: unknown }) {
 خب در نهایت کد کامل register function به صورت زیر هست : 
 
 ```javascript
-export const registerUser = async (
-  UserRegisterData: registeruserType,
-
-  setErrorRegister: Dispatch<SetStateAction<ErrorRegister>>
-) => {
-  const { username, password, confirmPassword, pic } = UserRegisterData;
-  console.log(UserRegisterData);
+export const registerUser = async (UserRegisterData: registeruserType) => {
+  // console.log(UserRegisterData);
   try {
-    const register = await axios.post(
-      `${baseUrl}/register`,
-
-      {
-        username,
-        password,
-        confirmPassword,
-        pic,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    const register = await axios.post(`${baseUrl}/register`, UserRegisterData, {
+      headers: { "Content-Type": "application/json" },
+    });
     // console.log(register, "response user is register");
     return register;
   } catch (err: any & { response?: unknown }) {
-    console.log(err);
     const errors = err?.response?.data;
-    setErrorRegister(errors);
+    return errors;
   }
 };
 ```
@@ -579,6 +500,7 @@ export const loginUser = async (userLoginData: loginValue) => {
     return user;
   } catch (err) {
     console.log(" login api err ", err);
+     return err;
   }
 };
 ```
@@ -611,6 +533,7 @@ export const profileUser = async () => {
     return user.data;
   } catch (err) {
     console.log(" profile api err", err);
+        return err;
   }
 };
 ```
@@ -646,15 +569,22 @@ export const logoutUser = async () => {
 
 ``` javascript
 const cloudinaryApi = `https://api.cloudinary.com/v1_1/cloud_name/image/upload`;
+
 export const uploadRegisterImage = async (pic: {} | any) => {
-  const data = new FormData();
-  data.append("file", pic);
-  data.append("upload_preset", "*****");
-  data.append("cloud_name", "*****");
-  const res = await axios.post(cloudinaryApi, data, {
-    withCredentials: false,
-  });
-  return res;
+  try {
+    const data = new FormData();
+    data.append("file", pic);
+    data.append("upload_preset", "****");
+    data.append("cloud_name", "****");
+    const res = await axios.post(cloudinaryApi, data, {
+      withCredentials: false,
+    });
+    console.log(res, "response");
+    return res;
+  } catch (err:any) {
+    console.log(err);
+    return err;
+  }
 };
 ```
 
