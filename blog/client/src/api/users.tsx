@@ -29,7 +29,9 @@ export const registerUser = async (UserRegisterData: registeruserType) => {
 
 //* Upload pic For Profile Image
 const CLOUDNAME = import.meta.env.VITE_CLOUDINARAY_CLOUDNAME;
+console.log(`🚀  file: users.tsx:32  CLOUDNAME:`, CLOUDNAME)
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARAY_UPLOAD_PRESET;
+console.log(`🚀  file: users.tsx:33  UPLOAD_PRESET:`, UPLOAD_PRESET)
 const cloudinaryApi = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`;
 export const uploadRegisterImage = async (pic: {} | any) => {
   try {
