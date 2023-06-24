@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 const Header = () => {
   let { userInfoOnline, setUserInforOnline } = useGlobalContext();
+  
   const logOut = async () => {
     await logoutUser();
     //* can set loading for logout take effect
@@ -19,7 +20,7 @@ const Header = () => {
   useEffect(() => {
     takeUser();
   }, []);
-  console.log("userInfoOnline", userInfoOnline.pic);
+  console.log("userInfoOnline", userInfoOnline?.pic);
   return (
     <header className="bg-zinc-200 flex justify-between p-4 text-lg font-bold">
       <div className="flex items-center justify-center">logo</div>

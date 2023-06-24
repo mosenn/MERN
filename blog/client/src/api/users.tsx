@@ -30,33 +30,45 @@ export const registerUser = async (UserRegisterData: registeruserType) => {
 //* Upload pic For Profile Image
 const cloudinaryApi = `https://api.cloudinary.com/v1_1/duhpa0txz/image/upload`;
 export const uploadRegisterImage = async (pic: {} | any) => {
-  const data = new FormData();
-  data.append("file", pic);
-  data.append("upload_preset", "mqcdxsrq");
-  data.append("cloud_name", "duhpa0txz");
-  const res = await axios.post(cloudinaryApi, data, {
-    withCredentials: false,
-  });
-  console.log(res, "response");
-  return res;
+  try {
+    const data = new FormData();
+    data.append("file", pic);
+    data.append("upload_preset", "mqcdxsrq");
+    data.append("cloud_name", "duhpa0txz");
+    const res = await axios.post(cloudinaryApi, data, {
+      withCredentials: false,
+    });
+    console.log(res, "response");
+    return res;
+  } catch (err:any) {
+    console.log(err);
+    return err;
+  }
 };
 
 //* Login user api clinet
+interface user {
+  status: number;
+  data: any;
+}
+
 interface loginValue {
   username: string;
   password: string;
 }
-export const loginUser = async (userLoginData: loginValue) => {
+export const loginUser = async (userLoginData: loginValue): Promise<user> => {
   try {
     const user = await axios.post(`${baseUrl}/login`, userLoginData);
     console.log("User Data in api LoginUser Function", user);
     return user;
-  } catch (err) {
+  } catch (err: any) {
     console.log(" login api err ", err);
+    return err;
   }
 };
 
 //* For profile user check user online api clinet
+
 export const profileUser = async () => {
   try {
     const user = await axios.get(`${baseUrl}/profile`);
@@ -65,6 +77,7 @@ export const profileUser = async () => {
     return user.data;
   } catch (err) {
     console.log(" profile api err", err);
+    return err;
   }
 };
 
@@ -72,7 +85,9 @@ export const profileUser = async () => {
 export const logoutUser = async () => {
   try {
     const user = axios.post(`${baseUrl}/logout`);
+    return user;
   } catch (err) {
     console.log(" logoutUser api err", err);
+    return err;
   }
 };
