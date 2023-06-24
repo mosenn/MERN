@@ -19,7 +19,9 @@ const Register = () => {
   const [toast, setToast] = useState<Boolean>(false);
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(false);
   const [uploadAnimation, setUploadAnimation] = useState(false);
-  const [uploadMessage, setuploadMessage] = useState("upload image");
+  const [uploadMessage, setuploadMessage] = useState(
+    "upload your profile image"
+  );
   const [register, setRegister] = useState({
     username: "",
     password: "",
@@ -67,8 +69,8 @@ const Register = () => {
     console.log("response upload pic in submit func", res);
     if (res.status === 200) {
       setTimeout(() => {
-        setuploadMessage("upload is done ✔");
         setUploadAnimation(false);
+        setuploadMessage("upload is done ✔");
         setDisabelSubmitForm(false);
       }, 3000);
       setRegister({
@@ -76,10 +78,11 @@ const Register = () => {
         pic: res.data.secure_url,
       });
     }
-    if (res.response.status === 400) {
+    if (res?.response?.status === 400) {
       console.log("error");
-      setuploadMessage("upload is fail ☹");
       setUploadAnimation(false);
+      setuploadMessage("upload is fail ☹");
+  
     }
     console.log("register state in uplpad image btn", register);
   };
@@ -130,7 +133,7 @@ const Register = () => {
           id="confirmPassword"
           name="confirmPassword"
         />
-        <section className="flex items-center text-center">
+        <section className="flex flex-col md:flex-row items-center text-center md:justify-between">
           <div>
             <label
               className="ml-2 font-semibold text-gray-900"
@@ -145,19 +148,23 @@ const Register = () => {
               accept=".png, .jpg, .jpeg .webp"
             />
           </div>
-          <button
-            className={`bg-blue-500 text-center hover:bg-blue-300 w-[40%] h-[50px] rounded p-1 mr-2 text-zinc-50 font-semibold`}
-            type="button"
-            onClick={Uploadimage}
-          >
-            <span className="flex justify-center">
-              {uploadAnimation ? (
-                <Loading size={35} color={"#ECF0F3"} />
-              ) : (
-                uploadMessage
-              )}
-            </span>
-          </button>
+          <div className="w-full flex justify-center md:justify-end items-center">
+            <Button
+              disabled={false}
+              text={
+                uploadAnimation ? (
+                  <Loading size={35} color={"#ECF0F3"} />
+                ) : (
+                  uploadMessage
+                )
+              }
+              className={
+                "bg-blue-500 hover:bg-blue-300 w-[96%]   md:w-[180px] md:-translate-x-1 lg:w-[250px] rounded p-3 text-zinc-50 font-semibold"
+              }
+              type="button"
+              onClick={Uploadimage}
+            ></Button>
+          </div>
         </section>
         <div className=" m-1 p-1 w-full flex justify-start md:justify-center items-start">
           <button

@@ -1,14 +1,26 @@
 interface buttonProps {
-  text: string;
-  type: "button" | "submit" | "reset";
-  className: string;
-  disabled: boolean;
+  text?: string | any;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => Promise<void>;
 }
 
-export default function Button({ text, type, className , disabled }: buttonProps) {
+export default function Button({
+  text,
+  type,
+  className,
+  disabled,
+  onClick,
+}: buttonProps) {
   return (
-    <button disabled={disabled} type={type} className={className}>
-      {text}
+    <button
+      disabled={disabled}
+      type={type}
+      className={className}
+      onClick={onClick}
+    >
+      <span className="p-2"> {text}</span>
     </button>
   );
 }
