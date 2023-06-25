@@ -2462,6 +2462,22 @@ const bcrypt = require("bcryptjs");
 
 ```javascript
 const hash = async (password, ConfirmPassword) => {
+
+}; 
+```
+
+به این دلیل که `bcryptjs` متد های درونش `promise base` هستند نیاز هست از `async / await`  استفاده کنیم 
+
+فانکشن `hash`  از نوع `async`  هست که 2 تا `parameter` می گیره در واقع پسورد های که کاربر وارد کرده. 
+
+از `controller` که نوشته شده و متصل به یک `route` هست و `client`  اطلاعات مروبط به کاربر به `route` تعریف شده ارسال میشه . 
+
+
+ در ادامه یک `if` تعریف میشه که چک می کنه ببینه `password` هست یا نه اگر بود بیاد پسورد رو به وسیله `bcryptjs` رمزگذار می کنیم . 
+
+
+ ```javascript 
+const hash = async (password, ConfirmPassword) => {
   if (password) {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -2471,6 +2487,17 @@ const hash = async (password, ConfirmPassword) => {
       hashConfirmPassword,
     };
   }
-}; 
+};
 ```
- 
+
+درون `if` اول یک `salt` ایجاد می کنیم که یک `string` رندم ایجاد می کنه که گفتیم تا 10 `character` اینکارو انجام بده . 
+
+در نهایت `pasword` , `confirmPassword`  رو گفتیم که بیاد به وسیله  `bcrypt.hash`  که داریم از پکیج `bcryptjs` استفاده کردیم .
+
+و `hash` یک متد درونی `bcryptjs` هست .  
+
+و الان به جای پسورد که کاربر وارد کرده یک `string` داریم با 10 کاراکتر 
+
+و هر دو متغییر `hashPassword` , `hashConfirmPassword`  رو return کردیم  . 
+
+که در نهایت در [model user.js](has-passowrd#) ازش استفاده کردیم . 
