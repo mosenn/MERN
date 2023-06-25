@@ -2500,4 +2500,33 @@ const hash = async (password, ConfirmPassword) => {
 
 و هر دو متغییر `hashPassword` , `hashConfirmPassword`  رو return کردیم  . 
 
-که در نهایت در [model user.js](#has-passowrd) ازش استفاده کردیم . 
+که در نهایت در [model user.js](#has-passowrd) ازش استفاده کردیم .
+
+فانکشن بعدی کار `compare`  کردن رو انجام میده در واقع مفدار رمز گذاری شده درون `data base` رو 
+
+با وردی که کاربر وارد می کنه مقایسه می کنه .  در `controller` مربوط به `login` کاربر ازش استفاده می کنیم 
+
+```javascript 
+const compare = async (reqPassowrd, dbPassword) => {
+  return await bcrypt.compare(reqPassowrd, dbPassword);
+};
+```
+
+در نهایت هر دو فانکشن که درون فولدر `midelware` درون فایل `bcrypt.js` هستند رو `export` می کنیم . 
+
+که بتونیم در فایل های دیگه به اونها دسترسی داشته باشیم و ازشون استفاده کنیم . 
+
+```javascript
+module.exports = {
+  hash,
+  compare,
+};
+
+```
+
+# Validation Middleware 
+
+درون فولدر `Middleware` یک فایل داریم به اسم `userValidation` که مسئول `valid` کردن اطلاعات دریافتی هستش . 
+
+که درون [model user.js](##model-folder) ازش استفاده کردیم همراه با `statics` قبل از اینکه model رو بسازیم . 
+
