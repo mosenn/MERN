@@ -1916,6 +1916,8 @@ node -v
 # Create Server
 
 
+# Index.js File
+
 درون فایل `index.js` اول میایم پکیج های موزد نیاز رو `require`  می کنیم . 
 
 **نکته** : در این پروژه از `commonjs` استفاد هشده به جای `es6` 
@@ -1975,3 +1977,500 @@ require("dotenv").config({ path: "./config.env" });
 const app = express();
 ```
 
+الان می تونیم از `express` استفاده کنیم . 
+
+
+### middelware use 
+
+قدم بعدی استفاده از `use` هست , یک متد درونی `express` هست که به عنوان یک `middelware` عمل می کنه . 
+
+ اجازه میده که بتونیم از HTTP METHOD ها استفاده کنیم به وسیله `express` 
+
+در واقع هر جا نیاز داریم که به `server` بگیم یک سری چیز ها رو استفاده کن . 
+
+از `use` استفاده می کنیم . 
+
+```nodejs 
+app.use(bodyParser.json());
+app.use(cookieParser());
+```
+
+
+در کد بالا امدیم از `parser` ها استفاده کردیم که توضیح شون رو کمی بالا تر گفتیم . 
+
+
+
+### Saving Image In Server 
+
+اگر بخوایم عکسی رو درون server ذخیره کنیم . که نخوایم از یک فضای دیگه برای ذخیره سازی عکس استفاده کنیم . 
+
+و بخوایم درون خوده سرور اینکارو انجام بدیم که پیشنهاد نمیشه . 
+
+به دلیل اینکه حجم دیتا بیس و سرور افزایش پیدا می کنه . اما به هر حال نیاز هست 
+
+که از پکیج `multer` استفاده کنیم و همینطور کد های زیر رو درون `index.js` داشته باشیم . 
+
+```javascript
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+```
+
+در واقع برای فایل های `json` که سمت سرور میاد یک `limit` تعیین شده . 
+
+و همینطور برای `urlencoded` که به سمت سرور ارسال میشه باز یک `limit` تعریف شده . 
+
+در نهایت از `multer` استفاده میشه برای ذخیره سازی و ارسال عکس به سمت `data base` . 
+
+**یاداوری** : در این پروژه ما از یک فضای `cloud` سمت `client` استفاده کردیم . 
+
+از سایت `cloudinary` , که عکس فرستاده شده از کاربر رو `upload` می کنه . 
+
+یک لینک اپلود عکس برای ما به عنوان ریسپانس میده 
+
+و `link` ارسال شده که `response api` هست رو درون `data base` دخیره می کنیم . 
+
+**یاداوری** : تمامی مراحل گفته شده برای اپلود عکس سمت  `client` انجام شده . 
+
+
+بریم سراغ ادامه فایل `index.js` . 
+
+```nodejs 
+app.use(bodyParser.json());
+app.use(cookieParser());
+```
+
+### define cors 
+
+قدم بعدی تعریف کردن `cors` هست . 
+
+که در واقع ادرس های که قرار هست به این server دسترسی داشته باشند . 
+
+مر بوط به `cors policy` که می تونیم یک یا چند دسترسی اعمال کنیم . 
+
+البته برای اینکه بتونیم با `cookie` کار کنیم نیاز هست `credentials` رو روی `true` قرار بدیم . 
+
+که یک option مر بوط به `cors` هست . 
+
+```javascript 
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173",
+  })
+);
+```
+
+از `use` استفاده کردیم که توضیح دادیم یک `method` درونی `express` هست . 
+
+از `use` به مکرر استفاده میشه . 
+
+### listen 
+
+مر حله بعدی نوشتن `listen` هست برای اینکه `server` که ایجاد کردیم روی یک port و یک ادرس بیاد `run` شه . 
+
+**نکته** : حتما باید این `listen` تعریف شه حتی اگر می خوایم `server` رو بعدا روی `host` دیپلوی کنیم . 
+
+اگر این کارو انجام ندیم وقتی که `deploy` انجام میشه روی `host` پورت دیفالت اون `host` رو نمی تونه بخونه . 
+
+در نهایت `server` مد نظر ما به طور کامل `deploy` نمیشه .
+
+
+```javascript
+const port = process.env.PORT || 3010;
+app.listen(port, () => {
+  console.log(`server is connectin http://localhost:${port}`);
+});
+```
+
+در اینجا `port` که تعریف شده به صورت `default` گذاشتیم روی 3010 و در نهایت یک متغییر `env` تعریف کردیم . 
+
+که اگر `port` دیفالت که 3010 هست اجرا نشد بره از داخل   متغییر `env`  پورت رو بخونه . 
+
+و موقع `deploy` کردن روی `host` این متغییر رو برای host تعریف می کنیم و host پورت خودش رو اعمال می کنه . 
+
+
+### run server 
+
+خب حالا اگر با دستور `node index.js` رو بزنیم `server`  اجرا میشه . 
+
+همینطور با اگر دستور `nodemon` رو بزنیم درون `terminal` باز سرور ران میشه . 
+
+پیشنهاد میشه با `nodemon` ران شه به صورت `live` تغییرات رو ببنید . 
+
+که قبل تر گفتیم نیاز هست `nodemon` رو نصب کنید .
+
+### define test route 
+
+برای اینکه متوجه شیم server روی لوکال به درستی run میشه یا نه . 
+
+یک `route` تست تعریف می کنیم تا درون صحفه یک چیزی رو به ما نمایش بده یک پیام ساده .
+
+**نکته** : این `route` ساده که می نویسیم بعد از تست می تونیم کامنت کنیم یا پاک کنیم . 
+
+```javascript 
+app.use("/home", async (req, res) => {
+  res.status(200).send("server is ok");
+});
+```
+
+در واقع هر `ROUTE` که نوشته میشه `parameter` های `req` , `res` رو خواهد داشت . 
+
+که با `res` در خواست ها رو به ادرسی که نوشته شده ارسال میشه . 
+
+با `req` می تونیم در خواست های سمت `client` یا `cookie` و .. بگیریم . 
+
+در کد بالا یک پیام حاوی `server is ok` در صحفه اصلی server چاپ کردیم . 
+
+متد `res` درون خودش `status` کد رو داره که با این `status` ها رو ست می کنیم . 
+
+که هر `status code` بیانگر یک پیام هست . 
+
+مثلا `201 status code`  به معنی ساخته شدن هست . 
+یا `status 200` به معنی موفقیت امیز بودن هست . 
+
+مثلا `status code 404` به این معنی `bad requset` در خواست بد هست .
+
+می تونیم از `send` یا `json` برای ارسال استفاده کنیم . 
+
+که `json` پیشنهاد میشه . 
+
+# Connect to mongodb 
+
+بعد از ساخت اکانت در mongodb atlas که data base انلاین ما هستش . 
+
+یک ادرس برای متصل شدن ایجاد میشه که به وسیله این ادرس میایم server خودمون رو به `mongodb atlas` متصل می کنیم . 
+
+یک فولدر به اسم `connection` داریم که فایل درونی اون به اسم `db.js`  کار متصل شدن به `data base` رو انحام میده . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/a91a0d7a-97e8-4b08-91a8-3985ab7c32d3)
+
+درون `db.js` کد زیر رو داریم : 
+
+```javascript
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+
+const connecetToDb = async () => {
+  try {
+    const connect = await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/blog`
+    );
+
+    console.log(`db is connect at ${connect.connection.host}`);
+  } catch (err) {
+    console.log(err, "data base cant connect");
+    process.exit(1);
+  }
+};
+
+module.exports = connecetToDb;
+```
+ نکته ای که وجود داره گفتیم از `mongoose` استفاده می کنیم برای ارتباط گرفتن و کار با `mongodb` . 
+
+ برای connect شدن و ا ستفاده از متد های `mongodb` نیاز هست که از async , await استفاده کنیم . 
+
+ّبه این دلیل که `promise base` هستند . 
+
+فانکشن `connecetToDb` از نوع async هست و درون بلاک `try` امدیم از `await` استفاده کردیم . 
+
+که بتونیم `connect` شیم به `data base` خودمون . 
+
+```javascript 
+  try {
+    const connect = await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/blog`
+    );
+
+    console.log(`db is connect at ${connect.connection.host}`);
+  } catch (err) {
+    console.log(err, "data base cant connect");
+    process.exit(1);
+  }
+```
+
+درون بلاک `catch` امدیم error مربوط به `connect` شدن رو هندل کردیم . 
+
+که اگر `data base` ما به مشکل خورد و متصل نشد یک `error` داشته باشیم متوجه شیم که مشکل سمت `connect` شدن هست . 
+
+در نهایت فانکشن خودمون رو `export` کردیم و می خوایم از این فانکشن بیام درون `index.js` استفاده کنیم . 
+
+```javascript
+module.exports = connecetToDb; 
+```
+
+به این دلیل که فقط `index.js` اجرا خواهد شد و تمامی اجزای `server` که ما می نویسیم . 
+
+به طور مستقیم یا غیر مستقیم درون `index.js` قرار میگیره تا `module` مد نظرمون اجرا شه  . 
+
+**یاداوری** : هر فایل `javascript` در واقع یک `module` هستش . 
+
+به `index.js` میریم و `connectToDb` که `export` کردیم میام اول `require` می کنیم و بعد صداش می زنیم . 
+
+```javascript 
+const connectToDb = require("./connection/db");
+```
+
+و بالا تر از `listen` که نوشتیم صداش می زنیم همینطور بالا تر از `routet test` که ایجاد کردیم . 
+
+```javascript 
+connectToDb();
+```
+
+**نکته** : در واقع زمانی که سمت `server` میایم با `nodejs` کد می زنیم ترتیب یه جاهای مهمه . 
+
+و اگر این ترتیب بندی بعضی از جاها رعایت نشه ممکنه سرور ما به مشکل بخوره و ران نشه . 
+
+
+# Server Folders 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/eed7828c-8eee-43b1-b0df-a02fe7509e52)
+
+
+
+فولدر های سمت `server` رو معرفی کنیم . 
+
+### model folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4ea96d1c-3a41-4bdd-af20-f1555a63519d)
+
+
+که یدونه `model` داریم که برای ایجاد `schema` هست که بتونیم با `data base` ارتباط بگیریم . 
+
+در واقع هر `collection` که می خوایم برای `data base` ایجاد کنیم نیاز به یک `schema` و `model`  داریم . 
+
+که در فولدر model برا مثال یک فایل به اسم `user.js` داریم برای ایجاد `model` کاربرانی که در سایت ما هستند . 
+
+### user.js 
+
+
+اگر بخوایم فایل user.js رو بررسی کنیم به طور کلی نوع دیتای که قرار برای هر کاربر ذخیره شه رو مشخص کردیم . 
+
+بعد به وسیله یک `middelware` که خودمون نوشتیم و ایجاد کردیم کار `validation` رو انجام دادیم . 
+
+و همینطور از `bcrypt` استفاده کردیم برای رمز گذاری پسورد ها . 
+
+در واقع قبل از اینکه دیتای مربوط به `user` ها ثبت شه اول `valid` شده . 
+
+**نکته** : این کار تکراری هست و برای هر پروژه می تونیم انجام ا ش بدیم . 
+
+
+یه نگاهی به کل کد های مربوط به فایل `user.js` بندازیم : 
+
+اول مواردی که نیاز داریم رو `require`  می کنیم . 
+
+که 2 تا از این موارد مربوط به رمز گذاری پسورد و ولیدیشن هست که بهشون می رسیم  جلو تر . 
+
+```javascript 
+const { hash } = require("../middleware/bcrypt");
+const mongoose = require("mongoose");
+const userRegisterValid = require("../middleware/userValidation");
+```
+
+همینطور به `mongoose` نیاز داریم برای ساخت `schema` . 
+
+**یاداوری** : هر `data` که قرار درون `data base` ذخیره شه نیاز به یک `schema` و `model`  داره . 
+
+
+قدم بعدی ساخت `schema` هست به وسیله `mongoose` : 
+
+```javascript 
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    require: true,
+  },
+  password: {
+    require: true,
+    type: String,
+  },
+  confirmPassword: {
+    require: true,
+    type: String,
+  },
+  pic: {
+    type: String,
+  },
+});
+```
+
+که نوع type و اینکه اون اطلاعات که داره ارسال میشه نیاز هست `required`  هست  .  
+
+مواردی که `required` قرار داده شده وجود داشتن شون الزامی هست . 
+
+
+خب می تونیم الان `model` خودمون رو ایجاد کنیم و اسم collection که می خوایم این data درونش ذخیره شه رو اعمال کنیم . 
+
+منتها قبل از اینکه کار ذخیره شدن انجام شه میایم نوع `valid` شدن رو چک می کنیم . 
+
+به وسیله خوده `schema` که ایجاد کردیم 
+
+```javascript 
+userSchema.statics
+```
+**نکته** : مهمه که اخر static یه `s` باشه در غیر اینصورت به مشکل می خوریم . 
+
+در ادامه فانکشنی که برای `validation` نوشتیم و کار `valid` کردن رو انجام میده میایم استفاده می کنیم . 
+
+قبل تر `requiire` کرده بودیم . 
+
+
+```javascript 
+const userRegisterValid = require("../middleware/userValidation");
+```
+
+```javascript 
+userSchema.statics.userRegisterValid = (reqBody) => {
+  return userRegisterValid.validate(reqBody, { abortEarly: false });
+};
+```
+پارامتر `reqBody`  در واقع `req` های هستند که موقع ارسال شدن درون `body` قرار می گیرند . 
+
+و هر `route` یا `controller` این موارد رو داره . که به این فانکشن پاس داده میشه . 
+
+در نهایت درون فانکشن داریم `return` می کنیم `userRegisterValid` که بیاد `validate`  کنه . 
+
+منتها پارامتر `reqBody` رو بهش پاس دادیم در ادامه `option abtortEraly:false` گذاشتیم . 
+
+که اگر `error` وجود داشت بیاد به صورت دسته جمی اون `error` هارو نشون بده نه تک تک . 
+
+
+### has passowrd 
+
+بعد از validtion رمزگذاری کردن password ها رو داریم که به وسیله `package bcryptjs` انجام میشه .  
+
+که قبل از اینکه بخوایم `model` رو ذخیره کنیم میایم password کاربر های که ثبت نام می کنند . 
+
+رو برای امنیت بیشتر رمز گذاری می کنیم و درون `data base` ذخیره می کنیم . 
+
+برای این کار از `schema` که ساختیم استفاده می کنیم و در ادامه یک فانکشن ایجاد می کنیم . 
+
+```javascript
+userSchema.pre("save", async function (next) {
+
+});
+```
+این فانکشن نیاز هست که از نوع فانکشن معمولی باشه در واقع arrow function نباشه . 
+
+به این دلیل که می خوایم از `keyword this`  استفاده کنیم . 
+
+گفتیم   `userSchema.pre` که در واقع `pre` به این معنی که قبل از اینکه در ادامه `save` رو داریم که یک `string` هست . 
+
+معنی فانکشنی که نوشتیم اینه : قبل از اینکه `userSchema` که ساختیم بیاد `save` شه . 
+
+یک کاری انجام بده بعدش بیاد `save` شه . 
+
+کاری که می خوایم انجام بدیم درون فانکشن انجام میشه . 
+
+```javascript
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+
+});
+```
+
+در قدم اول میایم چک می کنیم به وسیله `if` اگر که `userSchema` ما به هر دلیلی وجود نداشت فانکشن `next` اتفاق بیوفته . 
+
+در واقع `this.isModified` میاد چک می کنه که `userSchema` ما اگر مشکلی نداشت همه چی اوکی بود بره ادامه فانکشن . 
+
+اما اگر مشکلی بود بره روی `error` ها و `error` ها رو نشون بده.
+
+در ادامه فانکشن  `password` , `confrimPassword`  رو قبل از اینکه در `data base` ذخیره شن رمزگذاری می کنیم . 
+
+
+```javascript 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  //*new update for hasing most be get this in model
+
+  const { hashPassword, hashConfirmPassword } = await hash(
+    this.password,
+    this.confirmPassword
+  );
+  this.password = hashPassword;
+  this.confirmPassword = hashConfirmPassword;
+});
+```
+**نکته** : ممکنه در اول کار به این صورت کد کار نکنه که به صورت `middelware` امدیم `hash` کردیم . 
+
+در واقع اتفاق رمز گذرای درون یک فانکشن که درون فولدر `middelware` هست داره اتفاق می افته . 
+
+اگر که اول کار مشکلی پیش امد با این روش `hash` کردن به وسیله `midelware` تمامی عملیات `hash` کردن رو 
+
+همینجا انجام میدیم بدون `middelware` اما بعد از چند باز که مشکلی نبود می تونیم باز تبدیل اش کنیم به یک فانکشن جدا . 
+
+خب `hash`  در واقع یک فانکشن هست که `require`  شده در یک فایل جدا داره یک سری عملیات مربوط به رمزگذری رو انجام میده . 
+
+```javascript 
+const { hash } = require("../middleware/bcrypt");
+```
+
+حالا ازش درون فانکشن که تعریف کردیم استفاده می کنیم 
+
+```javascript 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  //*new update for hasing most be get this in model
+
+  const { hashPassword, hashConfirmPassword } = await hash(
+    this.password,
+    this.confirmPassword
+  );
+  this.password = hashPassword;
+  this.confirmPassword = hashConfirmPassword;
+});
+```
+درون فانکشن `this.password` , `this.confrimPassword`  به `userSchema` که ساختیم اشاره می کنند . 
+
+و `hashPassword` , `hashConfirmPassword`  در واقع پسورد کاربر هستند که از `req`  گرفته شده و رمزگذاری شده . 
+
+در نهایت `password` های که درون `schema` هست با پسورد های که `hash`  شده `assignment` میشه
+
+# Midelware Folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/3ccd86f8-8e02-4271-8527-8b9ee86c1d14)
+
+
+یک فولدر در پروژه داریم به اسم `midelware`  که فانکشن های که ممکنه زیاد استفاده شه . 
+
+درون این فولدر تعریف می شه . 
+
+مثل hash کردن یا ولیدیشن و ... . 
+
+بریم اول `hash` رو بررسی کنیم که کمی بالا تر ازش استفاده کردیم برای رمزگذاری پسورد ها . 
+
+درون فایل `bcrypt.js` امدیم عملیات `hash` وهمینطور `compare` استفاده کردیم . 
+
+زمانی که passowrd درون `data base` ذخیره میشه به صورت رمزگذاری هست چون خودمون `hash` کردیم . 
+
+و زمانی که بخوایم مثلا برای لاگین شدن همون password رمزگذاری شده رو با پسوردی که کاربر برای لاگین شدن وارد می کنه 
+
+مقایسه کنیم نیاز داریم که `compare` کنیم تا این مقایسه به درستی انجام شه . 
+
+اول پکیج `bcryptjs` رو میایم `require` کنیم 
+
+```javascript 
+const bcrypt = require("bcryptjs");
+```
+
+قدم بعدی نوشتن فانکشن `hash`  هست . 
+
+```javascript
+const hash = async (password, ConfirmPassword) => {
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const hashConfirmPassword = await bcrypt.hash(ConfirmPassword, salt);
+    return {
+      hashPassword,
+      hashConfirmPassword,
+    };
+  }
+}; 
+```
+ 
