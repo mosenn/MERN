@@ -2175,6 +2175,12 @@ module.exports = connecetToDb;
 
 که بتونیم `connect` شیم به `data base` خودمون . 
 
+
+
+--- بعد از `mongodb.net` که در ادرس دیتا بیس ما هست یک / می زنیم و اسم `data base` خودمون رو وارد می کنیم . 
+
+که در ادرس زیر اسم `data base` مد نظر ما `blog` هست .
+
 ```javascript 
   try {
     const connect = await mongoose.connect(
@@ -2431,6 +2437,30 @@ userSchema.pre("save", async function (next) {
 
 در نهایت `password` های که درون `schema` هست با پسورد های که `hash`  شده `assignment` میشه
 
+### create model connect to collection 
+
+در نهایت نوبت به ساخت `model` میشه و یک اسم برای `collection` دیتا بیس تعریف می کنیم . 
+
+که این `schema` درون `collection data base` ساخته میشه . 
+
+```javascript
+const userModel = mongoose.model("users", userSchema);
+
+module.exports = userModel;
+
+``` 
+
+میایم `model`  رو درون یک متغییر قرار میدیم و `export` می کنیم . 
+
+به وسیله `mongoose.model` میایم مدل خودمون رو ایجاد می کنیم . 
+
+که `users` میشه اسم `collection` که داشتیم . 
+
+و `userSchema` در واقع `schema` هست که ساختیم 
+
+و  `userSchema` درون `collection users` در `mongodb atals` ذخیره میشه .
+
+بعدا زمانی که  `controller` رو تعریف کردیم از این userModel استفاده می کنیم . 
 # Midelware Folder 
 
 ![image](https://github.com/mosenn/MERN/assets/91747908/3ccd86f8-8e02-4271-8527-8b9ee86c1d14)
