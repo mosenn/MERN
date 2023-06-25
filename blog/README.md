@@ -2500,4 +2500,4 @@ const hash = async (password, ConfirmPassword) => {
 
 و هر دو متغییر `hashPassword` , `hashConfirmPassword`  رو return کردیم  . 
 
-که در نهایت در [model user.js](has-passowrd#) ازش استفاده کردیم . 
+که در نهایت در [model user.js](#has-passowrd) ازش استفاده کردیم . 
