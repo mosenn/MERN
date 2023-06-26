@@ -2558,5 +2558,602 @@ module.exports = {
 
 درون فولدر `Middleware` یک فایل داریم به اسم `userValidation` که مسئول `valid` کردن اطلاعات دریافتی هستش . 
 
-که درون [model user.js](##model-folder) ازش استفاده کردیم همراه با `statics` قبل از اینکه model رو بسازیم . 
+که درون [model user.js](#model-folder) ازش استفاده کردیم همراه با `statics` قبل از اینکه model رو بسازیم . 
+
+ولیدیشن رو به وسیله  پکیج [yup](#yup) انجام شده . 
+
+یک فایل به اسم `userValidation` درون فولدر `middleware` داریم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/1e3c7bf0-38f6-495b-bb67-86bdd96e0586)
+
+درون `userValidation` میایم `yup` رو `require` می کنیم . 
+
+```javascript
+const yup = require("yup");
+```
+
+قدم بعدی یک متغییر تعریف می کنیم و یک `shape` به وسیله `yup` ایجاد می کنیم . 
+
+```javascript 
+const userRegisterValid = yup.object().shape({
+});
+```
+ میایم به وسیله متد های درون `yup` ولیدیشن رو برای `userSchema` انجام میدیم . 
+
+ **نکته** : هر بار که بخوایم یک `schema` رو به وسیله `yup` ولیدیشن کنیم . از همین روش استفاده می کنیم .
+
+ در ادامه میایم `key` های که درون `userSchema` داریم تعریف می کنیم . نوع `type` شون رو مشخص می کنیم . 
+
+ و به وسیله متد های `yup` و `regex` ولیدیشن رو انجام میدیم . 
+
+ 
+```javascript 
+const userRegisterValid = yup.object().shape({
+    username: yup.string().trim().required().min(3, "username character +3 "),
+});
+```
+
+خب اینجا `username` رو داریم که به وسیله `yup` ولیدیشن شده . 
+
+در واقع `shape` که ایجاد کردیم یک `object` هست . 
+
+در ادامه `()username:yup.string` به منظور `string` بودنه . 
+
+از `()trimt` برای از بین بردن فاصله ها استفاده کردیم . 
+
+از `()required` به این معنی که حتما `username` باید وجود داشته باشه . 
+
+از `min` برا مشخص کردن تعداد `charcater` استفاده کردیم . 
+
+در اخر یک `string` برای نشون دادن پیام مربوط به `error` گذاشتیم . 
+
+بقیه موارد هم به همین صورت هست  و برای `password` از `regex` استفاده کردیم . 
+
+که یدونه `hard password` داشته باشیم برای ثبت نام کاربر . 
+
+اگر `email` هم داشتیم می تونیم از  `regex` استفاده کنیم . 
+
+در کل هر جای که نیاز باشه می تونیم از `regex` در `yup` استفاده کنیم . 
+
+کل `userValidation`  به صورت زیر هستش : 
+
+```javascript
+const yup = require("yup");
+const userRegisterValid = yup.object().shape({
+  username: yup.string().trim().required().min(3, "username character +3 "),
+  password: yup
+    .string()
+    .trim()
+    .required("pasword 8 charcter a-A-2-@")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "pasword 8 charcter a-A-2-@"
+    )
+    .min(8),
+  confirmPassword: yup
+    .string()
+    .required()
+    .oneOf([yup.ref("password"), null], "passwords is not match")
+    .trim()
+    .min(8, "passwords is not match"),
+  pic: yup.string(),
+});
+```
+در قسمت `password` از `regex` و متد `match` استفاده شده . 
+
+در قسمت `confirmPassword` از `oneOf` استاده کردیم که `ref` زده شده به `password` . 
+
+در واقع `onOf` و `ref` میاد `confrimPassowrd` رو چک می کنه که دقیقا عین خوده `password` باشه . 
+
+در اخر میایم `shape yup` که ایجاد کردیم رو `export` می کنیم . 
+
+```javascript 
+module.exports = userRegisterValid;
+```
+
+که درون [model user.js](#model-folder) ازش استفاده کرده بودیم قبل از اینکه `schema` درون `data base` ذخیره شه . 
+
+# Controller Folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/491c7e3e-9c88-4fb0-ba35-172ce60b4aa7)
+
+**نکته** : از `mvc` استفاده می کنیم . که مخفف `model view controller` هست . 
+
+که تا به اینجا با `model` اشنا شدیم . 
+
+و `view` این پروژه به وسیله `reactjs` هندل میشه و فایل `view` درون `server` نداریم . 
+
+که می تونیم `view` رو داشته باشیم در سمت `server` 
+
+در مورد `controller` هم در همین بخش می خوایم در موردش صحبت کنیم . 
+
+خب یک فولدر داریم به اسم `controller` که درون این فولدر فایل های مربوط به `controller route`  ها قرار داره . 
+
+در واقع هر api یک `route` داره و هر `route` یک `controller` . 
+
+در واقع `route` ها همون ادرس api هستند که می تونیم ازشون `response` بگیریم یا چیزی رو ارسال کنیم به وسیله متد `post`
+
+و `controller` ها فانکشن های هستند که میان برای `route` ها تعریف میشن . که یک سری شرط شاید گذاشته شه . 
+
+در کل درونشون یک سری عملیات اتفاق می افته و `error` ها کنترل میشه . 
+
+در نهایت اطلاعات  رو به `route` مورد نظر ارسال می کنه و `clinet` می تونه `response` رو ببینه . 
+
+## user.js controller 
+
+درون فایل `user.js`  کار های مربوط به کاربران انجام میشه . 
+
+مثل `register` , `login` و ...  
+
+اول ببنیم درون فایل `user.js چه چیزای `require` شده 
+
+```javascript 
+const { compare } = require("../middleware/bcrypt");
+const userModel = require("../model/user");
+const jwt = require("jsonwebtoken");
+```
+
+ اینجا از `compare` برای مقایسه کردن  پسوردی که کاربر برای لاگین وارد می کنه . 
+
+و پسوردی که درون `data base` هست استفاده می کنیم . 
+
+در ادامه به `userModel` نیاز داریم در واقع  [model](#model-folder)` هست که برای `user` ها ایجاد کردیم . 
+
+در ادامه `jwt` رو داریم که امدیم برای ارسال و ست کردن `token` ازش استفاده می کنیم . 
+
+که درون فانکشن `loginUser` و `profileUser` ازش استفاده شده . 
+
+**یاداوری** : `controller` ها در اصل همگی `function` هستند 
+
+**نکته** : تمامی `controller` ها فانکشن های از نوع `async` هستند 
+
+به این دلیل که  برای کار با `data base` نیاز هست که از `await , async` استفاده کنیم . 
+
+اگر استفاده نشه توی ارسال `data` یا ذخیره کردن در `data base` به مشکل می خوریم . 
+
+
+### registerUser Controller 
+
+همنوطر کفه گفته شد تمامی `controller` ها یک فانکشن هستند . 
+
+که از نوع `async` هستند . 
+
+```javascript
+const registerUser = async (req, res) => {
+};
+```
+
+در فانکشن `registerUser` میایم عملیات ثبت نام کاربر رو انجام میدیم 
+
+ به `route` و `api` مد نظر مربوط برای ثبت نام ارسال می کنیم .
+
+ در هر `controller` که برای یاداوری یک فانکشن هستند از `try / catch` استفاده می کنیم . 
+
+ ```javascript 
+const registerUser = async (req, res) => {
+  try {
+  } catch (err) {
+  }
+};
+```
+هر `controller` رو میایم `export` می کنیم چون می خوایم درون `routes` استفاده کنیم .
+
+```javascript 
+module.exports = {
+  registerUser,
+};
+```
+در هر `controller`  دو تا `parameter` داریم به اسم `req` , `res` .
+
+که `req` , `res` از  `route`  میان .
+
+یک فولدر به اسم `routes` داریم که در واقع ادرس api ها رو اونجا تعریف کردیم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4f134f0e-fc2d-4295-8cd6-9da7bc8c7fc1)
+
+
+و   `clinet` این ادرس api ها رو میگیره که در نهایت اگر همه چی خوب پیش بره یک `response` خواهد داشت  . 
+
+که کمی جلوتر فولدر `route` رو توضیح میدیم . 
+
+بر گردیم به `registerUser` فانکشن 
+
+```javascript 
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+  } catch (err) {
+  }
+};
+```
+
+یک متغییر ابجکت به اسم `errors` بیرون از بلاک `try` داریم .
+
+به این دلیل که `message` مربوط به `yup` مربوط به اینکه `username` کاربر وجود داره در `data base` یا نه رو نداریم . 
+
+به همین دلیل این `error` و چک کردن رو به وسیله یک `if` انجام میدیم و `message error` شو درون `errors` ذخیره می کنیم .
+
+در ادامه یک `descracher` داریم که مقادیر که `clinet` در `body` می فرسته رو گرفتیم . 
+
+در واقع `form` که برای `register` شدن کاربر در سمت `clinet` هست یک سری `input` داره . 
+
+که مقادیر اون ارسال میشه به `api` مربوط به `register`
+
+
+
+
+```javascript
+  const { username, confirmPassword, password, pic } = req.body;
+```
+
+در بلاک `try` ولیدیشنی که به وسیله `yup` ایجاد کردیم داریم .
+
+```javascript
+
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+
+  } catch (err) {
+};
+```
+
+در ادامه میایم به وسیله متده `findeOne` چک می کنیم کاربری که در حال ثبت نام هست قبلا ثبت نام کرده ؟ 
+
+اگر قبلا شخصی با اکانت وارد شده درون `data base` وجود داشت  بود یک پیام به عنوان `error` ارسال می کنیم .
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+  } catch (err) {
+};
+```
+
+یک متفییر به اسم `foundUser` تعریف کردیم و درون `data base` داریم `username` که کاربر وارد کرده برای ثبت نام چک می کنیم . 
+
+ببینیم ایا واقعا این `user` درون `data base` هست یا نه . 
+
+در ادامه یک `if` داریم . 
+
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register";
+          
+    }
+  } catch (err) {
+};
+```
+
+در `if` گفتیم اگر `foundUser` بود بیاد یک پیام مبنی بر اینکه این کاربر قبلا ثبت نام کرده ایجاد شه . 
+
+و در ابجکت `errors` ذخیره شه . 
+
+در ادامه ساخت ذخیره سازی اکانت رو داریم در `data base` . 
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+  } catch (err) {
+};
+```
+
+در ادامه متد `create` رو داریم که برای ساخت یک `document`  هر کاربری که ثبت نام رو انجام میده . 
+
+یک `document` ایجاد میشه درون `collection user` که در واقع `model` هست که ایجاد کردیم . 
+
+در ادامه `users` رو به عنوان `response` ارسال شده . 
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+    return res.status(201).json(users);
+  } catch (err) {
+};
+```
+
+که از `status code 201` استفاده شده . 
+
+```javascript 
+    return res.status(201).json(users);
+```
+
+بریم سراغ بلاک `catch` که `error` ها هندل میشه . 
+
+که اگر مشکلی در `register` پیش امد `error` ها و پیام های مروبط به `validation` سمت `client` ارسال میشه .
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+    return res.status(201).json(users);
+  } catch (err) {
+    err?.inner?.forEach((e) => {
+      errors[e.path] = e.message;
+    });
+    return res.status(400).json(errors);
+};
+```
+که `err.inner`  در صورتی که وجود داشت ` ? ` یک `forEach` روش زده میشه و تمامی `message` ها ارسال میشه . 
+
+و در نهایت یک `404 status code` ارسال می کنیم مبنی بر اینکه خطای وجود داره .
+
+و درون یک `json` هر انچه درون `errors` داریم ارسال می کنیم .
+
+
+### LoginUser Controller 
+
+در فانکشن `loginUser` میایم لاگین شدن کاربر رو کنترل می کنیم . 
+
+
+```javascript 
+const loginUser = async (req, res) => {
+};
+```
+
+کاربری که ثبت نام کرده در می تونه به وسیله `username` و `password` لاگین کنه . 
+
+که در اینجا چک کردن اینکه کاربر `username` , `password` رو درست وارد کرده رو چک می کنیم . 
+
+در قدم اول `username` و `password` رو از `req` می گیریم . 
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+
+
+  } catch (err) {
+
+  }
+```
+بعد از اینکه `username` و `password` رو گرفتیم از `req.body` میایم چک می کنیم که پسورد وارد شده درست باشه . 
+
+در واقعه با پسوردی که کاربر ثبت نام کرده یکی باشه . 
+
+اینجا میایم از `compare` استفاده می کنیم که در بخش `middelware` توضیح شو داده بودیم .
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+  } catch (err) {
+
+  }
+```
+ 
+که نیاز هست `password` که از سمت `clinet` درون `req.body` داریم و پسوردی که به وسیله `findOne` از `data base` میگیریم رو به `compare` پاس بدیم . 
+
+که `compare` میاد پسورد ها رو مقایسه می کنه . 
+
+که `compare`  یک `boolean` برگشت میده یا `false` یا `true` . 
+
+در نهایت درون `if` گفتیم اگر `passwordIsOky` بود . در واقع اگر `true` بود . 
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {}
+  } catch (err) {
+
+  }
+```
+درون این `if` میایم یک `token` رو `sign` می کنیم . 
+
+درون `token` اطلاعاتی رو که می خوایم ارسال می کنیم . 
+
+که ایجاد کردن `token` به وسیله `jsonwebtoken` انجام میشه . 
+
+
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+
+}
+  } catch (err) {
+
+  }
+```
+
+این `token` رو درون `cookie` سمت `server` ذخیره می کنیم . 
+
+در ادامه اطلاعات رو به وسیله `json` به `client` ارسال می کنیم . 
+
+
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          secure: "false",
+          sameSite: "none",
+        })
+        .json({
+          id: user._id,
+          username,
+          pic: user.pic,
+        });
+}
+  } catch (err) {
+
+  }
+```
+ 
+که یک سری `option` داریم برای `cookie` مثل `secure` و `sameSite` برای ذخیره کردن `cookie` در سمت سرور نیاز هست که `credinatial ` هم ست کنیم . 
+
+که اینکارو در `cors` در فایل `index.js` انجام دادیم . 
+
+در ادامه ` if ` یک `else` داریم که `throw ` می کنه `err` رو . 
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          secure: "false",
+          sameSite: "none",
+        })
+        .json({
+          id: user._id,
+          username,
+          pic: user.pic,
+        });
+} else {
+      throw "err";
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json("user or password is worng");
+  }
+```
+در ادامه بلاک `catch` رو داریم . 
+
+اگر `error` داشته باشیم و `login` کاربر به مشکلی بخوره در بلاک `catch` هندل میشه و به سمت `client` ارسال میشه . 
+
+که اینجا اگر کاربر `username` یا `password` خودشو اشتباه بزنه . 
+
+در بلاک `catch` یک `json` ارسال شده که در واقع یک `string` هست . `user or password is worng` . 
+
+اگر سواله که `username` چطوری چک میشه . 
+
+داریم `username` رو از درون `data base` می گیریم و به پسوردش دسترسی می گیریم .
+
+به `compare` پاس میدیم . 
+
+```javascript
+  const user = await userModel.findOne({ username });
+   const passowrdIsOky = await compare(password, user.password);
+```
+
+اینجاست که اگر `username` که کاربر وارد می کنه درون `data base` نباشه . 
+
+در نهایت `user.password` هم وجود نداره با ارور مواجه میشه 
+
+در نتیجه بلاک `else` اجرا میشه که داره `throw` می کنه یک `error` رو . 
+
+```javascript 
+else {
+      throw "err";
+    }
+```
+
+و زمانی که `throw` داریم بلاک catch اجرا میشه . 
+
+```javascript 
+catch (err) {
+    console.log(err);
+    return res.status(400).json("user or password is worng");
+  }
+```
+
+اینجوری میشه که با متغییر `paswordIsOkey` پسورد کاربر رو چک می کنه . 
+
+و چون داریم `findOne` می زنیم `username` رو اگر نباشه باز به ارور می خوریم .
+
+در نتیجه پیام درون  بلاک `catch` به عنوان یک `error` به سمت `clinet` ارسال میشه .
 
