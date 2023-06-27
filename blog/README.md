@@ -3193,4 +3193,121 @@ try {
 
 که در واقع توکن ما هست حاوی اطلاعات کاربر که لاگین شده .
 
-برای دسترسی اطلاعات نیاز هست که `token` رو `veryfi` کنیم .
+برای دسترسی اطلاعات نیاز هست که `token` رو `verify` کنیم .
+
+یک `if` داریم گفتیم اگر که `userToken` وجود داشت . 
+
+بیاد `token` رو `verify` کنه . 
+
+در `jwt.verify` مقدار اول اسم `coockie` هست مقدار دوم `secert` که موقع ست کردن `token` تعیین شده .|
+
+مقدار اخر در واقع یک ` { } ` خالی هست . 
+
+در نهایت به وسیله `res.json` اطلاعات رو ارسال می کنیم . 
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      return res.status(200).json(user);
+    }
+  } catch (err) {
+  } 
+};
+```
+
+در قسمت `catch` در صورتی که `token` وجود نداشت یک ارور ارسال می کنیم . 
+
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      return res.status(200).json(user);
+    }
+  } catch (err) {
+ return res.status(401).json({ error: "Invalid or expired token" });
+  } 
+};
+```
+
+### logoutUser controller 
+
+فانکشن `logoutUser` در واقع `token` رو از درون `cookie` میاید `remove` می کنه در نهایت 
+
+کاربری که `login` هست میاد `logout` میشه , یک پیام مبنی بر `logout` شدن ارسال شده به وسیله `json` .
+```javascript
+const logoutUser = async (req, res) => {
+  try {
+    return res.cookie("userToken", "").status(200).json("user is logout");
+  } catch (err) {
+    console.log("logout controll err", err);
+  }
+};
+```
+
+
+### exports all controller 
+
+در نهایت تمامی `controller` ها رو `export` می کنیم .
+
+```javascript
+module.exports = {
+  registerUser,
+  loginUser,
+  profileUser,
+  logoutUser,
+};
+```
+
+
+# Routes Folder
+
+![image](https://github.com/mosenn/MERN/assets/91747908/8d19effd-5f86-4020-90e8-0f4eed46bf38)
+
+درون فولدر `routes` میایم از `controller` های که نوشتیم استفاده می کنیم . 
+
+و برای هر `controller` یک ادرس تعیین می کنیم . 
+
+که میشه `api` ریسپانس `controller` هامون رو  درون `api` که می نویسیم  داریم .
+
+در قدم اول نیاز داریم که `Router` رو از دورن `express` صدا بزنیم و استفاده کنیم .
+
+```javascript
+const userRoute = require("express").Router();
+```
+
+در قدم بعدی تمامی `controller` های که نوشتیم رو `export` می کنیم 
+
+```javascript 
+const {
+  registerUser,
+  loginUser,
+  profileUser,
+  logoutUser,
+} = require("../controller/user");
+```
+
+در ادامه میایم `route` هارو می نویسیم و `controller` ها رو بهش پاس میدیم 
+
+```javascsript 
+//* POST create user (register user)
+userRoute.post("/register", registerUser);
+//* POST login user
+userRoute.post("/login", loginUser);
+
+//* Get user online with cookie ( jwt user token)
+userRoute.get("/profile", profileUser);
+module.exports = userRoute;
+
+//* logout
+userRoute.post("/logout", logoutUser);
+```
+
+در هر ادرسی میاد فانکشن که به عنوان contorller نوشتیم اعمال میشه .
+
+و ریسپانس رو به ما برگشت میده 
