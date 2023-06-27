@@ -2942,6 +2942,8 @@ const registerUser = async (req, res) => {
 
 در فانکشن `loginUser` میایم لاگین شدن کاربر رو کنترل می کنیم . 
 
+و اگر کاربر `login` شد  یک `token` حاوی اطلاعات کاربر درون `cookie` ذخیره می شه .
+
 
 ```javascript 
 const loginUser = async (req, res) => {
@@ -3157,3 +3159,25 @@ catch (err) {
 
 در نتیجه پیام درون  بلاک `catch` به عنوان یک `error` به سمت `clinet` ارسال میشه .
 
+### profileUser Controller 
+
+
+فانکشن `profileUser`  میاد اطلاعات کاربری که `login` شده رو از درون `token` که درون `cookie` ذخیره شده میگیره .
+
+در صورتی که کاربر `login` شد و `token` که درون `cookie` ذخیره شده رو 
+
+می گیره و اول `token` رو میاد `verify` می کنه   . 
+
+و `token` حاوی اطلاعات کاربری هست که `login`  شده . 
+
+
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+  } catch (err) {
+  } 
+};
+```
+
+درون بلاک `try` میایم `cookie` که ست کردیم در بخش 
