@@ -3180,4 +3180,17 @@ try {
 };
 ```
 
-درون بلاک `try` میایم `cookie` که ست کردیم در بخش 
+درون بلاک `try` میایم `cookie` که ست کردیم رو میگیریم از داخل `req.cookie`
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+  } catch (err) {
+  } 
+};
+```
+
+که در واقع توکن ما هست حاوی اطلاعات کاربر که لاگین شده .
+
+برای دسترسی اطلاعات نیاز هست که `token` رو `veryfi` کنیم .
