@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
+import { posts } from "../../api/post";
+import { compareAsc, format } from "date-fns";
+
 interface dataPostFake {
   id: number;
   postCover: string;
@@ -65,41 +68,59 @@ const fakeData: dataPostFake[] = [
     date: "2023/2/1",
   },
 ];
+
 const Home = () => {
+  const [post, setPost] = useState([]);
+  const takeAllPosts = async () => {
+    const response = await posts();
+
+    console.log("POSTS", response);
+    console.log("hiii");
+    setPost(response?.data);
+  };
+  useEffect(() => {
+    takeAllPosts();
+    console.log("hi");
+  }, []);
+  console.log(post);
   return (
     <section className="grid justify-center md:justify-center md:grid-cols-2 lg:grid-cols-3 md:p-2 md:m-2 md:gap-2 lg:gap-">
-      {fakeData?.map((blog: any) => {
-        return (
-          <div
-            key={blog.id}
-            className="border lg:p-0 lg:m-0 flex flex-col items-center m-2  text-left"
-          >
-            <h2 className="p-2 text-xl  font-semibold">{blog.postTitle}</h2>
+      {post.length > 0 &&
+        post?.map((blog: any) => {
+          return (
+            <div
+              key={blog._id}
+              className="border lg:p-0 lg:m-0 flex flex-col items-center m-2  text-left"
+            >
+              <h2 className="p-2 text-xl  font-semibold">{blog.title}</h2>
 
-            <figure className="flex flex-col items-center">
-              <img
-                className="w-72 lg:w-96 md:w-[70%] rounded-s"
-                src={blog.postCover}
-                alt={blog.postTitle}
-              />
-              <figcaption className="p-3 md:w-[60%] w-72 lg:w-96 lg:justify-between flex mt-2 justify-between text-gray-400">
-                <p>{blog.postAuthor}</p>
-                <p>{blog.date}</p>
-              </figcaption>
-            </figure>
-            <p className="w-72 md:text-center md:w-[250px] lg:w-96 text-left mt-1 mb-1 p-2 md:p-0 ">
-              {blog.description.substring(0, 147)}
-            </p>
-            <div className="p-2 w-[100%] flex justify-start md:justify-center">
-              <Button
-                className="bg-blue-500 md:w-[60%]  rounded p-3  text-zinc-50 font-semibold"
-                text="read more"
-                type="button"
-              />
+              <figure className="flex flex-col items-center">
+                <img
+                  className="w-72 h-[250px] lg:w-96 md:w-[70%] rounded-s"
+                  src={blog.cover}
+                  alt={blog.title}
+                />
+                <figcaption className="p-3 md:w-[60%] w-72 lg:w-96 lg:justify-between flex mt-2 justify-between text-gray-400">
+                  <p>{blog.author.username}</p>
+                  <p>{format(new Date(blog.createdAt), "yyyy-MM-dd")}</p>
+                </figcaption>
+              </figure>
+              <p
+                // dangerouslySetInnerHTML={{ __html: blog.content }}
+                className="w-72 md:text-center md:w-[250px] lg:w-96 text-left mt-1 mb-1 p-2 md:p-0 "
+              >
+                {blog.summery}
+              </p>
+              <div className="p-2 w-[100%] flex justify-start md:justify-center">
+                <Button
+                  className="bg-blue-500 md:w-[60%]  rounded p-3  text-zinc-50 font-semibold"
+                  text="read more"
+                  type="button"
+                />
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </section>
   );
 };

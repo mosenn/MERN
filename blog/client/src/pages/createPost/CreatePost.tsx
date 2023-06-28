@@ -7,12 +7,17 @@ import { uploadRegisterImage } from "../../api/users";
 import Loading from "../../components/loading/Loading";
 import Button from "../../components/button/Button";
 
+
+//TODO if post is create navigate to homepage  
+
+//TODO if user is not be login ,
+//* createPost page must be not open redirect to other page 
+//*or show someting for first login then can create post . 
+
 const CreatePost = () => {
   // TODO Refactor State to global state
   const [uploadAnimation, setUploadAnimation] = useState(false);
-  const [uploadMessage, setuploadMessage] = useState(
-    "upload your profile image"
-  );
+  const [uploadMessage, setuploadMessage] = useState("upload Thumbnail post");
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(false);
 
   const [postValue, setPostValue] = useState({
@@ -23,9 +28,6 @@ const CreatePost = () => {
   });
 
   const [content, setContent] = useState("");
-  // const handleOnChange = (e: React.ChangeEvent<HTMLInputElement> | any) => {
-  //   setPostValue({ ...postValue, [e.target.name]: e.target.value });
-  // };
 
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "cover") {
@@ -43,12 +45,14 @@ const CreatePost = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(postValue);
+
     setPostValue({ ...postValue, content: content });
     console.log(postValue, "POST VALUE");
     createPost(postValue);
     // uploadRegisterImage(postValue.cover);
   };
-//  TODO  Refactor to Global function
+
+  //  TODO  Refactor to Global function
   const Uploadimage = async () => {
     setUploadAnimation(true);
     const res = await uploadRegisterImage(postValue.cover);
@@ -115,8 +119,12 @@ const CreatePost = () => {
           type="button"
           onClick={Uploadimage}
         ></Button>
-        <ReactQuill theme="snow" value={content} onChange={setContent} />
 
+        <ReactQuill
+          theme="snow"
+          value={postValue.content}
+          onChange={(value) => setPostValue({ ...postValue, content: value })}
+        />
         <button
           className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
           type="submit"

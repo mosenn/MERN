@@ -28,6 +28,15 @@ const createPost = async (req, res) => {
   }
 };
 
+const posts = async (req, res) => {
+  try {
+    const posts =  await postModel.find().populate('author')
+    return res.status(200).json(posts);
+  } catch (err) {
+    console.log("All Post Err", err);
+  }
+};
 module.exports = {
   createPost,
+  posts,
 };
