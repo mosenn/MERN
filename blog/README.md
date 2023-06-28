@@ -3294,20 +3294,32 @@ const {
 
 در ادامه میایم `route` هارو می نویسیم و `controller` ها رو بهش پاس میدیم 
 
-```javascsript 
+```javascript 
 //* POST create user (register user)
 userRoute.post("/register", registerUser);
 //* POST login user
 userRoute.post("/login", loginUser);
-
 //* Get user online with cookie ( jwt user token)
 userRoute.get("/profile", profileUser);
-module.exports = userRoute;
-
 //* logout
 userRoute.post("/logout", logoutUser);
 ```
 
 در هر ادرسی میاد فانکشن که به عنوان contorller نوشتیم اعمال میشه .
 
-و ریسپانس رو به ما برگشت میده 
+و ریسپانس رو به ما برگشت میده  . 
+
+کافیه که `userRoute` که داریم بیایم `export` کنیم و درون `index.js` ازشون استفاده کنیم . 
+
+```javascript
+
+module.exports = userRoute;
+```
+
+درون `index.js` میایم از `route` های که نوشتیم استفاده می کنیم . 
+
+```javascript 
+app.use("/", require("./routes/user"));
+```
+
+به این شکل ازش استفاده می کنیم . 
