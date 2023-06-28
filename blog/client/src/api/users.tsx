@@ -33,6 +33,7 @@ console.log(`🚀  file: users.tsx:32  CLOUDNAME:`, CLOUDNAME)
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARAY_UPLOAD_PRESET;
 console.log(`🚀  file: users.tsx:33  UPLOAD_PRESET:`, UPLOAD_PRESET)
 const cloudinaryApi = `https://api.cloudinary.com/v1_1/${CLOUDNAME}/image/upload`;
+//  TODO  Refactor to Global function uploadRegisterImage and rename to uploadImage
 export const uploadRegisterImage = async (pic: {} | any) => {
   try {
     const data = new FormData();

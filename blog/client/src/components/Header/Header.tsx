@@ -3,10 +3,9 @@ import { logoutUser, profileUser } from "../../api/users";
 import { useGlobalContext } from "../../context/context";
 import { useEffect } from "react";
 
-
 const Header = () => {
   let { userInfoOnline, setUserInforOnline } = useGlobalContext();
-  
+
   const logOut = async () => {
     await logoutUser();
     //* can set loading for logout take effect
@@ -33,6 +32,9 @@ const Header = () => {
                 src={userInfoOnline.pic}
                 alt={`profile image ${userInfoOnline?.username}`}
               />
+            </li>
+            <li className="mr-5">
+              <Link to="/createpost">Create Post</Link>
             </li>
             <li className="mr-4">{userInfoOnline?.username}</li>
 

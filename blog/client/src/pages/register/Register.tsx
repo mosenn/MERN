@@ -17,6 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [errorRegister, setErrorRegister] = useState<ErrorRegister>({});
   const [toast, setToast] = useState<Boolean>(false);
+    // TODO Refactor State to global state
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(false);
   const [uploadAnimation, setUploadAnimation] = useState(false);
   const [uploadMessage, setuploadMessage] = useState(
@@ -62,7 +63,7 @@ const Register = () => {
       }, 3000);
     }
   };
-
+//  TODO  reafactor to Global function
   const Uploadimage = async () => {
     setUploadAnimation(true);
     const res = await uploadRegisterImage(register.pic);
