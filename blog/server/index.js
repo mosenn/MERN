@@ -6,8 +6,7 @@ const connectToDb = require("./connection/db");
 require("dotenv").config({ path: "./config.env" });
 const app = express();
 //*parser
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 //*cors
 app.use(
@@ -24,7 +23,7 @@ app.use("/home", async (req, res) => {
 });
 
 app.use("/", require("./routes/user"));
-
+app.use("/", require("./routes/post"));
 //*listen
 const port = process.env.PORT || 3010;
 app.listen(port, () => {

@@ -5,15 +5,15 @@ const userRegisterValid = require("../middleware/userValidation");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    require: true,
+    required: true,
     // unique: true,
   },
   password: {
-    require: true,
+    required: true,
     type: String,
   },
   confirmPassword: {
-    require: true,
+    required: true,
     type: String,
   },
   pic: {

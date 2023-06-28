@@ -10,10 +10,9 @@ const {
 userRoute.post("/register", registerUser);
 //* POST login user
 userRoute.post("/login", loginUser);
-
 //* Get user online with cookie ( jwt user token)
 userRoute.get("/profile", profileUser);
-module.exports = userRoute;
-
 //* logout
 userRoute.post("/logout", logoutUser);
+
+module.exports = userRoute;

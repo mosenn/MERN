@@ -1,12 +1,13 @@
 const { compare } = require("../middleware/bcrypt");
 const userModel = require("../model/user");
 const jwt = require("jsonwebtoken");
-//*Register user 
+//*Register user
 const registerUser = async (req, res) => {
   const errors = {};
   const { username, confirmPassword, password, pic } = req.body;
   try {
-    const validate = await userModel.userRegisterValid(req.body);
+    //* validation
+    await userModel.userRegisterValid(req.body);
     const foundUser = await userModel.findOne({ username });
     if (foundUser) {
       errors.username = "this user before register";
@@ -84,6 +85,7 @@ const logoutUser = async (req, res) => {
     console.log("logout controll err", err);
   }
 };
+
 module.exports = {
   registerUser,
   loginUser,
