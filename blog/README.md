@@ -685,9 +685,9 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 
 می خوایم بریم سراغ کامپونت ها . 
 
-# Components 
+# Components & pages
 
-### Register.tsx component
+### Register.tsx page
 
 درون این کامپونت مراحل ثبت نام کاربر انجام میشه . 
 
@@ -1027,7 +1027,8 @@ export const uploadRegisterImage = async (pic: {} | any) => {
 بعد از اینکه input ها رو درون صحفه پر کردیم و فروم خودمون رو submit کردیم . 
 
 **نکته** : نیاز هست یک button درون فروم داشته باشیم که نوع type button ما از نوع submit باشه . 
-که button تعریف شده می تونه یک کامپونت باشه . 
+
+که button تعریف شده یک `component` هست . 
 
 ```javascript
    <Button
@@ -1036,9 +1037,72 @@ export const uploadRegisterImage = async (pic: {} | any) => {
           />
 ```
 
+### Button Component 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/001b61a0-c9a8-4fad-ab80-70163e092092)
+
+یک کامپونت `Button` داریم که هر جا نیاز شد از button استفاده کنیم می تونیم از این کامپونت استفاده کنیم . 
+
+یک سری props که نیاز هست برای button پاس دادیم به کامپونت `Button` : 
+
+```javascript
+export default function Button({
+  text,
+  type,
+  className,
+  disabled,
+  onClick,
+}: buttonProps) {
+```
+نوع type props مربوط به کامپونت `Button` رو مشخص می کنیم  : 
+
+
+```javascript
+interface buttonProps {
+  text?: string | any;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  disabled?: boolean;
+  onClick?: () => Promise<void>;
+}
+```
+
+در نهایت کامپونت ما یک button میاد return می کنه و از این button هر جا که خواستیم استفاده می کنیم . 
+
+و props های مورد نیازش رو بهش پاس میدیم . 
+
+
+```javascript
+
+export default function Button({
+  text,
+  type,
+  className,
+  disabled,
+  onClick,
+}: buttonProps) {
+  return (
+    <button
+      disabled={disabled}
+      type={type}
+      className={className}
+      onClick={onClick}
+    >
+      <span className="p-2"> {text}</span>
+    </button>
+  );
+}
+```
+هر جا که خواستیم می تونید صدا بزنیم `Componen Button` رو و ازش استفاده کنیم .
+
+و حتی function های متفاوتی بهش پاس بدیم . 
+
+### continue Register.tsx page
+
 بعد از لاگ گرفتن و مظمئن شدن از value های input های خودمون نوبت به ارسال اونها به سمت سرور میشه . 
 
 یاد اوری : یک فولدر api داشتیم که تمامی کار با [api](#api-folder) رو درونش قرار دادیم . 
+
 ```javascript
  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1187,7 +1251,7 @@ const Register = () => {
 } 
 ```
 
-# Toast componet
+# Toast Componet
 که toast درواقع یک کامپونت مجزا هست . از این کامپونت برای login هم استفاده می کنیم . 
 
 در واقع نمایش داده شه یا نه به وسیله یک state boolean تعریف شده . 
@@ -1223,7 +1287,7 @@ const Toast = ({ text, toast }: propsToast) => {
 export default Toast;
 ```
 
-# Login.tsx component . 
+# Login.tsx Page . 
 
 بعد از ثبت نام کردن کاربر لاگین شدن کاربر رو داریم . 
 
@@ -1685,3 +1749,1577 @@ const Header = () => {
     </header>
   );
 ```
+
+
+# Server 
+
+همونطور که اشاره شد پروژه `blog` یک پروژه فول استک هست . 
+
+بک اند پروژه با nodejs + expressjs و mongodb زده شده . 
+
+برای اینکه بتونیم پروژه رو کامل داشته باشیم نیاز هست که فایل سرور هم در کنار فایل client داشته باشیم . 
+
+و هر دو رو ران کنیم  . 
+
+
+# Run Clinet & Server 
+
+برای client از دستور : 
+
+```bash
+npm i 
+npm run dev
+```
+
+برای server از دستور : 
+
+```bash
+npm i 
+nodemon 
+```
+
+or 
+
+```bash
+node index.js
+```
+
+پکیج `nodemon` به ما کمک می کنه سرور رو به صورت `live` ران داشته باشیم . 
+
+در واقع مثل `live server` سمت `client` می مونه . 
+
+که حتما نیاز هست nodejs روی سیستم نصب و ورژن 16 به بالا باشه . 
+
+برای دوسنتن ورژن nodejs کافیه `command prompet` رو باز کنید . 
+
+دستور : 
+
+```bash
+node -v 
+```
+
+رو وارد کنید اگر nodejs نصب باشه ورژن nodejs رو نمایش میده . 
+
+بریم سراغ ساخت سرور : 
+
+بعد از زدن دستوارت اوله npm i . 
+
+
+و ساخت package.json : 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4645db0b-8c5b-493b-ad3b-f72bee1a6078)
+
+
+اطلاعات درون package.json که درون dependencies پکیج های که برای server استفاده شده می بینیم . 
+```json
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.2.3",
+    "yup": "^1.2.0"
+  }
+}
+```
+
+
+یک فایل به اسم index.js ایجاد می کنیم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/1ca859d0-8c6c-4c54-8bb4-8af3414a1fb8)
+
+که در واقع فایل اصلی `server` حساب  میشه . 
+
+و تمامی module های دیگه درون index.js در نهایت import میشه . 
+
+چون در کل یک فایل سمت server ما run میشه و اونم index.js هست . 
+
+
+# Packages : 
+
+### cors 
+
+پکیج `cors`  در واقع cors policy رو کنترل می کنه که چه ادرسی می تونه به سرور دسترسی داشته باشه . 
+
+همینطور یک سری option داره که می تونیم set کنیم . که جلو تر با `credentials` اشنا میشیم . 
+
+### bcryptjs
+
+برای رمز گذاری استفاده میشه . 
+
+برای مثال از `bcryptjs`  برای رمزگذاری روی پسورد کاربر ازش استفاده شده . 
+
+
+### body-parser 
+
+کمک می کنه که به اطلاعات درون `body` به وسیله `req` دسترسی داشته باشیم . 
+
+برای  `HTTP REQUSET` متد های  `post , put , patch` کمک می کنه که به `req` دسترسی داشته باشیم . 
+
+
+### cookie-parser 
+
+برای set کردن `cookie` استفاده میشه در واقع می تونیم cookie سمت سرور set کنیم و بخونیم . 
+
+در واقع یک `middelware` هست `cookie-parser` کمک می کنه `cookie` سمت `server` خونده شه . 
+
+و اگر نیاز بود به سمت `client` ارسال شه به صورت یک `object`
+### dotenv
+
+برای set کردن فایل env ازش استفاده می کنیم . 
+
+### expressjs 
+
+پکیج `expressjs` در واقع یک `framework` هست که کار رو برای کد نویسی `server` فراهم می کنه . 
+
+### jsonwebtoken 
+
+پکیج `jsonwebtoken` برای ساخت `token` ازش استفاده میشه . 
+
+که `token` ساخته شده می تونه حاوی یک سری اطلاعات باشه . 
+
+برای `Authentication` و `Authorization` ازش استفاده میشه .
+
+
+### mongoose 
+
+
+پکیج `mongoose` به ما کمک می کنه تا بهتر بتونیم با `mongodb` ارتباط بگیریم و ازش استفاده کنیم .
+
+
+### yup 
+
+پکیج `yup`  برای اعتبار سنجی سمت `server` می تونیم ازش استفاده کنیم . 
+
+برای `validation` کردن اطلاعاتی که قرار هست ارسال شه سمت `data base` . 
+
+
+بعد از اینکه پکیج های مورد نیاز رو نصب شد . 
+
+اگر که پروژه رو `clone` کنید با دستور `npm i` می تونید تمامی پکیج ها رو نصب کنید . 
+
+نوبت به ساخت و ایجاد `server` می رسه . 
+
+# Create Server
+
+
+# Index.js File
+
+درون فایل `index.js` اول میایم پکیج های موزد نیاز رو `require`  می کنیم . 
+
+**نکته** : در این پروژه از `commonjs` استفاد هشده به جای `es6` 
+
+
+```javascript
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const connectToDb = require("./connection/db");
+require("dotenv").config({ path: "./config.env" });
+```
+
+بعضی از پکیج ها رو می بنید که require شده درون فایل index.js . 
+
+پکیج های که نیستند در module دیگه ای ازشون استفاده شده . 
+
+
+**نکته** : هر فایل js در واقع یک module هست . 
+
+یک متفیر `connectToDb` داریم که در واقع کار متصل شدن به پایگاه داده رو برای ما انجام میده . 
+```javascript
+const connectToDb = require("./connection/db");
+```
+
+که در اینده توضیح داده میشه نحوه اتصال به `data base`
+
+در این پروژه از `mongodb atlas` استفاده شده . 
+
+که `mongodb atlas` در واقع یک `data base` انلاین `mongodb` هستش . 
+
+و بدون نصب `mongodb` روی سیستم می تونیم از `mongodb atlas` استفاده کنیم . 
+
+ که البته نیاز داریم که حتما درونش یک اکانت ایجاد کنیم و مراحل ساخت `data base` رو انجام بدیم . 
+
+
+مورد بعدی که کمی با بقیه متفاوت هست `dotEnv` هست . 
+
+```javascript
+require("dotenv").config({ path: "./config.env" });
+```
+
+که این `dotenv` برای خوندن فایل `env`   استفاده میشه   
+
+نیاز به تعریف کردن متغییر نداره به `path` میایم ادرس فایل env خودمون رو وارد می کنیم . 
+
+که در اینجا اسم فایل ما `config.env` هست و درون `path` به این شکل تعریف شده `{ path: "./config.env" }` به ابجکت بودنش دقت کنید .
+
+
+### Define app
+
+بعد از import ها که تموم شد . میایم به وسیله `expressjs` یک app تعریف می کنیم . 
+
+
+```javascript 
+const app = express();
+```
+
+الان می تونیم از `express` استفاده کنیم . 
+
+
+### middelware use 
+
+قدم بعدی استفاده از `use` هست , یک متد درونی `express` هست که به عنوان یک `middelware` عمل می کنه . 
+
+ اجازه میده که بتونیم از HTTP METHOD ها استفاده کنیم به وسیله `express` 
+
+در واقع هر جا نیاز داریم که به `server` بگیم یک سری چیز ها رو استفاده کن . 
+
+از `use` استفاده می کنیم . 
+
+```nodejs 
+app.use(bodyParser.json());
+app.use(cookieParser());
+```
+
+
+در کد بالا امدیم از `parser` ها استفاده کردیم که توضیح شون رو کمی بالا تر گفتیم . 
+
+
+
+### Saving Image In Server 
+
+اگر بخوایم عکسی رو درون server ذخیره کنیم . که نخوایم از یک فضای دیگه برای ذخیره سازی عکس استفاده کنیم . 
+
+و بخوایم درون خوده سرور اینکارو انجام بدیم که پیشنهاد نمیشه . 
+
+به دلیل اینکه حجم دیتا بیس و سرور افزایش پیدا می کنه . اما به هر حال نیاز هست 
+
+که از پکیج `multer` استفاده کنیم و همینطور کد های زیر رو درون `index.js` داشته باشیم . 
+
+```javascript
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+```
+
+در واقع برای فایل های `json` که سمت سرور میاد یک `limit` تعیین شده . 
+
+و همینطور برای `urlencoded` که به سمت سرور ارسال میشه باز یک `limit` تعریف شده . 
+
+در نهایت از `multer` استفاده میشه برای ذخیره سازی و ارسال عکس به سمت `data base` . 
+
+**یاداوری** : در این پروژه ما از یک فضای `cloud` سمت `client` استفاده کردیم . 
+
+از سایت `cloudinary` , که عکس فرستاده شده از کاربر رو `upload` می کنه . 
+
+یک لینک اپلود عکس برای ما به عنوان ریسپانس میده 
+
+و `link` ارسال شده که `response api` هست رو درون `data base` دخیره می کنیم . 
+
+**یاداوری** : تمامی مراحل گفته شده برای اپلود عکس سمت  `client` انجام شده . 
+
+
+بریم سراغ ادامه فایل `index.js` . 
+
+```nodejs 
+app.use(bodyParser.json());
+app.use(cookieParser());
+```
+
+### define cors 
+
+قدم بعدی تعریف کردن `cors` هست . 
+
+که در واقع ادرس های که قرار هست به این server دسترسی داشته باشند . 
+
+مر بوط به `cors policy` که می تونیم یک یا چند دسترسی اعمال کنیم . 
+
+البته برای اینکه بتونیم با `cookie` کار کنیم نیاز هست `credentials` رو روی `true` قرار بدیم . 
+
+که یک option مر بوط به `cors` هست . 
+
+```javascript 
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173",
+  })
+);
+```
+
+از `use` استفاده کردیم که توضیح دادیم یک `method` درونی `express` هست . 
+
+از `use` به مکرر استفاده میشه . 
+
+### listen 
+
+مر حله بعدی نوشتن `listen` هست برای اینکه `server` که ایجاد کردیم روی یک port و یک ادرس بیاد `run` شه . 
+
+**نکته** : حتما باید این `listen` تعریف شه حتی اگر می خوایم `server` رو بعدا روی `host` دیپلوی کنیم . 
+
+اگر این کارو انجام ندیم وقتی که `deploy` انجام میشه روی `host` پورت دیفالت اون `host` رو نمی تونه بخونه . 
+
+در نهایت `server` مد نظر ما به طور کامل `deploy` نمیشه .
+
+
+```javascript
+const port = process.env.PORT || 3010;
+app.listen(port, () => {
+  console.log(`server is connectin http://localhost:${port}`);
+});
+```
+
+در اینجا `port` که تعریف شده به صورت `default` گذاشتیم روی 3010 و در نهایت یک متغییر `env` تعریف کردیم . 
+
+که اگر `port` دیفالت که 3010 هست اجرا نشد بره از داخل   متغییر `env`  پورت رو بخونه . 
+
+و موقع `deploy` کردن روی `host` این متغییر رو برای host تعریف می کنیم و host پورت خودش رو اعمال می کنه . 
+
+
+### run server 
+
+خب حالا اگر با دستور `node index.js` رو بزنیم `server`  اجرا میشه . 
+
+همینطور با اگر دستور `nodemon` رو بزنیم درون `terminal` باز سرور ران میشه . 
+
+پیشنهاد میشه با `nodemon` ران شه به صورت `live` تغییرات رو ببنید . 
+
+که قبل تر گفتیم نیاز هست `nodemon` رو نصب کنید .
+
+### define test route 
+
+برای اینکه متوجه شیم server روی لوکال به درستی run میشه یا نه . 
+
+یک `route` تست تعریف می کنیم تا درون صحفه یک چیزی رو به ما نمایش بده یک پیام ساده .
+
+**نکته** : این `route` ساده که می نویسیم بعد از تست می تونیم کامنت کنیم یا پاک کنیم . 
+
+```javascript 
+app.use("/home", async (req, res) => {
+  res.status(200).send("server is ok");
+});
+```
+
+در واقع هر `ROUTE` که نوشته میشه `parameter` های `req` , `res` رو خواهد داشت . 
+
+که با `res` در خواست ها رو به ادرسی که نوشته شده ارسال میشه . 
+
+با `req` می تونیم در خواست های سمت `client` یا `cookie` و .. بگیریم . 
+
+در کد بالا یک پیام حاوی `server is ok` در صحفه اصلی server چاپ کردیم . 
+
+متد `res` درون خودش `status` کد رو داره که با این `status` ها رو ست می کنیم . 
+
+که هر `status code` بیانگر یک پیام هست . 
+
+مثلا `201 status code`  به معنی ساخته شدن هست . 
+یا `status 200` به معنی موفقیت امیز بودن هست . 
+
+مثلا `status code 404` به این معنی `bad requset` در خواست بد هست .
+
+می تونیم از `send` یا `json` برای ارسال استفاده کنیم . 
+
+که `json` پیشنهاد میشه . 
+
+# Connect to mongodb 
+
+بعد از ساخت اکانت در mongodb atlas که data base انلاین ما هستش . 
+
+یک ادرس برای متصل شدن ایجاد میشه که به وسیله این ادرس میایم server خودمون رو به `mongodb atlas` متصل می کنیم . 
+
+یک فولدر به اسم `connection` داریم که فایل درونی اون به اسم `db.js`  کار متصل شدن به `data base` رو انحام میده . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/a91a0d7a-97e8-4b08-91a8-3985ab7c32d3)
+
+درون `db.js` کد زیر رو داریم : 
+
+```javascript
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+
+const connecetToDb = async () => {
+  try {
+    const connect = await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/blog`
+    );
+
+    console.log(`db is connect at ${connect.connection.host}`);
+  } catch (err) {
+    console.log(err, "data base cant connect");
+    process.exit(1);
+  }
+};
+
+module.exports = connecetToDb;
+```
+ نکته ای که وجود داره گفتیم از `mongoose` استفاده می کنیم برای ارتباط گرفتن و کار با `mongodb` . 
+
+ برای connect شدن و ا ستفاده از متد های `mongodb` نیاز هست که از async , await استفاده کنیم . 
+
+ّبه این دلیل که `promise base` هستند . 
+
+فانکشن `connecetToDb` از نوع async هست و درون بلاک `try` امدیم از `await` استفاده کردیم . 
+
+که بتونیم `connect` شیم به `data base` خودمون . 
+
+
+
+--- بعد از `mongodb.net` که در ادرس دیتا بیس ما هست یک / می زنیم و اسم `data base` خودمون رو وارد می کنیم . 
+
+که در ادرس زیر اسم `data base` مد نظر ما `blog` هست .
+
+```javascript 
+  try {
+    const connect = await mongoose.connect(
+      `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.zutazhf.mongodb.net/blog`
+    );
+
+    console.log(`db is connect at ${connect.connection.host}`);
+  } catch (err) {
+    console.log(err, "data base cant connect");
+    process.exit(1);
+  }
+```
+
+درون بلاک `catch` امدیم error مربوط به `connect` شدن رو هندل کردیم . 
+
+که اگر `data base` ما به مشکل خورد و متصل نشد یک `error` داشته باشیم متوجه شیم که مشکل سمت `connect` شدن هست . 
+
+در نهایت فانکشن خودمون رو `export` کردیم و می خوایم از این فانکشن بیام درون `index.js` استفاده کنیم . 
+
+```javascript
+module.exports = connecetToDb; 
+```
+
+به این دلیل که فقط `index.js` اجرا خواهد شد و تمامی اجزای `server` که ما می نویسیم . 
+
+به طور مستقیم یا غیر مستقیم درون `index.js` قرار میگیره تا `module` مد نظرمون اجرا شه  . 
+
+**یاداوری** : هر فایل `javascript` در واقع یک `module` هستش . 
+
+به `index.js` میریم و `connectToDb` که `export` کردیم میام اول `require` می کنیم و بعد صداش می زنیم . 
+
+```javascript 
+const connectToDb = require("./connection/db");
+```
+
+و بالا تر از `listen` که نوشتیم صداش می زنیم همینطور بالا تر از `routet test` که ایجاد کردیم . 
+
+```javascript 
+connectToDb();
+```
+
+**نکته** : در واقع زمانی که سمت `server` میایم با `nodejs` کد می زنیم ترتیب یه جاهای مهمه . 
+
+و اگر این ترتیب بندی بعضی از جاها رعایت نشه ممکنه سرور ما به مشکل بخوره و ران نشه . 
+
+
+# Server Folders 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/eed7828c-8eee-43b1-b0df-a02fe7509e52)
+
+
+
+فولدر های سمت `server` رو معرفی کنیم . 
+
+### model folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4ea96d1c-3a41-4bdd-af20-f1555a63519d)
+
+
+که یدونه `model` داریم که برای ایجاد `schema` هست که بتونیم با `data base` ارتباط بگیریم . 
+
+در واقع هر `collection` که می خوایم برای `data base` ایجاد کنیم نیاز به یک `schema` و `model`  داریم . 
+
+که در فولدر model برا مثال یک فایل به اسم `user.js` داریم برای ایجاد `model` کاربرانی که در سایت ما هستند . 
+
+### user.js 
+
+
+اگر بخوایم فایل user.js رو بررسی کنیم به طور کلی نوع دیتای که قرار برای هر کاربر ذخیره شه رو مشخص کردیم . 
+
+بعد به وسیله یک `middelware` که خودمون نوشتیم و ایجاد کردیم کار `validation` رو انجام دادیم . 
+
+و همینطور از `bcrypt` استفاده کردیم برای رمز گذاری پسورد ها . 
+
+در واقع قبل از اینکه دیتای مربوط به `user` ها ثبت شه اول `valid` شده . 
+
+**نکته** : این کار تکراری هست و برای هر پروژه می تونیم انجام ا ش بدیم . 
+
+
+یه نگاهی به کل کد های مربوط به فایل `user.js` بندازیم : 
+
+اول مواردی که نیاز داریم رو `require`  می کنیم . 
+
+که 2 تا از این موارد مربوط به رمز گذاری پسورد و ولیدیشن هست که بهشون می رسیم  جلو تر . 
+
+```javascript 
+const { hash } = require("../middleware/bcrypt");
+const mongoose = require("mongoose");
+const userRegisterValid = require("../middleware/userValidation");
+```
+
+همینطور به `mongoose` نیاز داریم برای ساخت `schema` . 
+
+**یاداوری** : هر `data` که قرار درون `data base` ذخیره شه نیاز به یک `schema` و `model`  داره . 
+
+
+قدم بعدی ساخت `schema` هست به وسیله `mongoose` : 
+
+```javascript 
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    require: true,
+  },
+  password: {
+    require: true,
+    type: String,
+  },
+  confirmPassword: {
+    require: true,
+    type: String,
+  },
+  pic: {
+    type: String,
+  },
+});
+```
+
+که نوع type و اینکه اون اطلاعات که داره ارسال میشه نیاز هست `required`  هست  .  
+
+مواردی که `required` قرار داده شده وجود داشتن شون الزامی هست . 
+
+
+خب می تونیم الان `model` خودمون رو ایجاد کنیم و اسم collection که می خوایم این data درونش ذخیره شه رو اعمال کنیم . 
+
+منتها قبل از اینکه کار ذخیره شدن انجام شه میایم نوع `valid` شدن رو چک می کنیم . 
+
+به وسیله خوده `schema` که ایجاد کردیم 
+
+```javascript 
+userSchema.statics
+```
+**نکته** : مهمه که اخر static یه `s` باشه در غیر اینصورت به مشکل می خوریم . 
+
+در ادامه فانکشنی که برای `validation` نوشتیم و کار `valid` کردن رو انجام میده میایم استفاده می کنیم . 
+
+قبل تر `requiire` کرده بودیم . 
+
+
+```javascript 
+const userRegisterValid = require("../middleware/userValidation");
+```
+
+```javascript 
+userSchema.statics.userRegisterValid = (reqBody) => {
+  return userRegisterValid.validate(reqBody, { abortEarly: false });
+};
+```
+پارامتر `reqBody`  در واقع `req` های هستند که موقع ارسال شدن درون `body` قرار می گیرند . 
+
+و هر `route` یا `controller` این موارد رو داره . که به این فانکشن پاس داده میشه . 
+
+در نهایت درون فانکشن داریم `return` می کنیم `userRegisterValid` که بیاد `validate`  کنه . 
+
+منتها پارامتر `reqBody` رو بهش پاس دادیم در ادامه `option abtortEraly:false` گذاشتیم . 
+
+که اگر `error` وجود داشت بیاد به صورت دسته جمی اون `error` هارو نشون بده نه تک تک . 
+
+
+### has passowrd 
+
+بعد از validtion رمزگذاری کردن password ها رو داریم که به وسیله `package bcryptjs` انجام میشه .  
+
+که قبل از اینکه بخوایم `model` رو ذخیره کنیم میایم password کاربر های که ثبت نام می کنند . 
+
+رو برای امنیت بیشتر رمز گذاری می کنیم و درون `data base` ذخیره می کنیم . 
+
+برای این کار از `schema` که ساختیم استفاده می کنیم و در ادامه یک فانکشن ایجاد می کنیم . 
+
+```javascript
+userSchema.pre("save", async function (next) {
+
+});
+```
+این فانکشن نیاز هست که از نوع فانکشن معمولی باشه در واقع arrow function نباشه . 
+
+به این دلیل که می خوایم از `keyword this`  استفاده کنیم . 
+
+گفتیم   `userSchema.pre` که در واقع `pre` به این معنی که قبل از اینکه در ادامه `save` رو داریم که یک `string` هست . 
+
+معنی فانکشنی که نوشتیم اینه : قبل از اینکه `userSchema` که ساختیم بیاد `save` شه . 
+
+یک کاری انجام بده بعدش بیاد `save` شه . 
+
+کاری که می خوایم انجام بدیم درون فانکشن انجام میشه . 
+
+```javascript
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+
+});
+```
+
+در قدم اول میایم چک می کنیم به وسیله `if` اگر که `userSchema` ما به هر دلیلی وجود نداشت فانکشن `next` اتفاق بیوفته . 
+
+در واقع `this.isModified` میاد چک می کنه که `userSchema` ما اگر مشکلی نداشت همه چی اوکی بود بره ادامه فانکشن . 
+
+اما اگر مشکلی بود بره روی `error` ها و `error` ها رو نشون بده.
+
+در ادامه فانکشن  `password` , `confrimPassword`  رو قبل از اینکه در `data base` ذخیره شن رمزگذاری می کنیم . 
+
+
+```javascript 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  //*new update for hasing most be get this in model
+
+  const { hashPassword, hashConfirmPassword } = await hash(
+    this.password,
+    this.confirmPassword
+  );
+  this.password = hashPassword;
+  this.confirmPassword = hashConfirmPassword;
+});
+```
+**نکته** : ممکنه در اول کار به این صورت کد کار نکنه که به صورت `middelware` امدیم `hash` کردیم . 
+
+در واقع اتفاق رمز گذرای درون یک فانکشن که درون فولدر `middelware` هست داره اتفاق می افته . 
+
+اگر که اول کار مشکلی پیش امد با این روش `hash` کردن به وسیله `midelware` تمامی عملیات `hash` کردن رو 
+
+همینجا انجام میدیم بدون `middelware` اما بعد از چند باز که مشکلی نبود می تونیم باز تبدیل اش کنیم به یک فانکشن جدا . 
+
+خب `hash`  در واقع یک فانکشن هست که `require`  شده در یک فایل جدا داره یک سری عملیات مربوط به رمزگذری رو انجام میده . 
+
+```javascript 
+const { hash } = require("../middleware/bcrypt");
+```
+
+حالا ازش درون فانکشن که تعریف کردیم استفاده می کنیم 
+
+```javascript 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  //*new update for hasing most be get this in model
+
+  const { hashPassword, hashConfirmPassword } = await hash(
+    this.password,
+    this.confirmPassword
+  );
+  this.password = hashPassword;
+  this.confirmPassword = hashConfirmPassword;
+});
+```
+درون فانکشن `this.password` , `this.confrimPassword`  به `userSchema` که ساختیم اشاره می کنند . 
+
+و `hashPassword` , `hashConfirmPassword`  در واقع پسورد کاربر هستند که از `req`  گرفته شده و رمزگذاری شده . 
+
+در نهایت `password` های که درون `schema` هست با پسورد های که `hash`  شده `assignment` میشه
+
+### create model connect to collection 
+
+در نهایت نوبت به ساخت `model` میشه و یک اسم برای `collection` دیتا بیس تعریف می کنیم . 
+
+که این `schema` درون `collection data base` ساخته میشه . 
+
+```javascript
+const userModel = mongoose.model("users", userSchema);
+
+module.exports = userModel;
+
+``` 
+
+میایم `model`  رو درون یک متغییر قرار میدیم و `export` می کنیم . 
+
+به وسیله `mongoose.model` میایم مدل خودمون رو ایجاد می کنیم . 
+
+که `users` میشه اسم `collection` که داشتیم . 
+
+و `userSchema` در واقع `schema` هست که ساختیم 
+
+و  `userSchema` درون `collection users` در `mongodb atals` ذخیره میشه .
+
+بعدا زمانی که  `controller` رو تعریف کردیم از این userModel استفاده می کنیم . 
+# Midelware Folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/3ccd86f8-8e02-4271-8527-8b9ee86c1d14)
+
+
+یک فولدر در پروژه داریم به اسم `midelware`  که فانکشن های که ممکنه زیاد استفاده شه . 
+
+درون این فولدر تعریف می شه . 
+
+مثل hash کردن یا ولیدیشن و ... . 
+
+بریم اول `hash` رو بررسی کنیم که کمی بالا تر ازش استفاده کردیم برای رمزگذاری پسورد ها . 
+
+درون فایل `bcrypt.js` امدیم عملیات `hash` وهمینطور `compare` استفاده کردیم . 
+
+زمانی که passowrd درون `data base` ذخیره میشه به صورت رمزگذاری هست چون خودمون `hash` کردیم . 
+
+و زمانی که بخوایم مثلا برای لاگین شدن همون password رمزگذاری شده رو با پسوردی که کاربر برای لاگین شدن وارد می کنه 
+
+مقایسه کنیم نیاز داریم که `compare` کنیم تا این مقایسه به درستی انجام شه . 
+
+اول پکیج `bcryptjs` رو میایم `require` کنیم 
+
+```javascript 
+const bcrypt = require("bcryptjs");
+```
+
+قدم بعدی نوشتن فانکشن `hash`  هست . 
+
+```javascript
+const hash = async (password, ConfirmPassword) => {
+
+}; 
+```
+
+به این دلیل که `bcryptjs` متد های درونش `promise base` هستند نیاز هست از `async / await`  استفاده کنیم 
+
+فانکشن `hash`  از نوع `async`  هست که 2 تا `parameter` می گیره در واقع پسورد های که کاربر وارد کرده. 
+
+از `controller` که نوشته شده و متصل به یک `route` هست و `client`  اطلاعات مروبط به کاربر به `route` تعریف شده ارسال میشه . 
+
+
+ در ادامه یک `if` تعریف میشه که چک می کنه ببینه `password` هست یا نه اگر بود بیاد پسورد رو به وسیله `bcryptjs` رمزگذار می کنیم . 
+
+
+ ```javascript 
+const hash = async (password, ConfirmPassword) => {
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(password, salt);
+    const hashConfirmPassword = await bcrypt.hash(ConfirmPassword, salt);
+    return {
+      hashPassword,
+      hashConfirmPassword,
+    };
+  }
+};
+```
+
+درون `if` اول یک `salt` ایجاد می کنیم که یک `string` رندم ایجاد می کنه که گفتیم تا 10 `character` اینکارو انجام بده . 
+
+در نهایت `pasword` , `confirmPassword`  رو گفتیم که بیاد به وسیله  `bcrypt.hash`  که داریم از پکیج `bcryptjs` استفاده کردیم .
+
+و `hash` یک متد درونی `bcryptjs` هست .  
+
+و الان به جای پسورد که کاربر وارد کرده یک `string` داریم با 10 کاراکتر 
+
+و هر دو متغییر `hashPassword` , `hashConfirmPassword`  رو return کردیم  . 
+
+که در نهایت در [model user.js](#has-passowrd) ازش استفاده کردیم .
+
+فانکشن بعدی کار `compare`  کردن رو انجام میده در واقع مفدار رمز گذاری شده درون `data base` رو 
+
+با وردی که کاربر وارد می کنه مقایسه می کنه .  در `controller` مربوط به `login` کاربر ازش استفاده می کنیم 
+
+```javascript 
+const compare = async (reqPassowrd, dbPassword) => {
+  return await bcrypt.compare(reqPassowrd, dbPassword);
+};
+```
+
+در نهایت هر دو فانکشن که درون فولدر `midelware` درون فایل `bcrypt.js` هستند رو `export` می کنیم . 
+
+که بتونیم در فایل های دیگه به اونها دسترسی داشته باشیم و ازشون استفاده کنیم . 
+
+```javascript
+module.exports = {
+  hash,
+  compare,
+};
+
+```
+
+# Validation Middleware 
+
+درون فولدر `Middleware` یک فایل داریم به اسم `userValidation` که مسئول `valid` کردن اطلاعات دریافتی هستش . 
+
+که درون [model user.js](#model-folder) ازش استفاده کردیم همراه با `statics` قبل از اینکه model رو بسازیم . 
+
+ولیدیشن رو به وسیله  پکیج [yup](#yup) انجام شده . 
+
+یک فایل به اسم `userValidation` درون فولدر `middleware` داریم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/1e3c7bf0-38f6-495b-bb67-86bdd96e0586)
+
+درون `userValidation` میایم `yup` رو `require` می کنیم . 
+
+```javascript
+const yup = require("yup");
+```
+
+قدم بعدی یک متغییر تعریف می کنیم و یک `shape` به وسیله `yup` ایجاد می کنیم . 
+
+```javascript 
+const userRegisterValid = yup.object().shape({
+});
+```
+ میایم به وسیله متد های درون `yup` ولیدیشن رو برای `userSchema` انجام میدیم . 
+
+ **نکته** : هر بار که بخوایم یک `schema` رو به وسیله `yup` ولیدیشن کنیم . از همین روش استفاده می کنیم .
+
+ در ادامه میایم `key` های که درون `userSchema` داریم تعریف می کنیم . نوع `type` شون رو مشخص می کنیم . 
+
+ و به وسیله متد های `yup` و `regex` ولیدیشن رو انجام میدیم . 
+
+ 
+```javascript 
+const userRegisterValid = yup.object().shape({
+    username: yup.string().trim().required().min(3, "username character +3 "),
+});
+```
+
+خب اینجا `username` رو داریم که به وسیله `yup` ولیدیشن شده . 
+
+در واقع `shape` که ایجاد کردیم یک `object` هست . 
+
+در ادامه `()username:yup.string` به منظور `string` بودنه . 
+
+از `()trimt` برای از بین بردن فاصله ها استفاده کردیم . 
+
+از `()required` به این معنی که حتما `username` باید وجود داشته باشه . 
+
+از `min` برا مشخص کردن تعداد `charcater` استفاده کردیم . 
+
+در اخر یک `string` برای نشون دادن پیام مربوط به `error` گذاشتیم . 
+
+بقیه موارد هم به همین صورت هست  و برای `password` از `regex` استفاده کردیم . 
+
+که یدونه `hard password` داشته باشیم برای ثبت نام کاربر . 
+
+اگر `email` هم داشتیم می تونیم از  `regex` استفاده کنیم . 
+
+در کل هر جای که نیاز باشه می تونیم از `regex` در `yup` استفاده کنیم . 
+
+کل `userValidation`  به صورت زیر هستش : 
+
+```javascript
+const yup = require("yup");
+const userRegisterValid = yup.object().shape({
+  username: yup.string().trim().required().min(3, "username character +3 "),
+  password: yup
+    .string()
+    .trim()
+    .required("pasword 8 charcter a-A-2-@")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "pasword 8 charcter a-A-2-@"
+    )
+    .min(8),
+  confirmPassword: yup
+    .string()
+    .required()
+    .oneOf([yup.ref("password"), null], "passwords is not match")
+    .trim()
+    .min(8, "passwords is not match"),
+  pic: yup.string(),
+});
+```
+در قسمت `password` از `regex` و متد `match` استفاده شده . 
+
+در قسمت `confirmPassword` از `oneOf` استاده کردیم که `ref` زده شده به `password` . 
+
+در واقع `onOf` و `ref` میاد `confrimPassowrd` رو چک می کنه که دقیقا عین خوده `password` باشه . 
+
+در اخر میایم `shape yup` که ایجاد کردیم رو `export` می کنیم . 
+
+```javascript 
+module.exports = userRegisterValid;
+```
+
+که درون [model user.js](#model-folder) ازش استفاده کرده بودیم قبل از اینکه `schema` درون `data base` ذخیره شه . 
+
+# Controller Folder 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/491c7e3e-9c88-4fb0-ba35-172ce60b4aa7)
+
+**نکته** : از `mvc` استفاده می کنیم . که مخفف `model view controller` هست . 
+
+که تا به اینجا با `model` اشنا شدیم . 
+
+و `view` این پروژه به وسیله `reactjs` هندل میشه و فایل `view` درون `server` نداریم . 
+
+که می تونیم `view` رو داشته باشیم در سمت `server` 
+
+در مورد `controller` هم در همین بخش می خوایم در موردش صحبت کنیم . 
+
+خب یک فولدر داریم به اسم `controller` که درون این فولدر فایل های مربوط به `controller route`  ها قرار داره . 
+
+در واقع هر api یک `route` داره و هر `route` یک `controller` . 
+
+در واقع `route` ها همون ادرس api هستند که می تونیم ازشون `response` بگیریم یا چیزی رو ارسال کنیم به وسیله متد `post`
+
+و `controller` ها فانکشن های هستند که میان برای `route` ها تعریف میشن . که یک سری شرط شاید گذاشته شه . 
+
+در کل درونشون یک سری عملیات اتفاق می افته و `error` ها کنترل میشه . 
+
+در نهایت اطلاعات  رو به `route` مورد نظر ارسال می کنه و `clinet` می تونه `response` رو ببینه . 
+
+## user.js controller 
+
+درون فایل `user.js`  کار های مربوط به کاربران انجام میشه . 
+
+مثل `register` , `login` و ...  
+
+اول ببنیم درون فایل `user.js چه چیزای `require` شده 
+
+```javascript 
+const { compare } = require("../middleware/bcrypt");
+const userModel = require("../model/user");
+const jwt = require("jsonwebtoken");
+```
+
+ اینجا از `compare` برای مقایسه کردن  پسوردی که کاربر برای لاگین وارد می کنه . 
+
+و پسوردی که درون `data base` هست استفاده می کنیم . 
+
+در ادامه به `userModel` نیاز داریم در واقع  [model](#model-folder)` هست که برای `user` ها ایجاد کردیم . 
+
+در ادامه `jwt` رو داریم که امدیم برای ارسال و ست کردن `token` ازش استفاده می کنیم . 
+
+که درون فانکشن `loginUser` و `profileUser` ازش استفاده شده . 
+
+**یاداوری** : `controller` ها در اصل همگی `function` هستند 
+
+**نکته** : تمامی `controller` ها فانکشن های از نوع `async` هستند 
+
+به این دلیل که  برای کار با `data base` نیاز هست که از `await , async` استفاده کنیم . 
+
+اگر استفاده نشه توی ارسال `data` یا ذخیره کردن در `data base` به مشکل می خوریم . 
+
+
+### registerUser Controller 
+
+همنوطر کفه گفته شد تمامی `controller` ها یک فانکشن هستند . 
+
+که از نوع `async` هستند . 
+
+```javascript
+const registerUser = async (req, res) => {
+};
+```
+
+در فانکشن `registerUser` میایم عملیات ثبت نام کاربر رو انجام میدیم 
+
+ به `route` و `api` مد نظر مربوط برای ثبت نام ارسال می کنیم .
+
+ در هر `controller` که برای یاداوری یک فانکشن هستند از `try / catch` استفاده می کنیم . 
+
+ ```javascript 
+const registerUser = async (req, res) => {
+  try {
+  } catch (err) {
+  }
+};
+```
+هر `controller` رو میایم `export` می کنیم چون می خوایم درون `routes` استفاده کنیم .
+
+```javascript 
+module.exports = {
+  registerUser,
+};
+```
+در هر `controller`  دو تا `parameter` داریم به اسم `req` , `res` .
+
+که `req` , `res` از  `route`  میان .
+
+یک فولدر به اسم `routes` داریم که در واقع ادرس api ها رو اونجا تعریف کردیم . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4f134f0e-fc2d-4295-8cd6-9da7bc8c7fc1)
+
+
+و   `clinet` این ادرس api ها رو میگیره که در نهایت اگر همه چی خوب پیش بره یک `response` خواهد داشت  . 
+
+که کمی جلوتر فولدر `route` رو توضیح میدیم . 
+
+بر گردیم به `registerUser` فانکشن 
+
+```javascript 
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+  } catch (err) {
+  }
+};
+```
+
+یک متغییر ابجکت به اسم `errors` بیرون از بلاک `try` داریم .
+
+به این دلیل که `message` مربوط به `yup` مربوط به اینکه `username` کاربر وجود داره در `data base` یا نه رو نداریم . 
+
+به همین دلیل این `error` و چک کردن رو به وسیله یک `if` انجام میدیم و `message error` شو درون `errors` ذخیره می کنیم .
+
+در ادامه یک `descracher` داریم که مقادیر که `clinet` در `body` می فرسته رو گرفتیم . 
+
+در واقع `form` که برای `register` شدن کاربر در سمت `clinet` هست یک سری `input` داره . 
+
+که مقادیر اون ارسال میشه به `api` مربوط به `register`
+
+
+
+
+```javascript
+  const { username, confirmPassword, password, pic } = req.body;
+```
+
+در بلاک `try` ولیدیشنی که به وسیله `yup` ایجاد کردیم داریم .
+
+```javascript
+
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+
+  } catch (err) {
+};
+```
+
+در ادامه میایم به وسیله متده `findeOne` چک می کنیم کاربری که در حال ثبت نام هست قبلا ثبت نام کرده ؟ 
+
+اگر قبلا شخصی با اکانت وارد شده درون `data base` وجود داشت  بود یک پیام به عنوان `error` ارسال می کنیم .
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+  } catch (err) {
+};
+```
+
+یک متفییر به اسم `foundUser` تعریف کردیم و درون `data base` داریم `username` که کاربر وارد کرده برای ثبت نام چک می کنیم . 
+
+ببینیم ایا واقعا این `user` درون `data base` هست یا نه . 
+
+در ادامه یک `if` داریم . 
+
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register";
+          
+    }
+  } catch (err) {
+};
+```
+
+در `if` گفتیم اگر `foundUser` بود بیاد یک پیام مبنی بر اینکه این کاربر قبلا ثبت نام کرده ایجاد شه . 
+
+و در ابجکت `errors` ذخیره شه . 
+
+در ادامه ساخت ذخیره سازی اکانت رو داریم در `data base` . 
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+  } catch (err) {
+};
+```
+
+در ادامه متد `create` رو داریم که برای ساخت یک `document`  هر کاربری که ثبت نام رو انجام میده . 
+
+یک `document` ایجاد میشه درون `collection user` که در واقع `model` هست که ایجاد کردیم . 
+
+در ادامه `users` رو به عنوان `response` ارسال شده . 
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+    return res.status(201).json(users);
+  } catch (err) {
+};
+```
+
+که از `status code 201` استفاده شده . 
+
+```javascript 
+    return res.status(201).json(users);
+```
+
+بریم سراغ بلاک `catch` که `error` ها هندل میشه . 
+
+که اگر مشکلی در `register` پیش امد `error` ها و پیام های مروبط به `validation` سمت `client` ارسال میشه .
+
+```javascript
+const registerUser = async (req, res) => {
+  const errors = {};
+  const { username, confirmPassword, password, pic } = req.body;
+  try {
+    //* validation
+    await userModel.userRegisterValid(req.body);
+      const foundUser = await userModel.findOne({ username });
+        if (foundUser) {
+      errors.username = "this user before register"; 
+    }
+   const users = await userModel.create({
+      username,
+      password,
+      confirmPassword,
+      pic,
+    });
+    return res.status(201).json(users);
+  } catch (err) {
+    err?.inner?.forEach((e) => {
+      errors[e.path] = e.message;
+    });
+    return res.status(400).json(errors);
+};
+```
+که `err.inner`  در صورتی که وجود داشت ` ? ` یک `forEach` روش زده میشه و تمامی `message` ها ارسال میشه . 
+
+و در نهایت یک `404 status code` ارسال می کنیم مبنی بر اینکه خطای وجود داره .
+
+و درون یک `json` هر انچه درون `errors` داریم ارسال می کنیم .
+
+
+### LoginUser Controller 
+
+در فانکشن `loginUser` میایم لاگین شدن کاربر رو کنترل می کنیم . 
+
+و اگر کاربر `login` شد  یک `token` حاوی اطلاعات کاربر درون `cookie` ذخیره می شه .
+
+
+```javascript 
+const loginUser = async (req, res) => {
+};
+```
+
+کاربری که ثبت نام کرده در می تونه به وسیله `username` و `password` لاگین کنه . 
+
+که در اینجا چک کردن اینکه کاربر `username` , `password` رو درست وارد کرده رو چک می کنیم . 
+
+در قدم اول `username` و `password` رو از `req` می گیریم . 
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+
+
+  } catch (err) {
+
+  }
+```
+بعد از اینکه `username` و `password` رو گرفتیم از `req.body` میایم چک می کنیم که پسورد وارد شده درست باشه . 
+
+در واقعه با پسوردی که کاربر ثبت نام کرده یکی باشه . 
+
+اینجا میایم از `compare` استفاده می کنیم که در بخش `middelware` توضیح شو داده بودیم .
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+  } catch (err) {
+
+  }
+```
+ 
+که نیاز هست `password` که از سمت `clinet` درون `req.body` داریم و پسوردی که به وسیله `findOne` از `data base` میگیریم رو به `compare` پاس بدیم . 
+
+که `compare` میاد پسورد ها رو مقایسه می کنه . 
+
+که `compare`  یک `boolean` برگشت میده یا `false` یا `true` . 
+
+در نهایت درون `if` گفتیم اگر `passwordIsOky` بود . در واقع اگر `true` بود . 
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {}
+  } catch (err) {
+
+  }
+```
+درون این `if` میایم یک `token` رو `sign` می کنیم . 
+
+درون `token` اطلاعاتی رو که می خوایم ارسال می کنیم . 
+
+که ایجاد کردن `token` به وسیله `jsonwebtoken` انجام میشه . 
+
+
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+
+}
+  } catch (err) {
+
+  }
+```
+
+این `token` رو درون `cookie` سمت `server` ذخیره می کنیم . 
+
+در ادامه اطلاعات رو به وسیله `json` به `client` ارسال می کنیم . 
+
+
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          secure: "false",
+          sameSite: "none",
+        })
+        .json({
+          id: user._id,
+          username,
+          pic: user.pic,
+        });
+}
+  } catch (err) {
+
+  }
+```
+ 
+که یک سری `option` داریم برای `cookie` مثل `secure` و `sameSite` برای ذخیره کردن `cookie` در سمت سرور نیاز هست که `credinatial ` هم ست کنیم . 
+
+که اینکارو در `cors` در فایل `index.js` انجام دادیم . 
+
+در ادامه ` if ` یک `else` داریم که `throw ` می کنه `err` رو . 
+
+```javascript 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await userModel.findOne({ username });
+    const passowrdIsOky = await compare(password, user.password);
+    if (passowrdIsOky) {
+  const userToken = await jwt.sign(
+        {
+          id: user._id,
+          username: user.username,
+          pic: user.pic,
+        },
+        process.env.JWT_SECRET,
+        {}
+      );
+      return res
+        .status(200)
+        .cookie("userToken", userToken, {
+          secure: "false",
+          sameSite: "none",
+        })
+        .json({
+          id: user._id,
+          username,
+          pic: user.pic,
+        });
+} else {
+      throw "err";
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json("user or password is worng");
+  }
+```
+در ادامه بلاک `catch` رو داریم . 
+
+اگر `error` داشته باشیم و `login` کاربر به مشکلی بخوره در بلاک `catch` هندل میشه و به سمت `client` ارسال میشه . 
+
+که اینجا اگر کاربر `username` یا `password` خودشو اشتباه بزنه . 
+
+در بلاک `catch` یک `json` ارسال شده که در واقع یک `string` هست . `user or password is worng` . 
+
+اگر سواله که `username` چطوری چک میشه . 
+
+داریم `username` رو از درون `data base` می گیریم و به پسوردش دسترسی می گیریم .
+
+به `compare` پاس میدیم . 
+
+```javascript
+  const user = await userModel.findOne({ username });
+   const passowrdIsOky = await compare(password, user.password);
+```
+
+اینجاست که اگر `username` که کاربر وارد می کنه درون `data base` نباشه . 
+
+در نهایت `user.password` هم وجود نداره با ارور مواجه میشه 
+
+در نتیجه بلاک `else` اجرا میشه که داره `throw` می کنه یک `error` رو . 
+
+```javascript 
+else {
+      throw "err";
+    }
+```
+
+و زمانی که `throw` داریم بلاک catch اجرا میشه . 
+
+```javascript 
+catch (err) {
+    console.log(err);
+    return res.status(400).json("user or password is worng");
+  }
+```
+
+اینجوری میشه که با متغییر `paswordIsOkey` پسورد کاربر رو چک می کنه . 
+
+و چون داریم `findOne` می زنیم `username` رو اگر نباشه باز به ارور می خوریم .
+
+در نتیجه پیام درون  بلاک `catch` به عنوان یک `error` به سمت `clinet` ارسال میشه .
+
+### profileUser Controller 
+
+
+فانکشن `profileUser`  میاد اطلاعات کاربری که `login` شده رو از درون `token` که درون `cookie` ذخیره شده میگیره .
+
+در صورتی که کاربر `login` شد و `token` که درون `cookie` ذخیره شده رو 
+
+می گیره و اول `token` رو میاد `verify` می کنه   . 
+
+و `token` حاوی اطلاعات کاربری هست که `login`  شده . 
+
+
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+  } catch (err) {
+  } 
+};
+```
+
+درون بلاک `try` میایم `cookie` که ست کردیم رو میگیریم از داخل `req.cookie`
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+  } catch (err) {
+  } 
+};
+```
+
+که در واقع توکن ما هست حاوی اطلاعات کاربر که لاگین شده .
+
+برای دسترسی اطلاعات نیاز هست که `token` رو `verify` کنیم .
+
+یک `if` داریم گفتیم اگر که `userToken` وجود داشت . 
+
+بیاد `token` رو `verify` کنه . 
+
+در `jwt.verify` مقدار اول اسم `coockie` هست مقدار دوم `secert` که موقع ست کردن `token` تعیین شده .|
+
+مقدار اخر در واقع یک ` { } ` خالی هست . 
+
+در نهایت به وسیله `res.json` اطلاعات رو ارسال می کنیم . 
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      return res.status(200).json(user);
+    }
+  } catch (err) {
+  } 
+};
+```
+
+در قسمت `catch` در صورتی که `token` وجود نداشت یک ارور ارسال می کنیم . 
+
+
+```javascript 
+const profileUser = async (req, res) => {
+try {
+   const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      return res.status(200).json(user);
+    }
+  } catch (err) {
+ return res.status(401).json({ error: "Invalid or expired token" });
+  } 
+};
+```
+
+### logoutUser controller 
+
+فانکشن `logoutUser` در واقع `token` رو از درون `cookie` میاید `remove` می کنه در نهایت 
+
+کاربری که `login` هست میاد `logout` میشه , یک پیام مبنی بر `logout` شدن ارسال شده به وسیله `json` .
+```javascript
+const logoutUser = async (req, res) => {
+  try {
+    return res.cookie("userToken", "").status(200).json("user is logout");
+  } catch (err) {
+    console.log("logout controll err", err);
+  }
+};
+```
+
+
+### exports all controller 
+
+در نهایت تمامی `controller` ها رو `export` می کنیم .
+
+```javascript
+module.exports = {
+  registerUser,
+  loginUser,
+  profileUser,
+  logoutUser,
+};
+```
+
+
+# Routes Folder
+
+![image](https://github.com/mosenn/MERN/assets/91747908/8d19effd-5f86-4020-90e8-0f4eed46bf38)
+
+درون فولدر `routes` میایم از `controller` های که نوشتیم استفاده می کنیم . 
+
+و برای هر `controller` یک ادرس تعیین می کنیم . 
+
+که میشه `api` ریسپانس `controller` هامون رو  درون `api` که می نویسیم  داریم .
+
+در قدم اول نیاز داریم که `Router` رو از دورن `express` صدا بزنیم و استفاده کنیم .
+
+```javascript
+const userRoute = require("express").Router();
+```
+
+در قدم بعدی تمامی `controller` های که نوشتیم رو `export` می کنیم 
+
+```javascript 
+const {
+  registerUser,
+  loginUser,
+  profileUser,
+  logoutUser,
+} = require("../controller/user");
+```
+
+در ادامه میایم `route` هارو می نویسیم و `controller` ها رو بهش پاس میدیم 
+
+```javascript 
+//* POST create user (register user)
+userRoute.post("/register", registerUser);
+//* POST login user
+userRoute.post("/login", loginUser);
+//* Get user online with cookie ( jwt user token)
+userRoute.get("/profile", profileUser);
+//* logout
+userRoute.post("/logout", logoutUser);
+```
+
+در هر ادرسی میاد فانکشن که به عنوان contorller نوشتیم اعمال میشه .
+
+و ریسپانس رو به ما برگشت میده  . 
+
+کافیه که `userRoute` که داریم بیایم `export` کنیم و درون `index.js` ازشون استفاده کنیم . 
+
+```javascript
+
+module.exports = userRoute;
+```
+
+درون `index.js` میایم از `route` های که نوشتیم استفاده می کنیم . 
+
+```javascript 
+app.use("/", require("./routes/user"));
+```
+
+به این شکل ازش استفاده می کنیم . 
