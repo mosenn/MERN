@@ -34,7 +34,7 @@ const Header = () => {
               />
             </li>
             <li className="mr-5">
-              <Link to="/createpost">Create Post</Link>
+              <Link to="/Panel">Panel</Link>
             </li>
             <li className="mr-4">{userInfoOnline?.username}</li>
 

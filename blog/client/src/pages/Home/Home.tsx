@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import Button from "../../components/button/Button";
+import { useEffect, useState } from "react";
 import { posts } from "../../api/post";
-import { compareAsc, format } from "date-fns";
+import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 interface dataPostFake {
   id: number;
@@ -85,7 +85,7 @@ const Home = () => {
   console.log(post);
   return (
     <section className="grid justify-center md:justify-center md:grid-cols-2 lg:grid-cols-3 md:p-2 md:m-2 md:gap-2 lg:gap-">
-      {post.length > 0 &&
+      {post &&
         post?.map((blog: any) => {
           return (
             <div
@@ -112,11 +112,12 @@ const Home = () => {
                 {blog.summery}
               </p>
               <div className="p-2 w-[100%] flex justify-start md:justify-center">
-                <Button
+                <Link
                   className="bg-blue-500 md:w-[60%]  rounded p-3  text-zinc-50 font-semibold"
-                  text="read more"
-                  type="button"
-                />
+                  to={`detail/${blog._id}`}
+                >
+                  read more
+                </Link>
               </div>
             </div>
           );

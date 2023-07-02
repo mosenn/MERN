@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const commentModel = require("./comment");
 
 const postSchema = new mongoose.Schema(
   {
@@ -11,23 +12,44 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    cover: {
-      type: String,
-      // required: true,
-    },
+
     content: {
       type: String,
       required: true,
     },
+    // cover: {
+    //   type: String,
+    //   // required: true,
+    // },
+
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
+
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comments",
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
+
+postSchema.methods.addComment = async function (comment) {
+  const newComment = new commentModel({
+    content: comment.content,
+    author: comment.author,
+    post: this._id,
+  });
+
+  await newComment.save();
+  this.comments.push(newComment._id);
+  await this.save();
+};
 
 const postModel = mongoose.model("posts", postSchema);
 

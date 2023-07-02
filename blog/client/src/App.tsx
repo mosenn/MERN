@@ -5,9 +5,10 @@ import Home from "./pages/Home/Home";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import CreatePost from "./pages/createPost/CreatePost";
+import Panel from "./pages/Panel/Panel";
+import Detail from "./pages/detail/Detail";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Header />
@@ -16,7 +17,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/createpost" element={<CreatePost />} />
-
+        <Route path="/panel" element={<Panel />} />
+        <Route path="/detail/:id" element={<Detail />} />
       </Routes>
     </BrowserRouter>
   );

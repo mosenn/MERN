@@ -8,18 +8,45 @@ export const createPost = async (data: any) => {
     const response = await axios.post(`${baseUrl}/createpost`, data, {
       withCredentials: true,
     });
-    console.log(response, "response");
+    // console.log(response, "response");
+    return response;
   } catch (err) {
-    console.log("Create Post Errr", err);
+    // console.log("Create Post Errr", err);
+    return err;
   }
 };
 
 export const posts = async () => {
   try {
     const response = await axios.get(`${baseUrl}/posts`);
+    // console.log(response, "RESPONSE");
+    return response;
+  } catch (err: any) {
+    console.log("All Posts Error", err);
+    return err;
+  }
+};
+
+export const userPost = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/userposts`);
     console.log(response, "RESPONSE");
     return response;
   } catch (err) {
-    console.log(err);
+    console.log("User Post Error", err);
+    return err;
+  }
+};
+
+export const deleteUserPost = async (id: string) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/deletepostuser/${id}`, {
+      method: "delete",
+    });
+    console.log(response, "response");
+    return response;
+  } catch (err) {
+    console.log("Delete Post Error", err);
+    return err;
   }
 };
