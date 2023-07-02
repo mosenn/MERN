@@ -16,11 +16,19 @@ interface Post {
     pic: string;
   };
 }
-
+interface postId {
+  _id: string;
+  title: string;
+  author: {
+    username: string;
+    pic: string;
+  };
+}
 const Detail = () => {
   const { userInfoOnline } = useGlobalContext();
   const [postData, setPostData] = useState<Post[]>([]);
   const [comments, setComments] = useState([]);
+  const [postWithId, setPostWithId] = useState();
   const [value, setValue] = useState({
     comment: "",
   });
@@ -33,16 +41,12 @@ const Detail = () => {
     // console.log(response);
     setPostData(response.data);
   };
-  // console.log(userInfoOnline, "userinfoonline");
 
-  // console.log("PostData", postData);
-
-  // console.log(pos, "pos");
-  // console.log(pos?.author.pic);
   const pos = postData.find((p: Post) => {
     return p?._id === id;
   });
 
+  console.log(postWithId);
   const sendComment = async () => {
     if (value) {
       const response = await postUserComments(
@@ -56,8 +60,9 @@ const Detail = () => {
       console.log("is empty");
     }
   };
+
   const takeAllComments = async () => {
-    //TODO must pass post id to getAllPostComments for take comments for posts . 
+    console.log(pos);
     const comments = await getAllPostComments(pos?._id as string);
     setComments(comments.data);
     console.log(comments, "Comments all");
@@ -70,11 +75,16 @@ const Detail = () => {
 
   useEffect(() => {
     takePost();
-    takeAllComments();
   }, []);
+
+  useEffect(() => {
+    takeAllComments();
+  }, [pos]);
+
   return (
     <div>
       <h1>Detail</h1>
+      {pos?.title}
       {pos?.title}
       <p>author : {pos?.author.username}</p>
       <img
@@ -87,7 +97,7 @@ const Detail = () => {
           comments.map((com: any) => {
             // console.log(com, "this is com in map");
             return (
-              <div>
+              <div key={com._id}>
                 <p>{com.comment}</p>
                 <p>{com?.author?.username}</p>
                 <img src={com?.author?.pic} alt="" className="w-[50px]" />
@@ -109,11 +119,3 @@ const Detail = () => {
 };
 
 export default Detail;
-// const [post, setPost] = useState(null);
-
-// const fetchPost = async () => {
-//   const response = await api
-//     .get(`/posts/${postId}`)
-//     .catch((err) => console.log(err));
-//   setPost(response.data);
-// };
