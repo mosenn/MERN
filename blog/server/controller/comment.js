@@ -13,11 +13,12 @@ const createComment = async (req, res) => {
 };
 
 const getCommentsByPost = async (req, res) => {
-  console.log(req.params.post);
+  console.log("req.params.post", req.params.postId);
   try {
     const comments = await commentModel
-      .find({ postId: req.params.post })
+      .find({ post: req.params.postId })
       .populate("author");
+    // console.log(comments, "comments");
     return res.json(comments);
   } catch (err) {
     console.error(err);

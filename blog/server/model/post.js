@@ -17,10 +17,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // cover: {
-    //   type: String,
-    //   // required: true,
-    // },
+    cover: {
+      type: String,
+      required: true,
+    },
 
     author: {
       type: mongoose.Schema.Types.ObjectId,
@@ -41,9 +41,9 @@ const postSchema = new mongoose.Schema(
 
 postSchema.methods.addComment = async function (comment) {
   const newComment = new commentModel({
-    content: comment.content,
+    comment: comment.comment,
     author: comment.author,
-    postId: this._id,
+    post: this._id, // Fix here
   });
   await newComment.save();
   this.comments.push(newComment._id);
