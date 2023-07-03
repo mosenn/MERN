@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import { postUserComments, getAllPostComments } from "../../api/comment";
 import { useGlobalContext } from "../../context/context";
 import Button from "../../components/button/Button";
-
 import "./detail.css";
 interface Post {
   _id: string;
   title: string;
   content: string;
-  img: string;
+  cover: string;
   createdAt: number;
   summery: string;
   username: string;
@@ -22,20 +21,20 @@ interface Post {
 
 const Detail = () => {
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
-
   const { userInfoOnline } = useGlobalContext();
   const [postData, setPostData] = useState<Post[]>([]);
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState({
     comment: "",
   });
+
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
   const { id } = useParams();
   const takePost = async () => {
     const response = await posts();
-    // console.log(response);
+    console.log(response);
 
     setPostData(response.data);
   };
@@ -82,16 +81,32 @@ const Detail = () => {
   }, [pos]);
 
   return (
-    <div>
-      <h1>Detail</h1>
-      {pos?.title}
-      {pos?.title}
-      <p>author : {pos?.author.username}</p>
-      <img
-        className="w-[50px]"
-        src={pos?.author.pic}
-        alt={pos?.author.username}
-      />
+    <div className="w-[100%]">
+      <h1 className="text-4xl m-2 p-2">{pos?.title}</h1>
+      <figure className="md:flex justify-center">
+        <img
+          className=" md:mb-4 md:w-[90%] md:object-cover md:bg-center  md:h-[200px] p-3 rounded-[14px]"
+          src={pos?.cover}
+          alt={pos?.title}
+        />
+      </figure>
+      <summary className=" leading-[30px] ml-[25px] text-center text-xl">
+        {pos?.summery}
+      </summary>
+      <div className="container">
+        <div
+          className="content"
+          dangerouslySetInnerHTML={{ __html: pos ? pos?.content : "" }}
+        />
+      </div>
+      <div className="flex">
+        <img
+          className="w-[50px]"
+          src={pos?.author.pic}
+          alt={pos?.author.username}
+        />
+        <p>author : {pos?.author.username}</p>
+      </div>
       <div className="flex flex-col m-3 justify-center align-cneter">
         {comments &&
           comments.map((com: any) => {

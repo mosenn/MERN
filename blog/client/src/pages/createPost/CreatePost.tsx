@@ -49,6 +49,7 @@ const CreatePost = () => {
     const post = await createPost(postValue);
     console.log("Response Create Post", post);
     if (post?.status === 201) {
+      //* can set loading then navigate to home page
       return navigate("/");
     }
   };

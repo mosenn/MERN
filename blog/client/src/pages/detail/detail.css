@@ -5,3 +5,45 @@ button:disabled {
 button:disabled:hover { 
     background: gray;
 }
+
+.content {
+    text-align: left;
+}
+.ql-syntax {
+    background: #dedede;
+
+}
+.content > p > img {
+    width: 80%;
+    max-width: 350px;
+}
+.content > p > a  {
+    font-weight: bolder;
+
+   display: flex;
+
+}
+.content > h4 , h3 , h2 , h1 {
+    padding: 10px;
+  margin:10px !important;
+    font-size: 20px !important;
+
+}
+.content>ul> li {
+    padding: 10px;
+    margin:10px;
+    line-height: 30px;
+}
+  .content p,
+  .content pre {
+    padding: 10px;
+    margin:10px;
+    max-width: 100%;
+    word-break: break-all;
+    line-height: 30px;
+  }
+  
+  .content pre {
+    max-width: 100%;
+    white-space: pre-wrap;
+  }

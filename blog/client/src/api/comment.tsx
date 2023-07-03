@@ -31,10 +31,10 @@ export const postUserComments = async (
   }
 };
 
-export const getAllPostComments = async (id: string) => {
-  console.log("Id", id);
+export const getAllPostComments = async (postId: string) => {
+  console.log("Id", postId);
   try {
-    const comments = await axios.get(`${baseUrl}/comment/${id}`);
+    const comments = await axios.get(`${baseUrl}/comment/${postId}`);
     console.log("COMMENTS FROM API", comments);
     return comments;
   } catch (err: any) {
