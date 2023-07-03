@@ -13,7 +13,7 @@ const createComment = async (req, res) => {
 };
 
 const getCommentsByPost = async (req, res) => {
-  console.log("req.params.post", req.params.postId);
+  // console.log("req.params.post", req.params.postId);
   try {
     const comments = await commentModel
       .find({ post: req.params.postId })

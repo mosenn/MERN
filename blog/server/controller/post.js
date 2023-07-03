@@ -30,7 +30,10 @@ const createPost = async (req, res) => {
 //* Get All Post
 const posts = async (req, res) => {
   try {
-    const posts = await postModel.find().populate("author");
+    const posts = await postModel
+      .find()
+      .populate("author")
+      .sort({ createdAt: -1 });
     return res.status(200).json(posts);
   } catch (err) {
     console.log("All Post Err", err);
