@@ -6,13 +6,12 @@ import { createPost } from "../../api/post";
 import { uploadRegisterImage } from "../../api/users";
 import Loading from "../../components/loading/Loading";
 import Button from "../../components/button/Button";
-
-
-//TODO if post is create navigate to homepage  
+import { useNavigate } from "react-router-dom";
+//TODO if post is create navigate to homepage
 
 //TODO if user is not be login ,
-//* createPost page must be not open redirect to other page 
-//*or show someting for first login then can create post . 
+//* createPost page must be not open redirect to other page
+//*or show someting for first login then can create post .
 
 const CreatePost = () => {
   // TODO Refactor State to global state
@@ -26,7 +25,7 @@ const CreatePost = () => {
     cover: {},
     content: "",
   });
-
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
 
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,14 +41,16 @@ const CreatePost = () => {
     console.log("Regiser State in onChange func", postValue);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(postValue);
-
     setPostValue({ ...postValue, content: content });
     console.log(postValue, "POST VALUE");
-    createPost(postValue);
-    // uploadRegisterImage(postValue.cover);
+    const post = await createPost(postValue);
+    console.log("Response Create Post", post);
+    if (post?.status === 201) {
+      return navigate("/");
+    }
   };
 
   //  TODO  Refactor to Global function
@@ -91,13 +92,7 @@ const CreatePost = () => {
           name="summery"
           onChange={handleOnChange}
         />
-        {/* <label
-          htmlFor="cover-input"
-          id="cover"
-          className=" bg-blue-500 text-white  p-2 m-2 rounded hover:bg-blue-400"
-        >
-          upload thumbnail post
-        </label> */}
+
         <input
           type="file"
           name="cover"
