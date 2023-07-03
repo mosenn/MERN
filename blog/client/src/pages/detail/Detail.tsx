@@ -3,6 +3,9 @@ import { posts } from "../../api/post";
 import { useEffect, useState } from "react";
 import { postUserComments, getAllPostComments } from "../../api/comment";
 import { useGlobalContext } from "../../context/context";
+import Button from "../../components/button/Button";
+
+import "./detail.css";
 interface Post {
   _id: string;
   title: string;
@@ -16,19 +19,13 @@ interface Post {
     pic: string;
   };
 }
-interface postId {
-  _id: string;
-  title: string;
-  author: {
-    username: string;
-    pic: string;
-  };
-}
+
 const Detail = () => {
+  const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
+
   const { userInfoOnline } = useGlobalContext();
   const [postData, setPostData] = useState<Post[]>([]);
   const [comments, setComments] = useState([]);
-  const [postWithId, setPostWithId] = useState();
   const [value, setValue] = useState({
     comment: "",
   });
@@ -39,6 +36,7 @@ const Detail = () => {
   const takePost = async () => {
     const response = await posts();
     // console.log(response);
+
     setPostData(response.data);
   };
 
@@ -46,9 +44,8 @@ const Detail = () => {
     return p?._id === id;
   });
 
-  console.log(postWithId);
   const sendComment = async () => {
-    if (value) {
+    if (value && userInfoOnline) {
       const response = await postUserComments(
         value,
         userInfoOnline.id,
@@ -79,6 +76,9 @@ const Detail = () => {
 
   useEffect(() => {
     takeAllComments();
+    if (userInfoOnline.id) {
+      setDisabelSubmitForm(false);
+    }
   }, [pos]);
 
   return (
@@ -92,27 +92,37 @@ const Detail = () => {
         src={pos?.author.pic}
         alt={pos?.author.username}
       />
-      <div>
+      <div className="flex flex-col m-3 justify-center align-cneter">
         {comments &&
           comments.map((com: any) => {
             // console.log(com, "this is com in map");
             return (
-              <div key={com._id}>
-                <p>{com.comment}</p>
-                <p>{com?.author?.username}</p>
-                <img src={com?.author?.pic} alt="" className="w-[50px]" />
+              <div
+                key={com._id}
+                className=" mt-3  rounded-md  border border-zinc-200  flex-col"
+              >
+                <div className="flex p-1 m-1  w-[fit-content]">
+                  <img src={com?.author?.pic} alt="" className="w-[35px]" />
+                  <p className="ml-2">{com?.author?.username}</p>
+                </div>
+                <p className="m-3">{com.comment}</p>
               </div>
             );
           })}
       </div>
-      <form action="" onSubmit={handleSubmit}>
+      <form action="" onSubmit={handleSubmit} className="p-1 m-1 ">
         <input
-          className="w-[250px] h-[150px] border-2 border-red-300"
+          className="rounded-md p-3 h-[90px] w-[100%] border"
           name="comment"
           placeholder="write your comment"
           onChange={handleOnchange}
         ></input>
-        <button>send comment</button>
+        <Button
+          text={"send comment"}
+          className="bg-blue-500 hover:bg-blue-300 w-[100%] rounded-md mt-2 md:w-60 p-3 text-zinc-50 font-semibold"
+          type="submit"
+          disabled={disabelSubmitForm}
+        ></Button>
       </form>
     </div>
   );
