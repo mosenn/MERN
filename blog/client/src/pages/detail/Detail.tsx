@@ -90,9 +90,10 @@ const Detail = () => {
           alt={pos?.title}
         />
       </figure>
-      <summary className=" leading-[30px] ml-[25px] text-center text-xl">
-        {pos?.summery}
-      </summary>
+      <div className=" md:p-3 m-3 flex justify-center items-start">
+        <p className=" summary text-xl p-3 leading-9 md:w-[92%]"> {pos?.summery}</p>
+      </div>
+
       <div className="container">
         <div
           className="content"

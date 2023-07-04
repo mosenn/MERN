@@ -47,3 +47,11 @@ button:disabled:hover {
     max-width: 100%;
     white-space: pre-wrap;
   }
+
+  .summary {
+    text-decoration: none;
+    list-style: none;
+    background: #39393b;
+    color:rgb(193, 224, 167);
+    border-radius: 5px;
+  }
