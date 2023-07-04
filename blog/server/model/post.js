@@ -43,7 +43,7 @@ postSchema.methods.addComment = async function (comment) {
   const newComment = new commentModel({
     comment: comment.comment,
     author: comment.author,
-    post: this._id, // Fix here
+    post: this._id, 
   });
   await newComment.save();
   this.comments.push(newComment._id);
