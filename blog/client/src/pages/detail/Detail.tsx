@@ -44,8 +44,11 @@ interface LikeResponse {
 }
 
 const Detail = () => {
+  const { userIntraction, setuserIntraction, userInfoOnline } =
+    useGlobalContext();
+
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
-  const { userInfoOnline } = useGlobalContext();
+
   const [postData, setPostData] = useState<Post[]>([]);
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState({
@@ -63,6 +66,7 @@ const Detail = () => {
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
+
   const { id } = useParams();
   const takePost = async () => {
     const response = await posts();
@@ -81,46 +85,62 @@ const Detail = () => {
         userInfoOnline.id,
         pos?._id as string
       );
-
-      // console.log(response, "Response handlesubmit comment");
     } else {
       console.log("is empty");
     }
   };
 
   const takeAllComments = async () => {
-    // console.log(pos);
     if (pos?._id) {
       const comments = await getAllPostComments(pos?._id as string);
       setComments(comments.data);
     }
-    // console.log(comments, "Comments all");
   };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // console.log(value);
+
     sendComment();
   };
-
-  useEffect(() => {
-    takePost();
-  }, []);
 
   //*Take Likes For Post With User
   const takeAllLikes = async () => {
     if (pos?._id) {
       const likes = await getLikes(pos?._id as string);
-      // console.log("Likes in detail", likes);
-      if (likes) {
-        setDataLike(likes);
-        likes.data.map((L: any) => {
-          const { liked } = L;
-          return setLike(liked);
-        });
+      setDataLike(likes);
+      console.log("Likes in detail", likes.data);
+      //* if page is refresh set agin data to setLike
+      const checkLiked = likes.data.find((i: any) => {
+        return i;
+      });
+
+      // console.log(checkLiked, "checkLiked");
+      if (checkLiked.liked) {
+        console.log("like is true");
+        return setLike(checkLiked.liked);
       }
     }
   };
+
+  //* Button Like set Like and Remove
+  const interactionLikeBtn = async () => {
+    try {
+      const like = await postLike(pos?._id as string);
+      console.log(like.data.liked.liked, "in btn");
+      //* now have realTime like and print user in ui if like or unlike
+      setLike(like.data.liked.liked);
+      takeAllLikes();
+    } catch (error: any) {
+      console.error(error?.message);
+    }
+  };
+
   useEffect(() => {
+    takePost();
+    console.log(like, "in useefect");
+  }, []);
+
+  useEffect(() => {
+    console.log(userIntraction, "userIntraaction like api context");
     takeAllComments();
     takeAllLikes();
     if (userInfoOnline.id) {
@@ -131,23 +151,6 @@ const Detail = () => {
   // console.log("liked true data", dataLike);
   // console.log("Like IS", like);
 
-  //* Button Like set Like and Remove
-  const interactionLikeBtn = async () => {
-    try {
-      const like = await postLike(pos?._id as string);
-      // console.log(like, "like in click");
-      const anchor = document.getElementById("like");
-      if (anchor) {
-        window.location.reload();
-        let checkReloadPage = true;
-        if (checkReloadPage) {
-          anchor.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    } catch (error: any) {
-      console.error(error?.message);
-    }
-  };
   return (
     <div className="w-[100%]">
       <h1 className="text-4xl m-2 p-2">{pos?.title}</h1>
@@ -164,14 +167,13 @@ const Detail = () => {
           {pos?.summery}
         </p>
       </div>
-
       <div className="container">
         <div
           className="content"
           dangerouslySetInnerHTML={{ __html: pos ? pos?.content : "" }}
         />
       </div>
-      <div className="flex">
+      <div className="flex" id="like">
         <img
           className="w-[50px]"
           src={pos?.author.pic}
@@ -179,11 +181,13 @@ const Detail = () => {
         />
         <p>author : {pos?.author.username}</p>
       </div>
+      {/* //*Todo move this in to new component */}
       {/* try to map likes and user */}
       {dataLike.data &&
-        dataLike.data?.map((items) => {
-          const { user, liked } = items;
-          console.log(user, liked, "in map");
+        dataLike.data?.map((items: any) => {
+          const { user } = items;
+          // console.log(user, liked, "in map");
+
           return (
             <div key={user._id}>
               <p>{user.username}</p>
@@ -202,9 +206,7 @@ const Detail = () => {
             <PiHeartStraight size="1.5rem" />
           </a>
         )}
-
-        {dataLike.data && <p id="like">{dataLike.data.length}</p>}
-        {/* <p>{dataLike.data.length}</p> */}
+        {dataLike.data && <p>{dataLike.data.length}</p>}
       </button>
       {/* testing button */}
       <button
