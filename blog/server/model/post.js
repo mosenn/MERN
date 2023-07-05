@@ -39,16 +39,18 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-postSchema.methods.addComment = async function (comment) {
-  const newComment = new commentModel({
-    comment: comment.comment,
-    author: comment.author,
-    post: this._id, 
-  });
-  await newComment.save();
-  this.comments.push(newComment._id);
-  await this.save();
-};
+//* this work but i want edit
+
+// postSchema.methods.addComment = async function (comment) {
+//   const newComment = new commentModel({
+//     comment: comment.comment,
+//     author: comment.author,
+//     post: this._id,
+//   });
+//   await newComment.save();
+//   this.comments.push(newComment._id);
+//   await this.save();
+// };
 
 const postModel = mongoose.model("posts", postSchema);
 

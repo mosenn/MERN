@@ -25,6 +25,7 @@ app.use("/home", async (req, res) => {
 app.use("/", require("./routes/user"));
 app.use("/", require("./routes/post"));
 app.use("/", require("./routes/comment"));
+app.use("/", require("./routes/userInteraction"));
 //*listen
 const port = process.env.PORT || 3010;
 app.listen(port, () => {
