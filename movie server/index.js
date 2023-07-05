@@ -17,7 +17,7 @@ app.use("/", require("./routes/recomend"));
 app.use("/", require("./routes/newmovie"));
 app.use("/", require("./routes/hotmovie"));
 app.use("/", require("./routes/toptenmovie"));
-
+app.use("/", require("./routes/commentUsers"));
 //*test route
 app.get("/", (req, res) => {
   return res.send("this is movie server");
