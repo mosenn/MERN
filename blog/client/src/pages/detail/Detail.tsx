@@ -44,8 +44,7 @@ interface LikeResponse {
 }
 
 const Detail = () => {
-  const { userIntraction, setuserIntraction, userInfoOnline } =
-    useGlobalContext();
+  const { userInfoOnline } = useGlobalContext();
 
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
 
@@ -77,7 +76,12 @@ const Detail = () => {
   const pos = postData.find((p: Post) => {
     return p?._id === id;
   });
-
+  const takeAllComments = async () => {
+    if (pos?._id) {
+      const comments = await getAllPostComments(pos?._id as string);
+      setComments(comments.data);
+    }
+  };
   const sendComment = async () => {
     if (value && pos?._id) {
       const response = await postUserComments(
@@ -85,21 +89,17 @@ const Detail = () => {
         userInfoOnline.id,
         pos?._id as string
       );
+      takeAllComments();
+      // console.log(response)
     } else {
       console.log("is empty");
     }
   };
 
-  const takeAllComments = async () => {
-    if (pos?._id) {
-      const comments = await getAllPostComments(pos?._id as string);
-      setComments(comments.data);
-    }
-  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     sendComment();
+    setValue({ comment: " " });
   };
 
   //*Take Likes For Post With User
@@ -140,7 +140,6 @@ const Detail = () => {
   }, []);
 
   useEffect(() => {
-    console.log(userIntraction, "userIntraaction like api context");
     takeAllComments();
     takeAllLikes();
     if (userInfoOnline.id) {
@@ -244,6 +243,7 @@ const Detail = () => {
           className="rounded-md p-3 h-[90px] w-[100%] border"
           name="comment"
           placeholder="write your comment"
+          value={value.comment}
           onChange={handleOnchange}
         ></input>
         <Button
