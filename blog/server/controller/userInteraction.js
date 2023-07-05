@@ -30,7 +30,7 @@ const likePost = async (req, res) => {
 
 const getLikes = async (req, res) => {
   const { postId } = req.params;
-  console.log("post Id for get Likes", postId);
+  // console.log("post Id for get Likes", postId);
   try {
     const Likes = await UserInteraction.find({
       post: req.params.postId,
