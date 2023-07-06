@@ -19,6 +19,23 @@ export const postLike = async (postId: string) => {
   }
 };
 
+export const postSave = async (postId: string) => {
+  try {
+    const save = await axios.post(`${baseUrl}/savedPost/${postId}`);
+    return save;
+  } catch (err: any) {
+    console.log("save post Error", err);
+    return err;
+  }
+};
+export const getSave = async (postId: string) => {
+  try {
+    const saves = await axios.get(`${baseUrl}/saves/${postId}`);
+    return saves;
+  } catch (err:any) {
+    console.log(err);
+  }
+};
 export const getLikes = async (postId: string) => {
   try {
     const likes = await axios.get(`${baseUrl}/likes/${postId}`);

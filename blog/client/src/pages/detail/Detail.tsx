@@ -5,7 +5,13 @@ import { postUserComments, getAllPostComments } from "../../api/comment";
 import { useGlobalContext } from "../../context/context";
 import Button from "../../components/button/Button";
 import "./detail.css";
-import { getLikes, postLike, testing } from "../../api/userIntraction";
+import {
+  getLikes,
+  getSave,
+  postLike,
+  postSave,
+  testing,
+} from "../../api/userIntraction";
 import { PiHeartStraight, PiHeartStraightFill } from "react-icons/pi";
 
 interface Post {
@@ -45,16 +51,13 @@ interface LikeResponse {
 
 const Detail = () => {
   const { userInfoOnline } = useGlobalContext();
-
+  //* States
   const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
-
   const [postData, setPostData] = useState<Post[]>([]);
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState({
     comment: "",
   });
-  // const [dataLike, setDataLike] = useState<Array<likeData>>([]);
-
   const [dataLike, setDataLike] = useState<LikeResponse>({
     data: [],
     status: 0,
@@ -62,6 +65,8 @@ const Detail = () => {
     config: {},
   });
   const [like, setLike] = useState(false);
+  const [save, setSave] = useState(false);
+  //*  Functions
   const handleOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
@@ -109,19 +114,29 @@ const Detail = () => {
       setDataLike(likes);
       console.log("Likes in detail", likes.data);
       //* if page is refresh set agin data to setLike
-      const checkLiked = likes.data.find((i: any) => {
+      const checkIntractionUser = likes.data.find((i: any) => {
         return i;
       });
-
+      console.log(checkIntractionUser, "checkIntractionUser");
       // console.log(checkLiked, "checkLiked");
-      if (checkLiked.liked) {
-        console.log("like is true");
-        return setLike(checkLiked.liked);
-      }
+      checkIntractionUser.liked && setLike(checkIntractionUser.liked);
     }
   };
-
-  //* Button Like set Like and Remove
+  const takeSaves = async () => {
+    try {
+      if (pos?._id) {
+        const saves = await getSave(pos?._id as string);
+        const checkIntractionUser = saves?.data.find((s: any) => {
+          return s;
+        });
+        checkIntractionUser.saved && setSave(checkIntractionUser.saved);
+      }
+    } catch (err) {
+      console.log("takeSaves error in detail", err);
+      return err;
+    }
+  };
+  //*set like and unlike
   const interactionLikeBtn = async () => {
     try {
       const like = await postLike(pos?._id as string);
@@ -133,6 +148,17 @@ const Detail = () => {
       console.error(error?.message);
     }
   };
+  //* set save and unsave
+  const interactionSavedBtn = async () => {
+    try {
+      const save = await postSave(pos?._id as string);
+      console.log(save.data.saved.saved);
+      setSave(save.data.saved.saved);
+      takeSaves();
+    } catch (err) {
+      console.error(err, "saved btn error in detail");
+    }
+  };
 
   useEffect(() => {
     takePost();
@@ -142,6 +168,7 @@ const Detail = () => {
   useEffect(() => {
     takeAllComments();
     takeAllLikes();
+    takeSaves();
     if (userInfoOnline.id) {
       setDisabelSubmitForm(false);
     }
@@ -206,6 +233,12 @@ const Detail = () => {
           </a>
         )}
         {dataLike.data && <p>{dataLike.data.length}</p>}
+      </button>
+
+      {/* save button */}
+
+      <button onClick={interactionSavedBtn}>
+        {save ? "post is save" : "un save"}
       </button>
       {/* testing button */}
       <button
