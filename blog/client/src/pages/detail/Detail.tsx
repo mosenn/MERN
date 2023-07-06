@@ -13,7 +13,7 @@ import {
   testing,
 } from "../../api/userIntraction";
 import { PiHeartStraight, PiHeartStraightFill } from "react-icons/pi";
-
+import { AiFillTag, AiOutlineTag } from "react-icons/ai";
 interface Post {
   _id: string;
   title: string;
@@ -64,6 +64,7 @@ const Detail = () => {
     statusText: "",
     config: {},
   });
+  const [saveData, setSaveData] = useState<[] | any>([]);
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
   //*  Functions
@@ -126,6 +127,7 @@ const Detail = () => {
     try {
       if (pos?._id) {
         const saves = await getSave(pos?._id as string);
+        setSaveData(saves);
         const checkIntractionUser = saves?.data.find((s: any) => {
           return s;
         });
@@ -224,13 +226,9 @@ const Detail = () => {
       {/* Like button */}
       <button className="ml-5" type="button" onClick={interactionLikeBtn}>
         {like ? (
-          <a href="#like">
-            <PiHeartStraightFill size="1.5rem" />
-          </a>
+          <PiHeartStraightFill size="1.5rem" color="red" />
         ) : (
-          <a href="#like">
-            <PiHeartStraight size="1.5rem" />
-          </a>
+          <PiHeartStraight size="1.5rem" />
         )}
         {dataLike.data && <p>{dataLike.data.length}</p>}
       </button>
@@ -238,7 +236,8 @@ const Detail = () => {
       {/* save button */}
 
       <button onClick={interactionSavedBtn}>
-        {save ? "post is save" : "un save"}
+        {save ? <AiFillTag size="1.5rem" /> : <AiOutlineTag size="1.5rem" />}
+        {saveData.data && <p>{saveData.data.length}</p>}
       </button>
       {/* testing button */}
       <button
