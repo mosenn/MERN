@@ -98,6 +98,7 @@ const Detail = () => {
       takeAllComments();
       // console.log(response)
     } else {
+      //*Todo set toast message for user can send empty comment
       console.log("is empty");
     }
   };
@@ -142,7 +143,7 @@ const Detail = () => {
   const interactionLikeBtn = async () => {
     try {
       const like = await postLike(pos?._id as string);
-      console.log(like.data.liked.liked, "in btn");
+      // console.log(like.data.liked.liked, "in btn");
       //* now have realTime like and print user in ui if like or unlike
       setLike(like.data.liked.liked);
       takeAllLikes();
@@ -154,7 +155,7 @@ const Detail = () => {
   const interactionSavedBtn = async () => {
     try {
       const save = await postSave(pos?._id as string);
-      console.log(save.data.saved.saved);
+      // console.log(save.data.saved.saved);
       setSave(save.data.saved.saved);
       takeSaves();
     } catch (err) {
