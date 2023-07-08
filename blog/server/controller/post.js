@@ -3,12 +3,12 @@ const postModel = require("../model/post");
 
 const createPost = async (req, res) => {
   // const { content, title, summery, cover } = req.body;
+  //* validation create post with yup
+  const { content, title, summery, cover } = req.body;
   try {
     const { userToken } = req.cookies;
     if (userToken) {
       const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
-      const { content, title, summery, cover } = req.body;
-
       const post = await postModel.create({
         content,
         title,
@@ -41,7 +41,7 @@ const posts = async (req, res) => {
 const userPost = async (req, res) => {
   const { userToken } = req.cookies;
   try {
-    console.log("User Token", userToken);
+    // console.log("User Token", userToken);
     if (userToken) {
       const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
       const userPost = await postModel.find({ author: user.id });
@@ -50,6 +50,38 @@ const userPost = async (req, res) => {
   } catch (err) {
     console.log("User Post Error", userPost);
     return err;
+  }
+};
+
+//* edit post
+const editPost = async (req, res) => {
+  const id = req.params.id;
+  // console.log("Edit post Id ", id);
+  const { userToken } = req.cookies;
+  const { summery, title, content, cover } = req.body;
+  try {
+    if (userToken) {
+      const post = await postModel.findByIdAndUpdate(
+        id,
+        {
+          title: title,
+          summery: summery,
+          content: content,
+          cover: cover,
+        },
+        {
+          new: true,
+        }
+      );
+      // console.log(post);
+      await post.save();
+      return res.status(200).json(post);
+    }
+  } catch (err) {
+    console.log("Edit Post Error Controller", err);
+    return res
+      .status(400)
+      .json({ message: "post is not edit", errMessage: err });
   }
 };
 //* Delete Post
@@ -74,4 +106,5 @@ module.exports = {
   posts,
   userPost,
   deleteUserPost,
+  editPost,
 };
