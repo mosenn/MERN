@@ -58,12 +58,14 @@ const Detail = () => {
   const [value, setValue] = useState({
     comment: "",
   });
+  //** global state dataLike for show likes in home page */
   const [dataLike, setDataLike] = useState<LikeResponse>({
     data: [],
     status: 0,
     statusText: "",
     config: {},
   });
+    //** global state saveData for show save in home page */
   const [saveData, setSaveData] = useState<[] | any>([]);
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
@@ -85,6 +87,7 @@ const Detail = () => {
   const takeAllComments = async () => {
     if (pos?._id) {
       const comments = await getAllPostComments(pos?._id as string);
+      /** change setComents to global state for show comments number in homepage*/
       setComments(comments.data);
     }
   };

@@ -32,8 +32,28 @@ export const userPost = async () => {
     const response = await axios.get(`${baseUrl}/userposts`);
     console.log(response, "RESPONSE");
     return response;
-  } catch (err) {
+  } catch (err: any) {
     console.log("User Post Error", err);
+    return err;
+  }
+};
+export const editPost = async (id: string, data: any) => {
+  console.log(id, "ID IN EDITPOST");
+  console.log(data, "DATA in editpost");
+  const { summery, title, content, cover } = data;
+
+  try {
+    const res = await axios.put(
+      `${baseUrl}/editpost/${id}`,
+      { title, content, summery, cover },
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(res, "response edit post in api");
+    return res;
+  } catch (err: any) {
+    console.log("edit post err", err);
     return err;
   }
 };

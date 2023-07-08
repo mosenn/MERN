@@ -3,9 +3,11 @@ import { createContext, useContext, useState } from "react";
 interface MyContextValue {
   name: string;
   setUserInforOnline: React.Dispatch<React.SetStateAction<{}>>;
-  setuserIntraction: React.Dispatch<React.SetStateAction<[]>>;
   userInfoOnline: {} | any;
+  setuserIntraction: React.Dispatch<React.SetStateAction<[]>>;
   userIntraction: [] | any;
+  setUserPosts: React.Dispatch<React.SetStateAction<[]>>;
+  userPosts: [] | any;
 }
 
 interface AppProviderProps {
@@ -16,13 +18,16 @@ interface AppProviderProps {
 const AppContext = createContext<MyContextValue>({
   name: "",
   setUserInforOnline: () => {},
-  setuserIntraction: () => {},
   userInfoOnline: {},
+  setuserIntraction: () => {},
   userIntraction: [],
+  setUserPosts: () => {},
+  userPosts: [],
 });
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   let [userInfoOnline, setUserInforOnline] = useState<{}>({});
   let [userIntraction, setuserIntraction] = useState<[]>([]);
+  const [userPosts, setUserPosts] = useState<[]>([]);
   return (
     <AppContext.Provider
       value={{
@@ -31,6 +36,8 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         userInfoOnline,
         setuserIntraction,
         userIntraction,
+        setUserPosts,
+        userPosts,
       }}
     >
       {children}
