@@ -1,17 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import { getLikes, getSave } from "../../api/userIntraction";
+import { getAllPostComments } from "../../api/comment";
 interface propsPost {
   _id: string;
   cover: string;
   title: string;
   createdAt: number;
   summery: string;
+  comments: [];
   author: {
     username: string;
   };
 }
 const Post = ({ _id, cover, title, createdAt, author, summery }: propsPost) => {
+  const [dataLikes, setDataLikes] = useState<[] | any>([]);
+  const [saveData, setSaveData] = useState<[] | any>([]);
+  const [comments, setComments] = useState<[] | any>([]);
+  //* take likes
+  const takeAllLikes = async () => {
+    if (_id) {
+      const likes = await getLikes(_id as string);
+      setDataLikes(likes);
+      console.log("Likes in post for homepage", likes.data);
+      //* if page is refresh set agin data to setLike
+      const checkIntractionUser = likes.data.find((i: any) => {
+        return i;
+      });
+      console.log(
+        checkIntractionUser,
+        "checkIntractionUser in post for homepage"
+      );
+      // console.log(checkLiked, "checkLiked");
+    }
+  };
+  //* take save
+  const takeSaves = async () => {
+    try {
+      if (_id) {
+        const saves = await getSave(_id as string);
+        setSaveData(saves);
+      }
+    } catch (err) {
+      console.log("takeSaves error in detail", err);
+      return err;
+    }
+  };
+  //* take comments
+  const takeAllComments = async () => {
+    if (_id) {
+      const comments = await getAllPostComments(_id as string);
+      /** change setComents to global state for show comments number in homepage*/
+      setComments(comments.data);
+    }
+  };
+  useEffect(() => {
+    takeAllLikes();
+    takeSaves();
+    takeAllComments();
+  }, []);
+  // console.log(dataLikes, "data like in home pages");
+  // console.log("length", dataLikes?.data.length);
+  // console.log(saveData, "save data in home page");
+  // console.log(saveData?.data?.length, "save data length");
+  console.log(comments, "comment data ");
+  console.log(comments?.length, "comment data length");
   return (
     <div
       key={_id}
@@ -27,7 +81,9 @@ const Post = ({ _id, cover, title, createdAt, author, summery }: propsPost) => {
         <figcaption className="p-3 md:w-[60%] w-72 lg:w-96 lg:justify-between flex mt-2 justify-between text-gray-400">
           <p>{author.username}</p>
           <p>{format(new Date(createdAt), "yyyy-MM-dd")}</p>
-          {/* <p>{comments.length}</p> */}
+          {dataLikes.data && <p>Likes : {dataLikes?.data.length}</p>}
+          {saveData.data && <p>saves : {saveData?.data.length}</p>}
+          {comments && <p> comment : {comments.length}</p>}
         </figcaption>
       </figure>
       <div>
