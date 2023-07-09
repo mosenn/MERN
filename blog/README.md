@@ -3323,3 +3323,526 @@ app.use("/", require("./routes/user"));
 ```
 
 به این شکل ازش استفاده می کنیم . 
+
+# Posts 
+
+در این بخش هر کاربری که لاگین کرده می تونه یک پست ایجاد کنه . 
+
+در واقع ایجاد پست رو سمت سرور داریم به وسیله کاربر . 
+
+و گرفتن پست های که ایجاد شده رو براشون api می نویسیم که در سمت کلاینت بتونیم `post` های ساخته شده رو نمایش بدیم . 
+
+
+درون `controller` میایم فایل `post.js` رو اضافه می کنیم . 
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/d45d0a00-c91c-425d-8408-9a5417240a28' alt='expressjs server'>
+
+درون `controller post` قرار عملیات `crud` رو انجام بدیم . 
+.
+پست رو بسازیم , پست های ساخته شده درون دیتا بیس رو بگیریم و بفرسیتم سمت کلاینت  ,  اپدیت کنیم , پاک کنیم 
+
+**نکته :** در واقع `crud`  مخفف `create` , `read` , `update` , `delete` هست . 
+
+
+### Create post controller
+
+اولین کاری که صورت میگیره ساخت `post` هست . 
+
+پس میایم فانکشن که قرار ساخت پست رو انجام بده ایجاد می کنیم در واقع `controller` که قرار هست `controller` رو انجام بده یا همون کنترل کنه . 
+
+```javascript 
+const createPost = async (req, res) => {
+
+};
+```
+
+در ادامه مقادیر که نیاز هست رو داشته باشیم از `req.body`  میگیریم که این مقادیر از سمت فرانت ارسال میشه . 
+
+و البته درون `schema post` هم همین مقادیر تعریف شده . 
+
+```javascript 
+const createPost = async (req, res) => {
+  const { content, title, summery, cover } = req.body;
+```
+
+خب نیا هست `model post` که ایجاد شده رو درون بلاک  try صدا بزنیم و پست خودمون رو به وسیله متد `create` ایجاد کنیم . 
+
+دقیقا مثل ساخت کاربران در قسمت `register` . 
+
+```javascript 
+const createPost = async (req, res) => {
+  const { content, title, summery, cover } = req.body;
+  try {
+    const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      const post = await postModel.create({
+        content,
+        title,
+        summery,
+        cover,
+        author: user.id,
+      });
+      return res.status(201).json({ data: post, message: "post is create" });
+    }
+  } catch (err) {
+    console.log("Create Post", err);
+    return err;
+  }
+};
+```
+درون بلاک `try` در کد بالا اول `userToken` رو از `req.cookies` گرفتیم . 
+
+اگر یادتون باشه زمانی که کاربر `login` میشه در سایت یک `token` در `cookie` سرور میاد set میشه . 
+
+که این `cookie` حاوی اطلاعات کاربری هست که `login` شده . 
+
+و بودن این `cookie` نشون دهنده این موضوع هست که کاربر ما لاگین شده . 
+
+برای اینکه در اینجا می خوایم فقط کاربر های که لاگین هستند بتونند post ایجاد کنند . 
+
+```javascript
+  try {
+    const { userToken } = req.cookies;
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      const post = await postModel.create({
+        content,
+        title,
+        summery,
+        cover,
+        author: user.id,
+      });
+      return res.status(201).json({ data: post, message: "post is create" });
+    }
+```
+
+نیاز داریم اول چک کنیم ببینم که کاربر ما لاگین شده یا نه که اینکار رو به وسیله `userToken` انجام دادیم  . 
+
+قدم بعدی نیاز داریم به `id` کاربر که لاگین شده دسترسی داشته باشیم چون می خوایم بدونیم کدوم کاربر داره یک پست رو ایجاد می کنه . 
+
+برای اینکه به `id` کاربری که لاگین شده دسترسی بگیریم نیا داریم توکن خودمون رو `verify` کنیم و `id` رو بکشیم بیرون . 
+
+در اینجا `author` در `schema post` یک `type objectId` هست که `ref` زده شده به `schema users` . 
+
+می تونید `schema post` رو باز چک کنید .
+
+به وسیله `ref` می تونیم متوجه شیم که چه کاربری چه پستی رو ایجاد کرده . 
+
+که از این موضوع استفاده می کنیم و پست های هر کاربری رو در `panel` خودش نشون می دیم . 
+
+و همینطور موقع گرفتن همه ی پست های به وسیله `author` کاربری که ایجاد کرده میایم نشون میدیم . 
+
+در نهایت یک `response` که حاوی اطلاعات پست ساخته شده و همینطور یک `message` هست رو به سمت کلاینت ارسال می کنیم . 
+
+```javascript
+return res.status(201).json({ data: post, message: "post is create" });
+```
+
+درون بلاک `catch` هم ارور ها رو ارسال می کنیم اگر که مشکلی پیش امده باشه . 
+
+هم لاگ سمت سرور رو داریم که متوجه شیم `error` که درون کنسول هست ماله چه بخشی از کد هست . 
+
+و هم خوده `error` به سمت `client` ارسال شده که `client` هم متوجه `error` شه . 
+
+```javascript
+catch (err) {
+    console.log("Create Post", err);
+    return err;
+  }
+```
+
+## Get all post controller
+
+بعد از ایجاد `post` توسط کاربر . 
+
+نوبت گرفتن تمامی پست های هست که ایجاد شده . 
+
+پس نیاز به یک `controller` داریم . 
+
+**یاداوری : ** هر `controller` در واقع یک `function` هست که عملیاتی درونش صورت میگیره . 
+
+```javascript 
+const posts = async (req, res) => {
+
+};
+```
+
+خب `controller posts` رو به طور کامل ببینیم : 
+
+```javascript
+const posts = async (req, res) => {
+  try {
+    const posts = await postModel
+      .find()
+      .populate("author", "username", "pic", "_id")
+      .sort({ createdAt: -1 });
+    return res.status(200).json(posts);
+  } catch (err) {
+    console.log("All Post Err", err);
+    return res.status(500).json({ message: "server is proplem", err: err });
+  }
+};
+```
+
+در کد بالا داریم از `postModel` به وسیله متد `find` به تمامی پست ها دسترسی می گیریم . 
+
+اما اگر دقت کنید بعد از `find` از یک متد دیگه هم استفاده شده به اسم `populate` .  
+
+متد `populate`  دو تا `parameter`  میگیره . 
+
+پارامتر اول مقداری هست که می خوایم یه همراه `post` ها پیدا شه . 
+
+الان میاد پست ها رو که پیدا کرده میره داخل `collection users` با توجه به `objectId` مشخصات کاربری که پست رو ساخته  پیدا می کنه  . 
+
+پارامتر دوم `populate` به این اشاره داره که از `user` که پیدا شده به همراه پست داره ارسال میشه , چه مقادیری رو داشته باشه . 
+
+که گفتیم `username` و `pic` و همینطور `_id` رو به همراه داشته باشه . 
+
+در ادامه متد `sort` رو  استفاده کردیم 
+
+که دیتا رو بر اساس `createAt`  که درون هر `document post` وجو داره میاد `sort` رو انجام میده . 
+
+در واقع هر پست جدیدی که ساخته میشه به عنوان اولین پست در `response` نمایش داده میشه  . 
+
+### User post controller 
+
+یک `controller` داریم به اسم `userPost` که  این `controller`  میاد `post` ها رو بر اساس `author` می گیره . 
+
+در واقع میاد پست ها رو بر اساس کاربری که اون پست رو ایجاد کرده میگیره . 
+
+یعنی پست های که توسط یک کاربر ایجاد شده رو `response` میده .
+
+به عنوان مثال : 
+
+کاربر محسن میاد 10 تا `post` ایجاد می کنه . 
+
+و می خوایم تمامی پست های که توسط کاربر محسن ایجاد شده رو داشته باشیم . 
+
+و در `panel` کاربری خودش نمایش بدیم . 
+
+برای اینکار و داشتن پست های یک کاربر `controller userPost` رو ایجاد کردیم . 
+```javascript
+const userPost = async (req, res) => {
+
+};
+```
+که درونش کد های زیر رو داریم : 
+
+```javascript
+//*method Get author post
+  const { userToken } = req.cookies;
+  try {
+    // console.log("User Token", userToken);
+    if (userToken) {
+      const user = await jwt.verify(userToken, process.env.JWT_SECRET, {});
+      const userPost = await postModel.find({ author: user.id });
+      return res.status(200).json(userPost);
+    }
+  }catch (err) {
+    console.log("User Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem about user post", err: err });
+  }
+```
+
+چک کردیم در ادامه که اگر `userToken`  بود بیاد این اتفاق بیوفته . 
+
+اگر کاربر ما لاگین بود . 
+
+اگر که چک نکنیم و بخوایم از `jwt.verify` استفاده کنیم با ارور سمت سرور مواجه می شیم . 
+
+چون داریم `user.id` رو از `token` که در `cookie` ذخیره شده دریافت می کنیم . 
+
+در نتیجه گفتیم `postModel` بیاد `find` شه توسط `author` که یک ابجکت هست . 
+
+میاد `author` رو پیدا میکنه بعدش میاد توسط `user.id` پیدا کردن رو انجام میده .
+
+در نتیجه `post` های که توسط  کاربر  مد نظر ما ایجاد شده پیدا میشه و به سمت کلاینت ارسال میشه . 
+
+اینجوری میشه که تمام پست های که به عنوان مثال توسط کاربر محسن ایجاد شده خواهیم داشت . 
+
+در صورت داشتن ارور هم بلاک `catch` اتفاق می افته 
+
+```javascript
+catch (err) {
+    console.log("User Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem about user post", err: err });
+  }
+```
+
+### Edit post controller 
+
+خب شاید کاربر ما خواست پستی که ساخته رو edit کنه . 
+
+برای اینکار هم نیاز به یک `controller` داریم به اسم `editPost` .  
+
+```javascript
+//* method Put  edit post
+const editPost = async (req, res) => {
+
+};
+```
+
+برای `edit` کردن . نیاز هست که مقادیر جدید رو بگیریم و جایگزین مقادیر قبلی کنیم . 
+
+خب میایم مقادیر جدید رو از `req.body` می گیریم . 
+
+خب سوال اینجاست از کجا مشخص میشه که چه پستی رو می خوایم `edit`  کنیم ؟ 
+
+اینکه چطوری متوجه میشیم که چه پستی قرار هست edit شه . اینکار توسط ایدی انجام میگیره . 
+
+```javascript 
+//* method Put  edit post
+const editPost = async (req, res) => {
+  const id = req.params.id;
+  // console.log("Edit post Id ", id);
+  const { userToken } = req.cookies;
+  const { summery, title, content, cover } = req.body;
+};
+```
+
+اگر دقت کنید  یک `const id = req.params.id` داریم که در واقع `id` پست هستش  به وسیله `req.params.id` این `id` رو گرفتیم . 
+
+خب این `req.params.id` در واقع از مست `client` ارسال میشه درون `address api` که نوشتیم 
+
+که درون `route` اگر نگاه کنیم `id:/` برای `controller editpost` ست شده . 
+
+```javascript 
+postRouter.put("/editpost/:id", editPost);
+```
+**نکته :** همیشه برای `delete` و `edit` نیاز به `ObjectId` داریم 
+
+که به وسیله `id` پست می تونیم بگیم که کدوم پست قرار هست در `data base` بیاد و `edit`  شه . 
+
+خب هر کاربری می تونه فقط پست خودشو رو بیاد اپدیت کنه
+
+پس  به `user.id` هم نیاز داریم که از داخل `token` می گیریم . 
+
+به کل `controller editPost` نگاه کنیم : 
+
+درون بلاک `try` گفتیم اگر که `userToken` بود بع معنی اینکه اگر کاربر `login` بود . 
+
+بیاد درون `postModel`  از متد `findByIdAndUpdate` استفاده کردیم . 
+
+تا به وسیله `id`  که در واقع همون `objectId` هست که از `req.params.id` داره گرفته میشه . 
+
+با `id` بیاد `post` رو پیدا کنه و در نتیجه مقادیر جدید که از `req.body` میاید رو جایگزین مقادیر قبلی شه . 
+
+
+```javascript 
+//* method Put  edit post
+const editPost = async (req, res) => {
+  const id = req.params.id;
+  // console.log("Edit post Id ", id);
+  const { userToken } = req.cookies;
+  const { summery, title, content, cover } = req.body;
+  try {
+    if (userToken) {
+      const post = await postModel.findByIdAndUpdate(
+        id,
+        {
+          title: title,
+          summery: summery,
+          content: content,
+          cover: cover,
+        },
+        {
+          new: true,
+        }
+      );
+      // console.log(post);
+      await post.save();
+      return res.status(200).json(post);
+    }
+  } catch (err) {
+    console.log("Edit Post Error Controller", err);
+    return res
+      .status(400)
+      .json({ message: "post is not edit", errMessage: err });
+  }
+};
+```
+
+توجه کنید که به `if` که داره `userToken` رو چک می کنه نیاز داریم در غیر اینصورت سمت سرور به اررور می خوریم . 
+
+```javascript
+ if (userToken) {
+}
+```
+
+در ادامه `post` که تغییر کرده رو  به وسیله متد `save` در دیتا بیس ذخیره کردیم . 
+
+```javascript
+  await post.save();
+```
+در ادامه بعد از ذخیره شدن `post` در دیتا بیس امدیم به سمت `client` فرستادیم . 
+
+```javascript
+      await post.save();
+      return res.status(200).json(post);
+```
+
+در ادامه در بلاک `catch` ارور رو داریم . 
+
+```javascript 
+catch (err) {
+    console.log("Edit Post Error Controller", err);
+    return res
+      .status(500)
+      .json({ message: "post is not edit", errMessage: err });
+  }
+```
+
+خب ساخت `controller editpost` رو هم انجام دادیم . 
+
+### Delete post 
+
+بریم سراغ `delete` که دیگه عملیات `crud` رو تکمیل کنیم . 
+
+```javascript 
+//*method Delete Post
+const deleteUserPost = async (req, res) => {
+  const id = req.params.id;
+  console.log("ID", id);
+  const { userToken } = req.cookies;
+};
+```
+
+اینجا هم برای اینکه بتونیم `post` مد نظرو `delete` کنیم که بدونیم چه پستی داره `delete` میشه نیاز به `ObjectId` داریم . 
+
+که این `objectId` به همراه دیتا هست  . 
+
+که به وسیله دیتای که سمت `client` گرفته میشه , `objecetId` رو به سمت `server` درون ادرس `api` فرستاده میشه که در واقع همون `params` هست  . 
+
+```javascript 
+//*method Delete Post
+const deleteUserPost = async (req, res) => {
+  const id = req.params.id;
+  console.log("ID", id);
+  const { userToken } = req.cookies;
+  try {
+    if (userToken) {
+      const userPost = await postModel.findByIdAndRemove(id);
+      if (!userPost) {
+        return res.status(404).json("this post is not exist");
+      }
+      return res.status(200).json(userPost);
+    }
+  } catch (err) {
+    console.log("Delete Post Error", err);
+  }
+};
+```
+
+باز دوباره چک می کنیم ببینیم که `userToken` هست یا نه اگر کاربر `login` بود بتونه `delete` رو انجام بده . 
+
+که به وسیله `postModel` , و متد `findByIdAndRemove` کار رو انجام دادیم . 
+
+که متد `findByIdAndRemove`  که صرفا پست رو اول پیدا می کنه و بعد  با توجه به `id` میاد پست رو پاک می کنه . 
+
+یک `if` داریم که اگر `id` مورد نظر اون پست وجود نداشت بیاد یک پیام به سمت `client` ارسال کنه : 
+
+```javascript
+     if (!userPost) {
+        return res.status(404).json("this post is not exist");
+      }
+```
+
+درون بلاک `catch` هم ارور زیر رو ارسال می کنیم : 
+
+```javascript 
+catch (err) {
+    console.log("Delete Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem(delete)", err: err });
+  }
+```
+
+یک بار دیگه کل `controller` مربوط به `delete` رو ببنیم : 
+
+```javascript
+//*method Delete Post
+const deleteUserPost = async (req, res) => {
+  const id = req.params.id;
+  console.log("ID", id);
+  const { userToken } = req.cookies;
+  try {
+    if (userToken) {
+      const userPost = await postModel.findByIdAndRemove(id);
+      if (!userPost) {
+        return res.status(404).json("this post is not exist");
+      }
+      return res.status(200).json(userPost);
+    }
+  } catch (err) {
+    console.log("Delete Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem(delete)", err: err });
+  }
+};
+```
+
+# Post Router 
+
+تمامی `controller` های که نوشتیم نیاز هست که برای اجرا شدن یک `address` در واقع یک `api` داشته باشند . 
+
+به همین دلیل یک فایل جدید به اسم `post.js` در فولدر `routes` ایجاد می کنیم . 
+
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/e4b2ed94-8a27-4615-8cd6-48c93c8e0056' alt='router in expressjs'>
+
+
+درون فایل خودمون میایم اول `express.Router`  رو `require` می کنیم . 
+
+بعد میایم تمامی `controller `  ها ی که برای `post` ایجاد کردیم رو `require` می کنیم 
+
+
+```javascript 
+const postRouter = require("express").Router();
+const {
+  createPost,
+  posts,
+  userPost,
+  deleteUserPost,
+  editPost,
+} = require("../controller/post");
+```
+
+حالا میایم `api` خودمون رو برای `controller` ها می نویسیم . 
+
+```javascript
+postRouter.post("/createpost", createPost);
+postRouter.get("/posts", posts);
+postRouter.get("/userposts", userPost);
+postRouter.delete("/deletepostuser/:id", deleteUserPost);
+postRouter.put("/editpost/:id", editPost);
+```
+دقت کنید برای `deletepostuser` و `edipost` امدیم یک  `id:/` هم گذاشتیم در ادرس `api` . 
+
+خب این ایدی قرار هست از سمت `clinet` درون ادرس `api` قرار بگیره که در واقع گفتیم همون `objectId` هست . 
+
+برای `delete` , `update` به `objectId` خوده `document`  که در دیتا بیس ایجاد شده نیاز داریم . 
+
+متد ها هم که مشخصه برای ساخت از `post` استفاده شده برای گرفتن یا همون `read` از `get` استفاده شده . 
+
+برای پاک کردن از متد `delete` استفاده شده و برای `update` از متد `put` استفاده شده . 
+
+در نهایت `postRouter` رو `export` می کنیم و در `index.js`  از این `route` استفاده می کنیم . 
+
+```javascript
+module.exports = postRouter;
+```
+
+داخل `index.js` : 
+
+```javascript 
+app.use("/", require("./routes/post"));
+```
+
+خب کافیه الان `clinet` بیاد `api` های که نوشته شده رو بگیره و استفاده کنه . البته درون `postman` هم می تونه تست کنه . 
