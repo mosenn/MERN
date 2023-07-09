@@ -65,7 +65,7 @@ const Detail = () => {
     statusText: "",
     config: {},
   });
-    //** global state saveData for show save in home page */
+  //** global state saveData for show save in home page */
   const [saveData, setSaveData] = useState<[] | any>([]);
   const [like, setLike] = useState(false);
   const [save, setSave] = useState(false);
@@ -84,6 +84,7 @@ const Detail = () => {
   const pos = postData.find((p: Post) => {
     return p?._id === id;
   });
+  //* takecomments
   const takeAllComments = async () => {
     if (pos?._id) {
       const comments = await getAllPostComments(pos?._id as string);
@@ -91,6 +92,7 @@ const Detail = () => {
       setComments(comments.data);
     }
   };
+  //* send comment
   const sendComment = async () => {
     if (value && pos?._id) {
       const response = await postUserComments(
@@ -124,9 +126,12 @@ const Detail = () => {
       });
       console.log(checkIntractionUser, "checkIntractionUser");
       // console.log(checkLiked, "checkLiked");
-      checkIntractionUser.liked && setLike(checkIntractionUser.liked);
+
+      checkIntractionUser?.liked && setLike(checkIntractionUser?.liked);
     }
   };
+
+  //*Take saved For Post With User
   const takeSaves = async () => {
     try {
       if (pos?._id) {
@@ -135,7 +140,7 @@ const Detail = () => {
         const checkIntractionUser = saves?.data.find((s: any) => {
           return s;
         });
-        checkIntractionUser.saved && setSave(checkIntractionUser.saved);
+        checkIntractionUser?.saved && setSave(checkIntractionUser?.saved);
       }
     } catch (err) {
       console.log("takeSaves error in detail", err);
@@ -148,7 +153,7 @@ const Detail = () => {
       const like = await postLike(pos?._id as string);
       // console.log(like.data.liked.liked, "in btn");
       //* now have realTime like and print user in ui if like or unlike
-      setLike(like.data.liked.liked);
+      setLike(like?.data?.liked?.liked);
       takeAllLikes();
     } catch (error: any) {
       console.error(error?.message);
@@ -158,8 +163,8 @@ const Detail = () => {
   const interactionSavedBtn = async () => {
     try {
       const save = await postSave(pos?._id as string);
-      // console.log(save.data.saved.saved);
-      setSave(save.data.saved.saved);
+      console.log(save);
+      setSave(save?.data?.saved?.saved);
       takeSaves();
     } catch (err) {
       console.error(err, "saved btn error in detail");
