@@ -3330,7 +3330,71 @@ app.use("/", require("./routes/user"));
 
 در واقع ایجاد پست رو سمت سرور داریم به وسیله کاربر . 
 
+
+### Post Schema
+
+برای اینکه بتونیم ایجاد `post` رو داشته باشیم اول نیاز داریم که یک `schema` پست داشته باشیم . 
+
+میایم درون فولدر `model` و یک فایل به اسم `post` می سازیم : 
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/c327c675-2efb-4e98-ba60-6ea2278e6159' alt='create model in express' />
+
+میایم درون این فایل `model`  مربوط به `post` رو ایجاد می کنیم : 
+
+```javascript 
+const mongoose = require("mongoose");
+const commentModel = require("./comment");
+
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+
+    summery: {
+      type: String,
+      required: true,
+    },
+
+    content: {
+      type: String,
+      required: true,
+    },
+    cover: {
+      type: String,
+      required: true,
+    },
+
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+const postModel = mongoose.model("posts", postSchema);
+module.exports = postModel;
+
+```
+
+موقع ساخت `schema post` امدیم 1 `ref` زدیم  به `author` . 
+
+برای اینکه بتونیم متوجه شیم چه کاربری امده `post` رو ساخته . 
+
+این کار به وسیله `ObjectId` انجام میشه . 
+
+به `id` کاربری که پست رو ساخته دسترسی می گیریم و متوجه می شیم که چه کاربری پست رو ایجاد کرده . 
+
+که اینجا موقع ساخت پست نیاز هست که `id` کاربری که `login` هست برای `author` ست کنیم  .
+
+که کمی پایین تر به این موضوع پرداخته شده .  
+
 و گرفتن پست های که ایجاد شده رو براشون api می نویسیم که در سمت کلاینت بتونیم `post` های ساخته شده رو نمایش بدیم . 
+
+### Post controller 
 
 
 درون `controller` میایم فایل `post.js` رو اضافه می کنیم . 
