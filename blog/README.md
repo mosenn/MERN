@@ -1,4 +1,4 @@
-
+![image](https://github.com/mosenn/MERN/assets/91747908/260699ba-de36-4ae7-bb82-9e89a4d21205)![image](https://github.com/mosenn/MERN/assets/91747908/cbc37ea0-e496-4e9c-87fc-89797d0cea74)
 # Blog Project 
 ## Technologies
 
@@ -1749,6 +1749,178 @@ const Header = () => {
     </header>
   );
 ```
+
+# Posts in clinet 
+
+در این قسمت از کلاینت می خوایم بخش ساخت پست رو ایجاد کنیم . 
+
+بخش پنل کاربری رو ایجاد کنیم که هر کاربری که لاگین هست بتونه در بخش پنل خودش پست های که ایجاد کرده ببینه . 
+
+
+بخش اپدیت شدن پست رو در پنل کاربری داشته باشیم به وسیله نویسنده خوده پست 
+
+همینطور بخش پاک کردن پست رو داشته باشیم . 
+
+و در نهایت تمامی پست هارو نمایش بدیم در صحفه اصلی  که در هر پست نشون دهنده این باشه که چه تاریخی ساخته شده . 
+
+و به وسیله چه کاربری ایجاد شده . 
+
+**نکته** : تمامی این موارد گفته در بالا در سمت سرور انجام شده و `api` مربوط به تمامی کار های مربوط نوشته شده . 
+
+**نکته** : برای `update` کردن  و `delete` کردن همیشه نیاز به `objectId` از سمت دیتا بیس هست . 
+
+
+# Post api 
+
+قدم اول درون فولدر `api` در کلاینت امدیم یک فایل به اسم `post` ساختیم . 
+
+در فایل `post.tsx` امدیم کارهای `api` مربوط به ساخت پست و اپدیت و
+
+همینطور پاکد کردن و گرفتن تمامی پست ها رو انجام دادیم . 
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/c1f8b7e4-284f-41d0-8894-2c24849e2be6' alt='axios in react'/>
+
+
+قدم اول `import` کردن `axios` و تعریف کردن `baseUrl` هست . 
+
+```javascript 
+import axios from "axios";
+const baseUrl = (axios.defaults.baseURL = "http://localhost:2023");
+
+```
+
+قدم دوم نوشتن فانکشن ها برای کار با `api` که سمت سرور نوشته شده . 
+
+### api post functions 
+
+
+
+#### createPost function in api
+
+اولین فانشکن `createpost` هست 
+
+```javscript 
+export const createPost = async (data: {}) => {
+  try {
+  } catch (err: any) {
+  }
+};
+```
+**یاداوری** : درون هر فانکشن مروبط به کار با `api` یک `try` داریم و یک بلاک `catch` . 
+
+**یاداوری** : تمامی فانکشن های مربوط به `api` نیاز هست که از نوع `async` و `await` باشن . 
+
+خب یک پارامتر داریم به اسم `data` که نوع اش ابجکت هست . 
+
+در واقع مقادیر یک `state` هست که به این فانکشن پاس داده شده . 
+
+که در `state` مشصخات پست که قرار هست ساخته بشه قرار میگیره مثل `    content , title , cover , summery`  . 
+
+که این موارد در یک `state` قرار میگیرند در نتیجه به به فانکشن `createPost` پاس داده میشن تا درون `api` قرار بیگرن . 
+
+و اطلاعات وارد شده درون دیتا بیس قرار بگیره و پست ایجاد شه . 
+
+**نکته** : کاربر حتما باید `login` باشه تا بتونه ساخت پست رو انجام بده .
+
+فانکشن کامل `careatePost` رو ببینیم . 
+
+```javascript 
+export const createPost = async (data: {}) => {
+  console.log(data, "data in create post");
+  try {
+    const post = await axios.post(`${baseUrl}/createpost`, data, {
+      // withCredentials: true,
+    });
+    // console.log(response, "response");
+    return post;
+  } catch (err: any) {
+    // console.log("Create Post Errr", err);
+    return err;
+  }
+};
+```
+درون بلاگ امیدیم به وسیله `axios.post` اطلاعات مد نظر رو به `end point /createpost` ارسال کردیم . 
+
+در نهایت اطلاعات رو `return` کردیم ریسپانسی که برشگت داده میشه اطلاعات پستی هست که ساخته شده . 
+
+اگر هم `err` داشته باشیم در نهایت `err` رو خواهیم داشت در بلاک `catch` . 
+
+به به وسیله `api`  که ادرس `createpost` رو داره در واقع همون `createpost  end poin` 
+
+امدیم یک `post` رو به سرور فرستادیم و در نهایت در دیتابیس ذخیره میشه . 
+
+#### get all posts function in api
+
+خب حالا که `post` رو ایجاد کردیم بریم سراغ اینکه چطوری تمامی پست ها رو بگیریم . 
+
+اینکارو به وسیله فانکشن `posts` انجام میدیم 
+
+```javascript
+export const posts = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/posts`);
+    // console.log(response, "RESPONSE");
+    return response;
+  } catch (err: unknown) {
+    console.log("All Posts Error", err);
+    return err;
+  }
+};
+
+```
+
+صرفا تمامی پست هارو می گیریم  .
+
+البته سمت سرور طوری این `api` نوشته شده که `response` که این `api` برگشت میده یک `author` هم درونش وجود داره . 
+
+<img src='https://github.com/mosenn/MERN/assets/91747908/850ee6f6-4ae1-442d-8d17-06af894fcadc'
+ alt='data in reactjs' />
+
+
+ اگر به عکس بالا که مربوط به `response` هست که این `api` برگشت میده در واقع تمامی `post` های هستند که ساخته شده . 
+
+ و به همراه خودشون یک `author` دارند که اشاره می کنه به کاربری که این پست رو ایجاد کرده . 
+
+ که این موضوع سمت `server` هندل شده . 
+
+ #### Get all post with user 
+
+ در سمت کلاینت یک `panel` کاربری داریم . 
+
+ که کاربری که لاگین شده می تونه وارد این `panel`  شده و تمامی `post` های که خودش ایجاد کرده رو مشاهده کنه . 
+
+ از این رو نیاز به یک `api` برای اینکار داریم که `api` سمت سرور نوشته شده که اینکارو برای ما انجام بده . 
+
+ به وسیله این `api` یک کاربر می تونه در پنل کاربری خودش تمام پست های که توسط خوده کاربر ایجا د شده می تونه ببینه . 
+
+ به عنوان مثال کاربر محسن امده 3 تا پست ایجاد کرده . در سایت . می تونه هر 3 پست که خودش ایجاد کرده در پنل کاربری خودش مشاهده کنه . 
+
+ **یاداوری** : در سمت `clinet` صرفا ما از `api` نوشته شده داریم استفاده می کنم تمامی منطق این قضیه سمت `server` هندل شده .
+
+
+ بریم فانشکن `userPost` رو ببینیم : 
+
+ ```javascript 
+export const userPost = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/userposts`);
+    console.log(response, "RESPONSE");
+    return response;
+  } catch (err: unknown) {
+    console.log("User Post Error", err);
+    return err;
+  }
+};
+```
+به `api` مد نظر در خواست زده شده که `end point` در اینجا `userposts` هست . 
+
+در نهایت `response` رو بر گشت میده که حاوی تمامی `post` های هست که کاربر حال حاضر لاگین شده ایجاد کرده . 
+
+در بلاک `catch` هم ارور رو کنترل کردیم و اگر اروری باشه به ما برگشت داده میشه 
+
+**نکته** : تایپ تمامی `err` ها درون بلاک `catch` می تونه `any` یا `unknown` باشه که ترجیجا از `unknown` استفاده شده . 
+
+
 
 
 # Server 
