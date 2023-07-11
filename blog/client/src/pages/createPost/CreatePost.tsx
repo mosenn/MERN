@@ -51,13 +51,13 @@ const CreatePost = () => {
     if (postValue) {
       setDisabelSubmitForm(false);
     }
-    const post = await createPost(postValue);
+    const post : {} | any = await createPost(postValue);
     console.log("Response Create Post", post);
     if (post?.status === 201) {
       setToast(true);
       //* can set loading then navigate to home page
       setTimeout(() => {
-        navigate("/");
+        navigate("/panel");
       }, 3000);
     }
   };
