@@ -1,4 +1,4 @@
-![image](https://github.com/mosenn/MERN/assets/91747908/260699ba-de36-4ae7-bb82-9e89a4d21205)![image](https://github.com/mosenn/MERN/assets/91747908/cbc37ea0-e496-4e9c-87fc-89797d0cea74)
+
 # Blog Project 
 ## Technologies
 
@@ -1883,7 +1883,7 @@ export const posts = async () => {
 
  که این موضوع سمت `server` هندل شده . 
 
- #### Get all post with user 
+ #### Get post with user 
 
  در سمت کلاینت یک `panel` کاربری داریم . 
 
@@ -1920,8 +1920,110 @@ export const userPost = async () => {
 
 **نکته** : تایپ تمامی `err` ها درون بلاک `catch` می تونه `any` یا `unknown` باشه که ترجیجا از `unknown` استفاده شده . 
 
+به وسیله این فانکشن در سمت `clinet` امدیم پست های مروبط به کاربری که `login` هست رو گرفتیم . 
+
+که از این فانکشن در فولدر `page` در فایل `Panel.tsx` ازش استفاده می کنیم . برای گرفتن پست های مربوط به کاربر . 
 
 
+#### Put edit post
+
+فانکشن بعدی کار `update` شدن یک پست رو برای ما فراهم می کنه . 
+
+می تونیم به وسیله این فانکشن و `api` که هست مقادیر یک پست رو `edit` کنیم . 
+
+منتها برای این کار همونطور که قبلا اشاره شد به `id` نیاز داریم . 
+
+در واقع به `post ObjectId` که درون دیتا هست نیاز داریم .
+
+```javascript 
+export const editPost = async (id: string, data: any) => {
+};
+```
+
+خب  دو تا `parameter` داره این فانکشن . 
+
+پارامتر اول که همون `objectId` مروبط به `post` هست که نوع تایپ اش هم `string` هست . 
+
+پارامتر دوم در واقع یک `state` هست که حاوی اطلاعات جدید هست . 
+
+قرار که پست رو اپدیت کنیم پس نیاز داریم اطلاعاتی رو که می خوایم داشته باشیم . 
+
+تا بتونیم جایگزین اطلاعات قبلی کنیم . 
+
+فانکشن `editPost` رو با هم دیگه کامل ببینیم : 
+
+```javascritp 
+export const editPost = async (id: string, data: any) => {
+  console.log(id, "ID IN EDITPOST");
+  console.log(data, "DATA in editpost");
+  const { summery, title, content, cover } = data;
+  try {
+    const res = await axios.put(
+      `${baseUrl}/editpost/${id}`,
+      { title, content, summery, cover },
+    
+    );
+    console.log(res, "response edit post in api");
+    return res;
+  } catch (err:unknown) {
+    console.log("edit post err", err);
+    return err;
+  }
+};
+```
+
+نکته ای که داره اینجا امدیم `id` که مربوط به `post` ها هم هست بهش پاس دادیم به ادرس `api` . 
+
+که در واقع `params` ادرس `api` ما میشه و در سمت سرور می تونیم این `params` رو بگیریم که در واقع `id` پست هست . 
+
+پستی که دست خوش تغیرر شده به وسیله همین ایدی پیدا کنیم . 
+
+البته `api` که نوشته در سمت سرور یک `id` درون خودش داره . 
+
+در ادامه در بلاک `try` امدیم مقادیر جدید که درون `state` ذخیره کرده بودیم به `api` پاس میدیم . 
+
+```javasript 
+  try {
+    const res = await axios.put(
+      `${baseUrl}/editpost/${id}`,
+      { title, content, summery, cover },
+    
+    );
+    console.log(res, "response edit post in api");
+    return res;
+  }
+```
+
+و `return res` رو داریم که در واقع `response` به ما `post` اپدیت شده رو برگشت میده . 
+
+#### Delete post function 
+
+فانکشن بعدی که از اسمش هم مشخص هست کار پاک کردن پست رو انجام میده .
+
+و هر کاربر می تونه پستی رو که ایجاد کرده بیاد پاک کنه . 
+
+**یاداوری** : پاک کردن و اپدیت کردن همیشه نیاز به `ObjectId` داره . 
+
+``` javascript 
+export const deleteUserPost = async (id: string) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/deletepostuser/${id}`, {
+      method: "delete",
+    });
+    console.log(response, "response");
+    return response;
+  } catch (err) {
+    console.log("Delete Post Error", err);
+    return err;
+  }
+};
+
+```
+اگر نگاه کنید دوباره به عنوان `parameter` درون ادرس `api` ایدی رو داریم که در واقع همون `ObjectId` مربوط به `post` هست . 
+
+ریسپانسی که برگشت میده در واقع مشخصات پستی هست که پاک شده . 
+
+در نهایت اگر `err` داشته باشیم برای پاک کردن پست در بلاک `catch` ارور مربوط رو خواهیم داشت . 
 
 # Server 
 
@@ -1932,6 +2034,7 @@ export const userPost = async () => {
 برای اینکه بتونیم پروژه رو کامل داشته باشیم نیاز هست که فایل سرور هم در کنار فایل client داشته باشیم . 
 
 و هر دو رو ران کنیم  . 
+
 
 
 # Run Clinet & Server 
@@ -2011,7 +2114,7 @@ node -v
 
 یک فایل به اسم index.js ایجاد می کنیم . 
 
-![image](https://github.com/mosenn/MERN/assets/91747908/1ca859d0-8c6c-4c54-8bb4-8af3414a1fb8)
+<img src='https://github.com/mosenn/MERN/assets/91747908/1ca859d0-8c6c-4c54-8bb4-8af3414a1fb8' alt ='index.js in express'/>
 
 که در واقع فایل اصلی `server` حساب  میشه . 
 
