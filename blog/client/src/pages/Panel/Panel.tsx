@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { deleteUserPost, userPost } from "../../api/post";
 import { format } from "date-fns";
 import { useGlobalContext } from "../../context/context";
+import Toast from "../../components/toast/Toast";
 interface userPostType {
   _id: string;
   title: string;
@@ -11,18 +12,31 @@ interface userPostType {
 }
 const Panel = () => {
   const { setUserPosts, userPosts } = useGlobalContext();
+
+  const [toast, setToast] = useState(false);
   // const [postUser, setPostUser] = useState([]);
   //* global function for take userPost for update and panel (done ✔)
   const takeUserPost = async () => {
-    const response = await userPost();
+    const response: {} | any = await userPost();
     console.log(response);
     setUserPosts(response?.data);
   };
-
+    //*TODO  befor call delete  can show pop up box for tell are you sure for delete ? 
+    //*TODO then user say that Yes in the box , called deletePostUser function
   const deletePostUser = async (id: string) => {
-    const response = await deleteUserPost(id);
-    console.log(response, "response");
+    const response: {} | any = await deleteUserPost(id);
+    console.log("response delete post", response);
+    if (response?.status === 200) {
+      const newUserPosts = userPosts.filter((post: any) => post._id !== id);
+      console.log("newUserPosts", newUserPosts);
+      setUserPosts(newUserPosts);
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+      }, 3000);
+    }
   };
+
   useEffect(() => {
     takeUserPost();
   }, []);
@@ -30,8 +44,9 @@ const Panel = () => {
   return (
     <div>
       <h1>Panel</h1>
+
       <Link to="/createpost">Create Post</Link>
-      {userPosts.length > 0 &&
+      {userPosts?.length > 0 &&
         userPosts.map((post: userPostType) => {
           return (
             <section
@@ -55,6 +70,9 @@ const Panel = () => {
                     </p>
                     {/* Buttons in tablet scope */}
                     <div className="  hidden md:flex  justify-evenly ml-[50px] w-[fit-content]   items-center ">
+                      {toast && (
+                        <Toast text="  your post is delete 👀 " toast={toast} />
+                      )}
                       <button
                         className="font-semibold m-3 w-[70px] h-[25px] flex justify-center items-center  bg-red-300 p-3 rounded-[5px]"
                         type="button"
