@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const postModel = require("../model/post");
 
+// *method Post create post
 const createPost = async (req, res) => {
   // const { content, title, summery, cover } = req.body;
   //* validation create post with yup
@@ -20,11 +21,13 @@ const createPost = async (req, res) => {
     }
   } catch (err) {
     console.log("Create Post", err);
-    return err;
+    return res
+      .status(500)
+      .json({ message: "server have a proplem for create post", err: err });
   }
 };
 
-//* Get All Post
+//*method Get all posts
 const posts = async (req, res) => {
   try {
     const posts = await postModel
@@ -34,10 +37,13 @@ const posts = async (req, res) => {
     return res.status(200).json(posts);
   } catch (err) {
     console.log("All Post Err", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem cant get all posts", err: err });
   }
 };
 
-//* Get author post
+//*method Get author post (for panel in clinet , )
 const userPost = async (req, res) => {
   const { userToken } = req.cookies;
   try {
@@ -48,12 +54,14 @@ const userPost = async (req, res) => {
       return res.status(200).json(userPost);
     }
   } catch (err) {
-    console.log("User Post Error", userPost);
-    return err;
+    console.log("User Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem can get user post", err: err });
   }
 };
 
-//* edit post
+//* method Put  edit post
 const editPost = async (req, res) => {
   const id = req.params.id;
   // console.log("Edit post Id ", id);
@@ -80,18 +88,18 @@ const editPost = async (req, res) => {
   } catch (err) {
     console.log("Edit Post Error Controller", err);
     return res
-      .status(400)
+      .status(500)
       .json({ message: "post is not edit", errMessage: err });
   }
 };
-//* Delete Post
+//*method Delete Post
 const deleteUserPost = async (req, res) => {
   const id = req.params.id;
   console.log("ID", id);
   const { userToken } = req.cookies;
   try {
     if (userToken) {
-      const userPost = await postModel.findByIdAndRemove(req.params.id);
+      const userPost = await postModel.findByIdAndRemove(id);
       if (!userPost) {
         return res.status(404).json("this post is not exist");
       }
@@ -99,6 +107,9 @@ const deleteUserPost = async (req, res) => {
     }
   } catch (err) {
     console.log("Delete Post Error", err);
+    return res
+      .status(500)
+      .json({ message: "server is proplem(delete)", err: err });
   }
 };
 module.exports = {
