@@ -76,9 +76,9 @@ const Detail = () => {
 
   const { id } = useParams();
   const takePost = async () => {
-    const response = await posts();
+    const response: [] | any = await posts();
     // console.log(response);
-    setPostData(response.data);
+    setPostData(response?.data);
   };
 
   const pos = postData.find((p: Post) => {
