@@ -3,7 +3,9 @@ interface buttonProps {
   type?: "button" | "submit" | "reset";
   className?: string;
   disabled?: boolean;
-  onClick?: () => Promise<void>;
+  // onClick?: () => Promise<void>;
+  onClick?: () => void;
+  icon: any;
 }
 
 export default function Button({
@@ -12,6 +14,7 @@ export default function Button({
   className,
   disabled,
   onClick,
+  icon,
 }: buttonProps) {
   return (
     <button
@@ -20,7 +23,9 @@ export default function Button({
       className={className}
       onClick={onClick}
     >
+      {" "}
       <span className="p-2"> {text}</span>
+      <p>{icon}</p>
     </button>
   );
 }
