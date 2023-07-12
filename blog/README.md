@@ -2025,6 +2025,432 @@ export const deleteUserPost = async (id: string) => {
 
 در نهایت اگر `err` داشته باشیم برای پاک کردن پست در بلاک `catch` ارور مربوط رو خواهیم داشت . 
 
+# Create Post Commponent 
+
+
+خب وقتی که `api` ها رو داریم . نوبت به ساخت کامپونت می رسیه . 
+
+کامپونتی که می خوایم در موردش صحبت کنیم `createPost` هست . 
+
+![image](https://github.com/mosenn/MERN/assets/91747908/4fc085d1-c7d9-4aad-8ef3-16a379e4548d)
+
+در این کامپونت یک `form` داری برای ساخت `post` . 
+
+که این `from` درون خودش `input` های داره. 
+
+هر `input` مقدار مربوط به خودش رو میگیره و درون یک `state` ذخیره میشه . 
+
+دقیقا مثل `form` ثبت نام کاربر . 
+
+مقادیری که برای `post` تعریف شده و درون سرور هم همین مقادیر تعریف شده . 
+
+عکس پست هست . تاتیل پست هست و خالاصه پست هست همینطور محتوای اصلی پست یا همون `contnet` . 
+
+بریم به فروم خودمومن در `createPost` نگاه کنیم : 
+
+``` javascrtip 
+        <form action="" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="title"
+            name="title"
+            onChange={handleOnChange}
+          />
+          <input
+            type="text"
+            placeholder="summery"
+            name="summery"
+            onChange={handleOnChange}
+          />
+
+          <input
+            type="file"
+            name="cover"
+            id="cover-input"
+            onChange={handleOnChange}
+          />
+          <Button
+            icon=""
+            disabled={uploadBtnDisabel}
+            text={
+              uploadAnimation ? (
+                <Loading size={35} color={"#ECF0F3"} />
+              ) : (
+                uploadMessage
+              )
+            }
+            className={
+              "bg-blue-500 hover:bg-blue-300 w-[96%]   md:w-[180px] md:-translate-x-1 lg:w-[250px] rounded p-3 text-zinc-50 font-semibold"
+            }
+            type="button"
+            onClick={Uploadimage}
+          ></Button>
+
+          <ReactQuill
+            theme="snow"
+            value={postValue.content}
+            onChange={(value) => setPostValue({ ...postValue, content: value })}
+          />
+          <button
+            className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            type="submit"
+            disabled={disabelSubmitForm}
+          >
+            create post
+          </button>
+        </form>
+```
+
+هر `input` با `onChange` شدن مقادیرش گرفته میشه و درون یک `state` ذحیره میشه . 
+
+**نکته :** برای گرفتن `content` از یک `package` استفاده شده به اسم `ReactQuill` . 
+
+**نکته** : برای اپلود شدن عکس از همون فانکشن که برای اپدیت عکس پرفایل استفاده میشه استفاده می کنیم . 
+
+
+ذخیره شدن `state` : 
+
+```javascript
+  const [postValue, setPostValue] = useState({
+    title: "",
+    summery: "",
+    cover: {},
+    content: "",
+  });
+  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "cover") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setUploadBtnDisabel(false);
+        setPostValue({ ...postValue, cover: file });
+      }
+    } else {
+      setPostValue({ ...postValue, [e.target.name]: e.target.value });
+    }
+    console.log("Regiser State in onChange func", postValue);
+  };
+
+```
+
+قسمتی که داره `cover` رو چک می کنه `e.target.name` اگر `cover` بود بیاد مقدار عکس رو ذخیره کنه در `state` داخل `cover` در غیر اینصورت بیاد `else` اجرا شه . 
+
+زمانی که `form` ما `submit` میشه یک فانکشن `handleSubmit` اتفاق می افته که میاد یک سری کار ها انجام میده . 
+
+فانکشن رو با هم بررسی کنیم : 
+
+```javascript 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(postValue);
+    setPostValue({ ...postValue, content: content });
+    console.log(postValue, "POST VALUE");
+    if (postValue) {
+      setDisabelSubmitForm(false);
+    }
+    const post: {} | any = await createPost(postValue);
+    console.log("Response Create Post", post);
+    if (post?.status === 201) {
+      setToast(true);
+      //* can set loading then navigate to home page
+      setTimeout(() => {
+        navigate("/panel");
+      }, 3000);
+    }
+  };
+```
+
+قسمت قابل توجه فانکشن جای هست که یک بار دیگه `state postValue` داره `contensh ` ست میشه . 
+
+این اتفاق به این دلیله که `reactQul` متد `onchange` رو قبول نمی کنه . 
+
+و زمانی که `form` ما می خواد `submit` شه ما میایم این مقدار `content` رو از داخل `reactQuill` میگیریم . 
+
+درون `state  postValue` میایم ست می کنیم . 
+
+```javascript
+    setPostValue({ ...postValue, content: content }); 
+```
+
+درون قانکشن `handleSubmit` یک `condition` داریم که گفتیم اگر که مقادیر `postValue`  بودند که در واقع `state` هست 
+
+که مقادیر`input` ها رو درون خودش ذخیره می کنه . 
+
+اگر که این `postValue` بود . به این معنی که تمامی فیلد های مورد نیاز برای ساخت `post` وجود داشت . 
+
+بیاد یک `state` رو `false` کنه . 
+
+  ```javascript
+    if (postValue) {
+      setDisabelSubmitForm(false);
+    }
+```
+
+که این `state` وظیفه `disable` بودن `button` مربوط به `submit` شدن رو مشخص می کنه .
+
+اگر تمامی مقادیر `post` وجود داشت در واقع تمامی فیلد ها پر شده بودند `button` ما امکان `submit` شدن و کلیک شدن داشته باشه . 
+
+در غیر اینصورت اگر هر کدوم از فیلد های مربوط به ساخت `post` خالی بودند `button` در واقع `disable` باشه و امکان کلیک شدن نداشته باشه . 
+
+
+```javascript
+
+//* state 
+  const [disabelSubmitForm, setDisabelSubmitForm] = useState(true);
+
+//* button
+          <button
+            className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            type="submit"
+            disabled={disabelSubmitForm}
+          >
+            create post
+          </button>
+
+```
+
+خب بریم سراغ بقیه فانکشن `handleSubmit` داخل `createPost` . 
+
+```javascript 
+    const post: {} | any = await createPost(postValue);
+    console.log("Response Create Post", post);
+    if (post?.status === 201) {
+      setToast(true);
+      //* can set loading then navigate to home page
+      setTimeout(() => {
+        navigate("/panel");
+      }, 3000);
+    }
+```
+
+در کد بالا که ادامه فانکشن `handlesubmit` هست  . 
+
+اول فانکشن `createPost` رو صدا زده شده که در فولدر `api` ساخته شده  در فایلی به اسم `post` . 
+
+در ادامه گفتیم اگر `post` اگر `status` برابر با `201` بود `setToast` رو `true` کنه . 
+
+در ادامه بعد از `3s`  به صحفه `panel` کاربر وارد شه یا همون `navigate`  شه یا `redirect` شه .
+
+
+**نکته** : هم کامپونت `CreatePost` نیاز هست در `router` قرار بگیره و هم کامپونت `Panel` که در اینده قرار هست ساخته شه . 
+
+دقت داشته باشید که این کامپونت ها نیاز هست در `App.tsx` در `react-router-dom` بیاد یک ادرسی به خودشون اختصاص بدن که ما بتونیم 
+
+این کامپونت ها رو ببنیم و بین شون جا به جا شیم . 
+
+```javascritp 
+//* in app.tsx 
+function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/createpost" element={<CreatePost />} />
+        <Route path="/panel" element={<Panel />} />
+        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/editpost/:id" element={<Editpost />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+
+در ادامه صحفه  `createPost` یک فانکشن دیگه هم وجود داره برای اپلود عکس پست مورد نظرمون . 
+
+که این فانکشن کار انجام `upload` عکس کاور پست رو انجام میده . 
+
+دقیقا مثل فانکشن که اپلود عکس پرفایل کاربر رو انجام میده . 
+
+تفاوتی نداره . 
+
+```javascript 
+  const Uploadimage = async () => {
+    setUploadAnimation(true);
+    const res = await uploadRegisterImage(postValue.cover);
+    console.log("response upload pic in submit func", res);
+    if (res.status === 200) {
+      setTimeout(() => {
+        setUploadAnimation(false);
+        setuploadMessage("upload is done ✔");
+        setDisabelSubmitForm(false);
+      }, 3000);
+      setPostValue({
+        ...postValue,
+        cover: res.data.secure_url,
+      });
+    }
+    if (res?.response?.status === 400) {
+      console.log("error");
+      setUploadAnimation(false);
+      setuploadMessage("upload is fail ☹");
+    }
+    console.log("register state in uplpad image btn", postValue);
+  };
+```
+
+علاوه بر اینکه درون `state postValue` میاد لینک اپلود رو در `cover` ست می کنه . 
+
+یک سری انیمیشن ها برای دکمه اپلود و یک سری مسیج ها اتفاق می افته و همینطور `submit` شدن هم کنترل میشه 
+
+```javascrtip 
+    if (res.status === 200) {
+      setTimeout(() => {
+        setUploadAnimation(false);
+        setuploadMessage("upload is done ✔");
+        setDisabelSubmitForm(false);
+      }, 3000);
+      setPostValue({
+        ...postValue,
+        cover: res.data.secure_url,
+      });
+    }
+```
+
+اگر که `status ` رسپانس 200 بود بیاد اول انمیشن دکمه رو `false` کنه در واقع یک لودینگ هست . 
+
+دوم بیاد نوشته داخل دکمه رو تغییر بده بگه اقا `upload is done` . 
+
+در ادامه اجازه `submit` شدن رو بده , بیاد `disable` دکمه `submit` رو `false` کنه . 
+
+در اخر هم بیرون از `setTimeout` امدیم `setPostValue` رو مقدار `cover` شو گذاشتیم لینکی که از دیتا می گیریم  .
+
+اما یه شرط دیگه هم داریم اگر که `status === 400` بود بیاد یه سری اتفاقات دیگه بیوتفته  داخل فانکشن `Uploadimage` . 
+
+```javascript
+    if (res?.response?.status === 400) {
+      console.log("error");
+      setUploadAnimation(false);
+      setuploadMessage("upload is fail ☹");
+    }
+    console.log("register state in uplpad image btn", postValue);
+
+```
+
+لودینگی وجود نداشته باشه . همینطور تکست دکمه ما تبدیل شه به `upload is fail`  .
+
+
+خب درون `button` که مسئول ران کردن فانکشن `Uploadimage` هستش  به صورت زیر هست : 
+
+```javascript 
+
+   <Button
+            icon=""
+            disabled={uploadBtnDisabel}
+            text={
+              uploadAnimation ? (
+                <Loading size={35} color={"#ECF0F3"} />
+              ) : (
+                uploadMessage
+              )
+            }
+            className={
+              "bg-blue-500 hover:bg-blue-300 w-[96%]   md:w-[180px] md:-translate-x-1 lg:w-[250px] rounded p-3 text-zinc-50 font-semibold"
+            }
+            type="button"
+            onClick={Uploadimage}
+          ></Button>
+```
+که برای `loading` از کامپونت `Loading` استفاده شده . 
+
+برای تکست هم از `state uploadMessage ` استفاده شده 
+
+و کلا برای `text` شرط گذاری شده : 
+
+```javascript
+        text={
+              uploadAnimation ? (
+                <Loading size={35} color={"#ECF0F3"} />
+              ) : (
+                uploadMessage
+              )
+            }
+```
+
+که `uploadAnimation` هم یک `state` هست داره که  `bolean` هست . 
+
+```javascript 
+  const [uploadAnimation, setUploadAnimation] = useState(false);
+
+```
+
+که این `state uploadAnimation` در 3 جا از فانکشن `Uploadimage` استفاده شده . 
+
+یک بار تا فانکشن اجرا میشه . 
+
+یک بار زمانی که `200 === status`  هست . 
+
+یک بار زمانی که `status === 400` هست . 
+
+
+
+```javascript 
+  const Uploadimage = async () => {
+//* at start function 
+    setUploadAnimation(true);
+    if (res.status === 200) {
+      setTimeout(() => {
+//* here if status == 200
+        setUploadAnimation(false);
+      }, 3000);
+      setPostValue({
+        ...postValue,
+        cover: res.data.secure_url,
+      });
+    }
+    if (res?.response?.status === 400) {
+//* here if status == 200
+      setUploadAnimation(false);
+    }
+    console.log("register state in uplpad image btn", postValue);
+  };
+```
+
+
+خب با `toast` هم اشنا هستید همون کامپونتی که برای `login` و `register` استفاده کردیم .
+
+یک پیامی با توجه به نیاز نشون میده اینجا می خوایم بعد از اینکه کاربر پست خودش رو ایجاد کردی . 
+
+یک پیام مبنی بر اینکه پست اش ایجاد شده نمایش میدیم . 
+
+درون فانکشن `handlesubmit` میایم `toast` رو به `true` تغییر میدیم . 
+
+ 
+```javascript
+  const [toast, setToast] = useState(false);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const post: {} | any = await createPost(postValue);
+    console.log("Response Create Post", post);
+    if (post?.status === 201) {
+//* here change toast to true , for show message to user
+      setToast(true);
+      setTimeout(() => {
+        navigate("/panel");
+      }, 3000);
+    }
+  };
+```
+
+در نهایت درون `return` از کامپونت `toast`  استفاده می کنیم در صورتی که `state toast` به `true` تغییر کرده باشه 
+
+و `state` , `text` رو که به عنوان `props` میگیره پاس میدیم . 
+
+   ```javascript 
+      <div>
+        <h1> create Post </h1>
+        {toast && <Toast text="post is create 😎" toast={toast} />}
+        <form action="" onSubmit={handleSubmit}>
+</form>
+```
+
+خب کامپونت  `createPost` به اتمام رسید . 
+
+بعد از ساخت پست نوبت به نمایش دادن پست های ایجاد شده در صحفه اصلی میشه . 
+
+# Show Posts In Home page 
 # Server 
 
 همونطور که اشاره شد پروژه `blog` یک پروژه فول استک هست . 
