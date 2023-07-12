@@ -42,7 +42,7 @@ button:disabled:hover {
     word-break: break-all;
     line-height: 30px;
   }
-  
+
   .content pre {
     max-width: 100%;
     white-space: pre-wrap;

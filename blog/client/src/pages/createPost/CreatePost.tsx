@@ -8,6 +8,8 @@ import Loading from "../../components/loading/Loading";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../components/toast/Toast";
+
+import UserCheckingLogin from "../../hooks/UserCheckingLogin";
 //TODO if post is create navigate to homepage
 
 //TODO if user is not be login ,
@@ -51,7 +53,7 @@ const CreatePost = () => {
     if (postValue) {
       setDisabelSubmitForm(false);
     }
-    const post : {} | any = await createPost(postValue);
+    const post: {} | any = await createPost(postValue);
     console.log("Response Create Post", post);
     if (post?.status === 201) {
       setToast(true);
@@ -86,59 +88,61 @@ const CreatePost = () => {
     console.log("register state in uplpad image btn", postValue);
   };
   return (
-    <div>
-      <h1> create Post </h1>
-      {toast && <Toast text="post is create 😎" toast={toast} />}
-      <form action="" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="title"
-          name="title"
-          onChange={handleOnChange}
-        />
-        <input
-          type="text"
-          placeholder="summery"
-          name="summery"
-          onChange={handleOnChange}
-        />
+    <UserCheckingLogin>
+      <div>
+        <h1> create Post </h1>
+        {toast && <Toast text="post is create 😎" toast={toast} />}
+        <form action="" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="title"
+            name="title"
+            onChange={handleOnChange}
+          />
+          <input
+            type="text"
+            placeholder="summery"
+            name="summery"
+            onChange={handleOnChange}
+          />
 
-        <input
-          type="file"
-          name="cover"
-          id="cover-input"
-          onChange={handleOnChange}
-        />
-        <Button
-          disabled={uploadBtnDisabel}
-          text={
-            uploadAnimation ? (
-              <Loading size={35} color={"#ECF0F3"} />
-            ) : (
-              uploadMessage
-            )
-          }
-          className={
-            "bg-blue-500 hover:bg-blue-300 w-[96%]   md:w-[180px] md:-translate-x-1 lg:w-[250px] rounded p-3 text-zinc-50 font-semibold"
-          }
-          type="button"
-          onClick={Uploadimage}
-        ></Button>
+          <input
+            type="file"
+            name="cover"
+            id="cover-input"
+            onChange={handleOnChange}
+          />
+          <Button
+            disabled={uploadBtnDisabel}
+            text={
+              uploadAnimation ? (
+                <Loading size={35} color={"#ECF0F3"} />
+              ) : (
+                uploadMessage
+              )
+            }
+            className={
+              "bg-blue-500 hover:bg-blue-300 w-[96%]   md:w-[180px] md:-translate-x-1 lg:w-[250px] rounded p-3 text-zinc-50 font-semibold"
+            }
+            type="button"
+            onClick={Uploadimage}
+          ></Button>
 
-        <ReactQuill
-          theme="snow"
-          value={postValue.content}
-          onChange={(value) => setPostValue({ ...postValue, content: value })}
-        />
-        <button
-          className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
-          type="submit"
-          disabled={disabelSubmitForm}
-        >
-          create post
-        </button>
-      </form>
-    </div>
+          <ReactQuill
+            theme="snow"
+            value={postValue.content}
+            onChange={(value) => setPostValue({ ...postValue, content: value })}
+          />
+          <button
+            className="bg-blue-500 hover:bg-blue-300 w-[99%] rounded p-3 text-zinc-50 font-semibold"
+            type="submit"
+            disabled={disabelSubmitForm}
+          >
+            create post
+          </button>
+        </form>
+      </div>
+    </UserCheckingLogin>
   );
 };
 

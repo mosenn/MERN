@@ -39,7 +39,7 @@ const Editpost = () => {
   //* -------------------------------------- Functions
   // console.log(post, "post in edit componet");
   const takeUserPost = async () => {
-    const response = await userPost();
+    const response: {} | any = await userPost();
     // console.log(response);
     setUserPosts(response?.data);
   };
@@ -67,7 +67,7 @@ const Editpost = () => {
     console.log(postValue, "POST VALUE IN SUBMIT FUNCTION");
     setPostValue({ ...postValue, content: content });
     console.log(postValue, "POST VALUE");
-    const res = await editPost(post?._id as string, postValue);
+    const res: {} | any = await editPost(post?._id as string, postValue);
     console.log(res, "response edit post in submit");
 
     console.log("Response editPost", post);
